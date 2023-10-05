@@ -2,8 +2,17 @@
   {
     "listing": "/blog.html",
     "items": [
-      "/posts/post-with-code/index.html",
       "/posts/welcome/index.html"
+    ]
+  },
+  {
+    "listing": "/posts/misc/misc.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/intro-to-python/intro_to_python.html",
+    "items": [
+      "/posts/intro-to-python/01.install.html"
     ]
   }
 ]

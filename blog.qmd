@@ -1,7 +1,7 @@
 ---
 title: "Blogs"
 listing:
-  contents: posts
+  contents: posts/welcome/*.qmd
   sort: "date desc"
   type: default
   categories: true
@@ -11,4 +11,7 @@ page-layout: full
 title-block-banner: true
 ---
 
+# Series
 
+##### [Intro to Python](intro_to_python.html)
+This series

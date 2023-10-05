@@ -2,9 +2,16 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "About",
+    "title": "Cover page",
     "section": "",
-    "text": "About this blog"
+    "text": "About this blog\ntry to do some interaction here later\n\n3 - Code\nThis is inline code plus a small code chunk.\n\nimport pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\n%matplotlib inline\ndf = pd.DataFrame(data=[[1,2,3,4],\n[4,3,2,1]], columns=[\"A\",\"B\",\"C\",\"D\"],index=[\"E\", \"F\"])\n# print(df)\nplt.plot(df)\n\n\n\n\n11111\n\ndf\n\n\n\n\n\n\n\nA\nB\nC\nD\n\n\n\n\nE\n1\n2\n3\n4\n\n\nF\n4\n3\n2\n1\n\n\n\n\n\n\n\n4 - Some math stuff\n\\[\n\\int_0^1 f(x) \\ dx\n\\]"
+  },
+  {
+    "objectID": "posts/intro-to-python/01.install.html",
+    "href": "posts/intro-to-python/01.install.html",
+    "title": "01 installation",
+    "section": "",
+    "text": "Heading 1\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Nam suscipit est nec dui eleifend, at dictum elit ullamcorper. Aliquam feugiat dictum bibendum. Praesent fermentum laoreet quam, cursus volutpat odio dapibus in. Fusce luctus porttitor vehicula. Donec ac tortor nisi. Donec at lectus tortor. Morbi tempor, nibh non euismod viverra, metus arcu aliquet elit, sed fringilla urna leo vel purus."
   },
   {
     "objectID": "posts/welcome/index.html",
@@ -18,13 +25,20 @@
     "href": "blog.html",
     "title": "Blogs",
     "section": "",
-    "text": "Post With Code\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2023\n\n\nHarlow Malloc\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2023\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "text": "Series\n\nIntro to Python\nThis series\n\n\n\n\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2023\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Post With Code",
+    "objectID": "posts/misc/misc.html",
+    "href": "posts/misc/misc.html",
+    "title": "Miscellaneous",
     "section": "",
-    "text": "This is a post with executable code."
+    "text": "This is a post with executable code.\n\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/intro-to-python/intro_to_python.html",
+    "href": "posts/intro-to-python/intro_to_python.html",
+    "title": "Series: Intro to Python",
+    "section": "",
+    "text": "01 installation\n\n\n\n\n\nThis is a test post. In this post, I try out different functionalities\n\n\n\n\n\n\nOct 5, 2023\n\n\n1 min\n\n\n\n\n\n\nNo matching items"
   }
 ]

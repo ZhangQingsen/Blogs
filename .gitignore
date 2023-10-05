@@ -1,1 +1,4 @@
 /.quarto/
+/.venv/
+/.luarc.json
+/.bat

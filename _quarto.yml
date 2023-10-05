@@ -3,18 +3,18 @@ project:
   output-dir: docs
 
 website:
-  title: "Blogs Content"
+  title: "Blogs"
+  site-url: https://zhangqingsen.github.io/Blogs/
+  description: "Keeping my notes here."
   navbar:
     right:
-      - about.qmd
+      - text: Blog
+        href: blog.qmd 
+      - text: "Series: Intro to Python"
+        href: posts/intro-to-python/intro_to_python.qmd
       - icon: github
-        href: https://github.com/
-      - icon: twitter
-        href: https://twitter.com
+        href: https://zhangqingsen.github.io/Blogs/
 format:
   html:
     theme: slate
     css: styles.css
-
-
-

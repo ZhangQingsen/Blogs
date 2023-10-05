@@ -1,0 +1,19 @@
+---
+title: "Miscellaneous"
+author: "Harlow Malloc"
+listing:
+  contents: ../misc/*.qmd
+  sort: "date desc"
+  type: default
+  categories: false
+  sort-ui: false
+  filter-ui: false
+  fields: [date, title, reading-time, description]
+page-layout: full
+title-block-banner: true
+date: "2023-09-12"
+categories: [news, code, analysis]
+image: "image.jpg"
+---
+
+This is a post with executable code.
