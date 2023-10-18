@@ -7,11 +7,18 @@
     "text": "About this blog\ntry to do some interaction here later\n\n3 - Code\nThis is inline code plus a small code chunk.\n\nimport pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\n%matplotlib inline\ndf = pd.DataFrame(data=[[1,2,3,4],\n[4,3,2,1]], columns=[\"A\",\"B\",\"C\",\"D\"],index=[\"E\", \"F\"])\n# print(df)\nplt.plot(df)\n\n\n\n\n11111\n\ndf\n\n\n\n\n\n\n\nA\nB\nC\nD\n\n\n\n\nE\n1\n2\n3\n4\n\n\nF\n4\n3\n2\n1\n\n\n\n\n\n\n\n4 - Some math stuff\n\\[\n\\int_0^1 f(x) \\ dx\n\\]"
   },
   {
-    "objectID": "posts/intro-to-python/01.install.html",
-    "href": "posts/intro-to-python/01.install.html",
-    "title": "01 installation",
+    "objectID": "posts/intro-to-python/01.week01.html",
+    "href": "posts/intro-to-python/01.week01.html",
+    "title": "01 week01",
     "section": "",
-    "text": "Heading 1\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Nam suscipit est nec dui eleifend, at dictum elit ullamcorper. Aliquam feugiat dictum bibendum. Praesent fermentum laoreet quam, cursus volutpat odio dapibus in. Fusce luctus porttitor vehicula. Donec ac tortor nisi. Donec at lectus tortor. Morbi tempor, nibh non euismod viverra, metus arcu aliquet elit, sed fringilla urna leo vel purus."
+    "text": "Print your full name here to replace “Hello World!” 打印姓名\n\nprint(\"Hello World!\")\n\nHello World!\n\n\nview/hide line numbers in jupyter notebook 显示/隐藏行数\nclick View -&gt; click Toggle Line Numbers 点击View -&gt; 点击Toggle Line Numbers\n\n# This is line #5   这是第5行\n\nthe order of executing block changes results jupyter notebook 中未运行的代码块对后面代码块无影响\n\nimport numpy as np\n\n\nprint(np.__version__)\n\n1.26.0\n\n\nthe order of executing block changes results jupyter notebook 代码运行顺序对结果有影响\n\na=5\n\n\nprint(a)\n\n5\n\n\n\na=6"
+  },
+  {
+    "objectID": "posts/intro-to-python/00.install.html",
+    "href": "posts/intro-to-python/00.install.html",
+    "title": "00 installation",
+    "section": "",
+    "text": "1. Installation\ninstall.bat\n@echo off\nREM 声明采用UTF-8编码\nchcp 65001\nECHO.\nTITLE [环境安装]\ncolor 70\n@REM start/wait python-3.7.8-amd64.exe /passive PrependPath=1\n@REM pause\ncall python -m venv venv\ncall dir\npause\ncall venv\\Scripts\\activate\ncall python -m pip install --upgrade pip\ncall pip3 --trusted-host pypi.tuna.tsinghua.edu.cn install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas\ncall pip3 --trusted-host pypi.tuna.tsinghua.edu.cn install -i https://pypi.tuna.tsinghua.edu.cn/simple jupyter\ncall pip3 list\ncall cmd\n\n@REM pause\nchcp 65001 : encoding in UTF-8 to present Chinese replace “python-3.7.8-amd64.exe” with your own python installation file /passive PrependPath=1 : sliencely extend the maximum length of path python -m venv venv : create a virtual environment\ninstall pandas and jupyter for now\n\n\n2. Execution\nI have provided 2 simple .bat file for activate the virtual environment and run jupyter notebook venv.bat\n@echo off\nREM 声明采用UTF-8编码\nchcp 65001\nECHO.\nTITLE [环境安装]\ncolor 70\n\ncall venv\\Scripts\\activate\necho \u001b[35mjupyter notebook stop\u001b[0m\ncall cmd\n\n\n@REM pause\nthe command ‘jupyter notebook stop’ is highlighted here this command could be used in this activated environment to stop the local sever of jupyter\nrun jupyter notebook.bat\n@echo off\nREM 声明采用UTF-8编码\nchcp 65001\nECHO.\nTITLE [运行]\ncolor 70\n\ncall venv\\Scripts\\activate\ncall jupyter notebook\n\n@REM pause\nSimplely double click this file to run jupyter notebook\n\n\n3. Possible Problems\nthere are two possible 1. jupyter notebook Bad file descriptor check the solution from this link (It’s in Chinese) 2. the default browser won’t prompt check the solution from this link (It’s in Chinese)"
   },
   {
     "objectID": "posts/welcome/index.html",
@@ -39,6 +46,13 @@
     "href": "posts/intro-to-python/intro_to_python.html",
     "title": "Series: Intro to Python",
     "section": "",
-    "text": "01 installation\n\n\n\n\n\nThis is a test post. In this post, I try out different functionalities\n\n\n\n\n\n\nOct 5, 2023\n\n\n1 min\n\n\n\n\n\n\nNo matching items"
+    "text": "About this series\nClass materials I made when I was a lecturer at Jiangxi University of Software Professional Technology\n\n\n\n\n\n\n\n\n\n\n02 week02 - answer\n\n\n\n\n\nweek02 class materials, simple python bases, with answers of practice problems\n\n\n\n\n\n\nOct 7, 2023\n\n\n1 min\n\n\n\n\n\n\n\n\n01 week01\n\n\n\n\n\nweek01 class materials, simple jupyter notebook tips\n\n\n\n\n\n\nOct 6, 2023\n\n\n1 min\n\n\n\n\n\n\n\n\n00 installation\n\n\n\n\n\n.bat file contains commands for install and run python environment\n\n\n\n\n\n\nOct 5, 2023\n\n\n1 min\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/intro-to-python/02.week02.html",
+    "href": "posts/intro-to-python/02.week02.html",
+    "title": "02 week02 - answer",
+    "section": "",
+    "text": "Print your full name here to replace “Hello World!” 打印姓名\n\nprint(\"Hello World!\")\n\nHello World!\n\n\nview/hide line numbers in jupyter notebook 显示/隐藏行数\nclick View -&gt; click Toggle Line Numbers 点击View -&gt; 点击Toggle Line Numbers\n\n# This is line #5   这是第5行\n\nthe order of executing block changes results jupyter notebook 中未运行的代码块对后面代码块无影响\n\nimport numpy as np\n\n\nprint(np.__version__)\n\n1.26.0\n\n\nthe order of executing block changes results jupyter notebook 代码运行顺序对结果有影响\n\na=5\n\n\nprint(a)\n\n5\n\n\n\na=6"
   }
 ]

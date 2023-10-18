@@ -11,3 +11,7 @@ listing:
 page-layout: full
 title-block-banner: true
 ---
+
+About this series
+
+Class materials I made when I was a lecturer at Jiangxi University of Software Professional Technology

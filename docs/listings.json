@@ -12,7 +12,9 @@
   {
     "listing": "/posts/intro-to-python/intro_to_python.html",
     "items": [
-      "/posts/intro-to-python/01.install.html"
+      "/posts/intro-to-python/02.week02.html",
+      "/posts/intro-to-python/01.week01.html",
+      "/posts/intro-to-python/00.install.html"
     ]
   }
 ]
