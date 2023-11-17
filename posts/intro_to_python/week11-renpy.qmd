@@ -1,0 +1,252 @@
+---
+title: 11 Ren'py
+# date: "1970-01-01"
+# categories: ['Python', 'lang:Chinese']
+description: "The Ren'py script file shows the instructions in Ren'py"
+execute: 
+  message: false
+  warning: false
+editor_options: 
+  chunk_output_type: console
+---
+
+### script.rpy in Ren'py
+Notice that at the time this course was teaching, the lastest version of Ren'py is 7.4, which is the last version using Python 2.7. Then, they shifted to Ren'py 8.0, which using Python 3.
+```{python}
+#| code-fold: true
+#| eval: false
+# 游戏的脚本可置于此文件中。
+init python:
+    # init python 语句在初始化阶段运行，早于其他游戏资源加载。
+    pass
+    # import numpy as np
+
+# 声明此游戏使用的角色。颜色参数可使角色姓名着色。
+define author = Character("张晴森", color='#7955d1')
+define abc = Character("abc123")
+
+# 游戏在此开始。
+
+label start:
+
+    # 显示一个背景。此处默认显示占位图，但您也可以在图片目录添加一个文件
+    # （命名为“bg room.png”或“bg room.jpg”）来显示。
+    "在script中仅有字符串时为无角色对话"
+    
+    abc "上面定义了角色abc123，角色名加字符串为简单对话"
+    author "上面定义了角色{b}{i}{size=45}{alpha=0.7}{color=#7955d1}张晴森{/color}{/alpha}{/size}{/i}{/b}，角色名显示为所设置的颜色"
+
+    "文字标签"
+    # https://www.renpy.cn/doc/text.html
+    "用 \{size\} 标签设置文字大小"
+    "如{size=45}abc123{/size}和{size=15}abc123{/size}"
+    "用 \{color\} 标签设置文字颜色"
+    "如{color=#7955d1}abc123{/color}和{color=#86aa2e}abc123{/color}"
+    "用 \{alpha\} 标签设置文字透明度"
+    "如{alpha=0.5}abc123{/alpha}"
+    "用 \{s\} 标签设置文字粗体"
+    "如{s}删除线{/s}"
+    "用 \{b\} 标签设置文字粗体"
+    "如{b}bold{/b}"
+    "用 \{i\} 标签设置文字斜体"
+    "如{i}italic{/i}"
+    "结合使用"
+    "如{b}{size=45}{alpha=0.7}{color=#7955d1}abc123{/color}{/alpha}{/size}{/b}和{i}{size=15}{alpha=0.3}{color=#86aa2e}abc123{/alpha}{/size}{/i}"
+
+    "显示背景"
+    scene bg win
+    "使用scence显示背景，bg win可以是'bg win.jpg'或者'bg win.png'或者其他图像格式"
+
+    # 显示角色立绘。此处使用了占位图，但您也可以在图片目录添加命名为
+    # “eileen happy.png”的文件来将其替换掉。
+    "显示人物图像"
+    show eileen happy
+    "{i}show eileen happy{/i}"
+    "未提前定义的图片也可直接通过'show'引用"
+    "RenPy 会自动去 Images 文件夹搜索 'eileen happy'.jpg/.png等"
+
+    # 此处显示各行对话。
+    define e = Character("艾琳", image="eileen", color='#e3b4b8')
+    image eileen concerned = "character/eileen concerned.png"           # 路径为: '.\images\character\xxx.jpg' images省略，默认从images搜索图片
+    image side eileen concerned = "character/side eileen concerned.png" # side设置头像
+    image eileen happy = "character/eileen happy.png"
+    image side eileen happy = "character/side eileen happy.png"
+    image eileen vhappy = "character/eileen vhappy.png"
+    image side eileen vhappy = "character/side eileen vhappy.png"
+    
+    e "定义角色\{艾琳\}，同时定义其图片"
+    e concerned "艾琳 {b}concerned{/b}"
+    e happy "艾琳 {b}happy{/b}"
+    e vhappy "艾琳 {b}very happy{/b}"
+    e "可以看到头像随人物图像的变动而变动"
+
+    e "语音"
+    voice "audio/D12_945.wav"
+    e "此外，鲨鱼，鱼龙和海豚仅管外貌上很相似，都擅长游泳，有人把它们归属鱼类"
+    e "具体参考 https://www.renpy.cn/doc/voice.html"
+    
+    hide eileen
+    "使用hide来隐藏图像，达到角色退场的效果"
+    "注意是hide图像eileen，而不是hide角色e"
+    e concerned "角色退场后说话"
+    show eileen happy
+    e "重新展示角色"
+
+    scene bg blank with fade
+    # region 转场特效
+        # None 无转场特效
+        # fade          0.5秒时间画面逐渐暗淡至全黑，然后0.5秒时间画面从全黑逐渐变亮成新界面。
+        # dissolve      0.5秒时间，使用溶解效果从旧界面切到新界面。
+        # pixellate     0.5秒像素化旧场景，并0.5秒反向像素化至新场景。
+        # move          通过在图像上移动位置切换场景。
+        # moveinright   从界面上对应的边界移入图像，用时0.5秒。(moveinleft, moveintop, moveinbottom)
+        # moveoutright  从界面上对应的边界移出图像，用时0.5秒。(moveoutleft, moveouttop, moveoutbottom)
+        # ease          类似于上面的move系列转场效果，差别在于ease系列基于余弦曲线放缓开始和结束的转场。(easeinright, easeinleft, easeintop, easeinbottom, easeoutright, easeoutleft, easeouttop, easeoutbottom)
+        # zoomin        镜头放大切入图像，耗时0.5秒。
+        # zoomout       镜头缩小离开图像，耗时0.5秒。
+        # zoominout     先镜头放大切入图像，然后镜头缩小离开图像，耗时0.5秒。
+        # vpunch        这种转场效果，会垂直摇晃界面0.25秒。
+        # hpunch        这种转场效果，会水平摇晃界面0.25秒。
+        # blinds        垂直遮蔽原界面，耗时1秒。
+        # squares       以平面效果转场界面，耗时1秒。
+        # wipeleft      以指定方向擦除原界面。 (wiperight, wipeup, wipedown)
+        # slideleft     以指定方向滑入新场景。(slideright, slideup, slidedown)
+        # slideawayleft 以指定方向滑出旧场景。(slideawayright, slideawayup, slideawaydown)
+        # pushright     新场景把旧场景从指定的边界推出。(pushleft, pushup, pushdown)
+        # irisin        使用一个矩形iris显示新界面，或者隐藏旧界面。(irisout)
+    # endregion
+    '重新调用{i}scene{/i}则清除所有图像并显示一个背景图'
+    '{i}with fade{/i}表示特效为淡出'
+    # +-----------------------------------------------------------+
+    # |topleft, reset               top                   topright|
+    # |                                                           |
+    # |                                                           |
+    # |                                                           |
+    # |                                                           |
+    # |                          truecenter                       |
+    # |                                                           |
+    # |                                                           |
+    # |                                                           |
+    # |                                                           |
+    # |left                   center, default                right|
+    # +-----------------------------------------------------------+
+
+    '背景音乐'
+    play music "audio/Piano Sonata no. 11, K. 331 - I. Andante grazioso.mp3" fadeout 1.0 fadein 1.0
+    'fadeout and fadein分句用于旧音乐的淡出和新音乐的淡入'
+
+    show eileen at left
+    e concerned "在左侧显示人像"
+    show eileen at right with move
+    e concerned "移动到右侧"
+
+    define l = Character("露西", image="lucy", color='#92b3a5')
+    image lucy happy = "character/lucy happy.png"
+    image lucy mad = "character/lucy mad.png"
+
+    show lucy happy at left
+    l happy "增加一个角色"
+
+    l mad "对话合并    可以自定义样式"(multiple=2)
+    e happy "对话合并"(multiple=2)
+
+    "python语句"
+    "单行用{i}${\i}表示"
+    "如{i}$ count = 0{\i}"
+    $ count = 0
+    '使用\[{i}var{\i}\]调用变量'
+    "这里count = [count]"
+
+    "Ren'Py中if-else可以直接使用"
+
+    if 0:
+        $ count = 0
+    elif -1:
+        $ count = -1
+    else:
+        $ count = 1
+    
+    "count现在是: [count]"
+
+    "多行python语句"
+    python:
+        for i in range(1,5,2):
+            count += i
+            print(f'count现在是: {count}')
+
+    "count现在是: [count]"
+
+    "使用多行python来读取输入"
+    define pov = Character("[povname]")
+    python:
+        # python 代码块
+        povname = renpy.input("你的名字是什么？", length=32)
+        povname = povname.strip()
+
+        if not povname:
+            povname = "122333"
+
+    pov "我的名字是 [povname]!"
+
+    "使用manu来进行分支选择"
+    "关于 import 引用，以下选项中描述错误的是( )"
+    $ ans = 0
+    menu:
+        'A. 使用 import numpy 引入 numpy 库':
+            $ ans = 1
+        'B. 可以使用 from numpy import Pi 引入 numpy 库':
+            $ ans = 2
+        'C. 使用 import numpy as np 引入 numpy 库，取别名为 np':
+            $ ans = 3
+        'D. import 保留字用于导入模块或者模块中的对象':
+            $ ans = 4
+    
+    if ans == 2:
+        "回答正确"
+    else:
+        "回答错误"
+
+    nvl_narrator 'NVL模式'
+    nvl_narrator 'NVL模式指的是一张背景图，全屏文本的模式'
+    nvl_narrator '适合背景介绍，旁白等'
+    
+    nvl_narrator "定义NVL内角色玛丽"
+    define m = Character("玛丽", kind=nvl, color='#c8c8ff')
+    m "我是玛丽"
+
+    e 'NVL外的角色说话即离开NVL'
+    m 'NVL内的角色说话回到NVL'
+    
+    nvl_narrator "可以使用'nvl clear'来清空屏幕"
+    nvl clear
+    nvl_narrator "现在NVL的内容清空了"
+
+    "下面介绍标签"
+    "标签类似面向过程编程的标签，或者内存中的跳转"
+    "面向过程编程中，按照自上而下的顺序逐行执行，也就是说，只有第一行命令执行之后，才可能执行第二行，第二行执行之后，才可以执行到第三行.....如此依次执行"
+    "使用流程跳转"
+    "jump语句用于将主控流程转入给定的脚本标签(label)处而call语句允许主控流程在执行完这次调用后，回到调用发生的脚本位置。"
+
+    menu:
+        "尝试jump跳转标签":
+            jump .a1
+        
+        "尝试call跳转标签":
+            call .a1
+    # 此处为游戏结尾。
+    "结尾"
+    return 
+
+label .a1:
+    "这里是a1标签"
+
+label .a2:
+    "这里是a2标签"
+    return
+
+label quit:
+    e "退出标签quit"
+    e "若该标签存在，当用户从主菜单退出游戏时该标签内容会被调用。"
+    "{b}{size=45}{alpha=0.7}{color=#ed556a}END{/color}{/alpha}{/size}{/b}"
+    return
+

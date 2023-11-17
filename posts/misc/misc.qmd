@@ -1,6 +1,6 @@
 ---
 title: "Miscellaneous"
-author: "Harlow Malloc"
+author: "Qingsen Zhang"
 listing:
   contents: ../misc/*.qmd
   sort: "date desc"
@@ -16,4 +16,4 @@ categories: [news, code, analysis]
 image: "image.jpg"
 ---
 
-This is a post with executable code.
+This series contains miscellaneous materials I have.

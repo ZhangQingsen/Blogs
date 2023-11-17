@@ -7,14 +7,12 @@
   },
   {
     "listing": "/posts/misc/misc.html",
-    "items": []
+    "items": [
+      "/posts/misc/01.Private Server Setup notes.html"
+    ]
   },
   {
-    "listing": "/posts/intro-to-python/intro_to_python.html",
-    "items": [
-      "/posts/intro-to-python/02.week02.html",
-      "/posts/intro-to-python/01.week01.html",
-      "/posts/intro-to-python/00.install.html"
-    ]
+    "listing": "/posts/machine_learning/machine_learning.html",
+    "items": []
   }
 ]

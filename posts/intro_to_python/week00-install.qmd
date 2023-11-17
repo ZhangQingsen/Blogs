@@ -1,0 +1,94 @@
+---
+title: 00 Installation
+# date: "1970-01-01"
+# categories: ['Python', 'lang:Chinese']
+description: '.bat file contains commands for install and run python environment'
+execute: 
+  message: false
+  warning: false
+editor_options: 
+  chunk_output_type: console
+---
+
+### 1. Installation
+install.bat
+```{python}
+#| code-fold: true
+#| eval: false
+@echo off
+REM 声明采用UTF-8编码
+chcp 65001
+ECHO.
+TITLE [环境安装]
+color 70
+@REM start/wait python-3.7.8-amd64.exe /passive PrependPath=1
+@REM pause
+call python -m venv venv
+call dir
+pause
+call venv\Scripts\activate
+call python -m pip install --upgrade pip
+call pip3 --trusted-host pypi.tuna.tsinghua.edu.cn install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas
+call pip3 --trusted-host pypi.tuna.tsinghua.edu.cn install -i https://pypi.tuna.tsinghua.edu.cn/simple jupyter
+call pip3 list
+call cmd
+
+@REM pause
+```
+chcp 65001 : encoding in UTF-8 to present Chinese
+replace "python-3.7.8-amd64.exe" with your own python installation file
+/passive PrependPath=1 : sliencely extend the maximum length of path
+python -m venv venv : create a virtual environment
+
+install pandas and jupyter for now
+
+### 2. Execution
+I have provided 2 simple .bat file for activate the virtual environment and run jupyter notebook
+venv.bat
+
+```{python}
+#| code-fold: true
+#| eval: false
+@echo off
+REM 声明采用UTF-8编码
+chcp 65001
+ECHO.
+TITLE [环境安装]
+color 70
+
+call venv\Scripts\activate
+echo [35mjupyter notebook stop[0m
+call cmd
+
+
+@REM pause
+```
+the command 'jupyter notebook stop' is highlighted here
+this command could be used in this activated environment to stop the local sever of jupyter
+
+
+```{python}
+#| code-fold: true
+#| eval: false
+@echo off
+REM 声明采用UTF-8编码
+chcp 65001
+ECHO.
+TITLE [运行]
+color 70
+
+call venv\Scripts\activate
+call jupyter notebook
+
+@REM pause
+```
+Simplely double click this file to run jupyter notebook
+
+### 3. Possible Problems
+there are two possible 
+1. jupyter notebook Bad file descriptor
+check the solution from [this link](https://blog.csdn.net/python_bigniu/article/details/120923326) (It's in Chinese)
+2. the default browser won't prompt
+check the solution from [this link](https://blog.csdn.net/fffsolomon/article/details/103733300) (It's in Chinese)
+
+

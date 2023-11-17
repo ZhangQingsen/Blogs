@@ -13,5 +13,6 @@ title-block-banner: true
 
 # Series
 
-##### [Intro to Python](intro_to_python.html)
-This series
+##### [Intro to Python](posts\intro_to_python\intro_to_python.html)
+##### [Machine Learning](posts\machine_learning\machine_learning.html)
+##### [Misc](posts\misc\misc.html)

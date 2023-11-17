@@ -1,0 +1,152 @@
+---
+title: 12 Flask
+# date: "1970-01-01"
+# categories: ['Python', 'lang:Chinese']
+description: 'Sample source code for a simple web application built by flask'
+execute: 
+  message: false
+  warning: false
+editor_options: 
+  chunk_output_type: console
+---
+
+### Falsk
+install.bat
+```{python}
+#| code-fold: true
+#| eval: false
+# from tkinter import N
+from flask import Flask, render_template, request, redirect, url_for, make_response
+from urllib.request import urlopen
+
+import re
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# help(Flask(__name__))
+#  |  :param import_name: the name of the application package
+#  |  :param static_url_path: can be used to specify a different path for the
+#  |                          static files on the web.  Defaults to the name
+#  |                          of the `static_folder` folder.
+#  |  :param static_folder: The folder with static files that is served at
+#  |      ``static_url_path``. Relative to the application ``root_path``
+#  |      or an absolute path. Defaults to ``'static'``.
+#  |  :param static_host: the host to use when adding the static route.
+#  |      Defaults to None. Required when using ``host_matching=True``
+#  |      with a ``static_folder`` configured.
+#  |  :param host_matching: set ``url_map.host_matching`` attribute.
+#  |      Defaults to False.
+#  |  :param subdomain_matching: consider the subdomain relative to
+#  |      :data:`SERVER_NAME` when matching routes. Defaults to False.
+#  |  :param template_folder: the folder that contains the templates that should
+#  |                          be used by the application.  Defaults to
+#  |                          ``'templates'`` folder in the root path of the
+#  |                          application.
+#  |  :param instance_path: An alternative instance path for the application.
+#  |                        By default the folder ``'instance'`` next to the
+#  |                        package or module is assumed to be the instance
+#  |                        path.
+#  |  :param instance_relative_config: if set to ``True`` relative filenames
+#  |                                   for loading the config are assumed to
+#  |                                   be relative to the instance path instead
+#  |                                   of the application root.
+#  |  :param root_path: The path to the root of the application files.
+#  |      This should only be set manually when it can't be detected
+#  |      automatically, such as for namespace packages.
+app = Flask(__name__, template_folder='./')
+print(app.template_folder)
+
+@app.route('/')
+def hello_world():
+    return "<h1>Hello World Flask!</h1>"
+
+@app.route('/h1', methods=['POST', 'GET'])
+def hello_h1():
+    return f"<h1>Hello h1!</h1>"
+
+@app.route('/zqs')
+def hello_zqs():
+    return "<h1>Hello 张晴森!</h1>"
+
+@app.route('/<int:age>')
+def hello_age(age):
+    return f"<h1>Hello World Flask! age is {age}</h1>"
+
+@app.route('/hello/<string:n>')
+def hello_name(n):
+    return f"<h1>Hello {n}!</h1>"
+
+# 请求
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        password = request.form.get('password')
+        print(f"name: {name}, password: {password}")
+        return redirect(url_for("hello_zqs"))
+        # return f'Hello {name}!'
+    if request.method == 'GET':
+        return render_template('Register.html')
+#         return '''<!DOCTYPE html>
+# <html lang="en">
+#  <head>
+#   <meta charset="UTF-8">
+#   <meta name="Generator" content="EditPlus®">
+#   <meta name="Author" content="">
+#   <meta name="Keywords" content="">
+#   <meta name="Description" content="">
+#   <title>Register</title>
+#  </head>
+#  <body>
+#      <form action="">
+#          账号: 
+#          <input type="text" name="name">
+#          <br>
+#          密码: 
+#          <input type="password" name="password">
+#          <br>
+#          <input type="submit" name="submit">
+  
+#  </body>
+# </html>
+# '''
+
+# 重定向
+@app.route('/redirect/<int:a>')
+def redire_idx(a):
+    if not a:
+        return redirect('https://www.jxuspt.com/')
+    elif a % 2:
+        return redirect(url_for("hello_name", n=f'{a} is odd'))
+    else:
+        return redirect(url_for("hello_name", n=f'{a} is even'))
+
+url = "http://jse.amstat.org/datasets/normtemp.dat.txt"
+html = urlopen(url).read().decode()
+pattern = re.compile(r'^(?P<t>[\d.]+?)\s+?(?P<g>\d)\s+?(?P<h>\d{2})$', re.M)
+items = re.findall(pattern, html)
+df = pd.DataFrame(items, columns=['体温','性别','心率'])
+df['体温'] = df['体温'].apply(lambda x : round((float(x)-32)/1.8,2))
+# 显示df
+@app.route('/pd')
+def from_pd():
+    # response = make_response(df.to_json(force_ascii=False))
+    # response.miteypte = 'application/json'
+    # return response
+    # return df.to_json(force_ascii=False)
+    return df.to_html()
+
+@app.route('/mpl')
+def mpl():
+    x_arr = np.arange(df.shape[0])
+    plt.scatter(x_arr, df['心率'], s=df['体温'], c=np.arctan2(df['体温'], x_arr), marker='8')
+    img_name = "scatter_plot.jpg"
+    plt.savefig('./'+img_name)
+    img_data = open('./'+img_name, "rb").read()
+    response = make_response(img_data)
+    response.headers['Content-Type'] = 'image/jpg'
+    return response
+
+if __name__ == "__main__":
+    app.run(debug=True)

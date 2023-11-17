@@ -1,0 +1,27 @@
+---
+title: "Series: Intro to Python"
+page-layout: full
+title-block-banner: true
+---
+
+About this series
+
+Course materials for \[Intro to Python\] in 2020 spring at Jiangxi University of Software Professional Technology
+The contents are showing below:
+
+| Schedule | Topic                     | Material                                | Description                                                     |
+|:---------|:--------------------------|:----------------------------------------|:----------------------------------------------------------------|
+| Week 00  | prerequisite              | [installation](./week00-install.qmd)    | Follow the instruction to create python virtual environment.    |
+| Week 01  | basic information         | [jupyter notebook](./week01-answer.html)| Follow the instruction to play with jupyter notebook.           |
+| Week 02  | python grammer            | [Python grammer](./week02-answer.html)  | Apply basic python grammer to calculate.                        |
+| Week 03  | python grammer 2          | [Python grammer 2](./week03-answer.html)| Class in python, file IO in python.                             |
+| Week 04  | numpy                     | [Numpy](./week04-answer.html)           | Introducing the Numpy package for calculation, also a little bit Data Structure.  |
+| Week 05  | pandas                    | [Pandas](./week05-answer.html)          | Introducing the Numpy package.                                  |
+| Week 06  | Matplotlib 1              | [Matplotlib 1](./week06-answer.html)    | Introducing the Matplotlib package for ploting basic plots.     |
+| Week 07  | Matplotlib 2              | [Matplotlib 2](./week07-answer.html)    | Introducing the Matplotlib package for ploting, including 3D plot and animation.  |
+| Week 08  | web crawler               | [spiders](./week08-answer.html)         | Introducing the requests and BeautifulSoup package for basic web crawler application.|
+| Week 09  | regular expression        | [regex](./week09-answer.html)           | Basic regular expressions using re package.                     |
+| Week 10  | Midterm Exam              | ----------------------------------------| ----------------------------------------------------------------|
+| Week 11  | Ren'py                    | [Ren'py](./week11-renpy.qmd)            | Simple sample Visual Novel Project with Ren'py instructions.    |
+| Week 12  | Falsk                     | [Falsk](./week12-flask.qmd)             | Basic web application using flask.                              |
+| Week 13  | OpenCV                    | [OpenCV](./week13-answer.html)          | Advaced vision applications using the OpenCV package.           |

@@ -10,11 +10,9 @@ website:
     right:
       - text: Blog
         href: blog.qmd 
-      - text: "Series: Intro to Python"
-        href: posts/intro-to-python/intro_to_python.qmd
       - icon: github
         href: https://zhangqingsen.github.io/Blogs/
 format:
   html:
-    theme: slate
+    theme: spacelab
     css: styles.css

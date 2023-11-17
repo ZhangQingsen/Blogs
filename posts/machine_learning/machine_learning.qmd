@@ -1,0 +1,27 @@
+---
+title: "Series: CS5805 Machine Learning"
+listing:
+  contents: ../intro-to-python/*.qmd
+  sort: "date desc"
+  type: default
+  categories: false
+  sort-ui: false
+  filter-ui: false
+  fields: [date, title, reading-time, description]
+page-layout: full
+title-block-banner: true
+---
+
+About this series
+
+Course projects for CS5805
+
+1. 5 blog posts are required, not 3
+2. Topics are pre-defined, not up to you to decide:
+    1. Probability theory and random variables
+    2. Clustering
+    3. Linear and nonlinear regression
+    4. Classification
+    5. Anomaly/outlier detection
+3. The requirements for Machine Learning code and at least one data visualization are still in effect.
+4. Also unchanged is my expectation that everyone will build their own blog, preferably using Quarto, and publish it online, preferably on GitHub Pages. You can build the site with something else, like a JavaScript framework, and publish it elsewhere: https://quarto.org/docs/websites/website-blog.html#publishing,Links to an external site. as long as the blog is built from source files programmatically (not using a GUI) and it is accessible for free via a URL.
