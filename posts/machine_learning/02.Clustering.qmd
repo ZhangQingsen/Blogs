@@ -1,6 +1,6 @@
 ---
 title: '01 week01'
-date: '2023-10-06'
+date: '2023-11-16'
 categories: ['Python', 'lang:Chinese']
 description: 'week01 class materials, simple jupyter notebook tips'
 execute: 
@@ -10,6 +10,7 @@ editor_options:
   chunk_output_type: console
 ---
 
+implement DBSCAN on 
 Print your full name here to replace "Hello World!"
 打印姓名
 ```{python}

@@ -10,6 +10,18 @@ editor_options:
   chunk_output_type: console
 ---
 
+
+### Device
+111
+### OS
+111
+### OMV (Debian 11)
+111
+### Docker
+111
+### Nginx && NextCloud
+111
+
 Print your full name here to replace "Hello World!"
 打印姓名
 ```{python}

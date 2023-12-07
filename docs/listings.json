@@ -1,8 +1,14 @@
 [
   {
-    "listing": "/blog.html",
+    "listing": "/posts/machine_learning/machine_learning.html",
     "items": [
-      "/posts/welcome/index.html"
+      "/posts/machine_learning/01.Probability.html",
+      "/posts/machine_learning/02.Clustering.html",
+      "/posts/machine_learning/03.Linear and nonlinear regression 1.html",
+      "/posts/machine_learning/03.Linear and nonlinear regression 2.html",
+      "/posts/machine_learning/04.Classification.html",
+      "/posts/machine_learning/05.Anomaly_outlier detection.html",
+      "/posts/machine_learning/06.Page Rank Algorithm.html"
     ]
   },
   {
@@ -12,7 +18,9 @@
     ]
   },
   {
-    "listing": "/posts/machine_learning/machine_learning.html",
-    "items": []
+    "listing": "/blog.html",
+    "items": [
+      "/posts/welcome/index.html"
+    ]
   }
 ]

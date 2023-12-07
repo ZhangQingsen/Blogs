@@ -1,7 +1,7 @@
 ---
 title: "Series: CS5805 Machine Learning"
 listing:
-  contents: ../intro-to-python/*.qmd
+  contents: ../machine_learning/*.qmd
   sort: "date desc"
   type: default
   categories: false
