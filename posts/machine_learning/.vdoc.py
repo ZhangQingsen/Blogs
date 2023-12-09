@@ -15,7 +15,6 @@
 #
 #
 #
-#
 #| echo: false
 #| output: false
 
@@ -26,191 +25,57 @@ warnings.filterwarnings("ignore")
 #
 #
 #
+#
+#
 import numpy as np
 import pandas as pd
-import yfinance as yf
+import seaborn as sns
 import matplotlib.pyplot as plt
-plt.style.use('ggplot')
-
+from sklearn.preprocessing import OneHotEncoder, MinMaxScaler, StandardScaler
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import accuracy_score
-#
-#
-#
-#
-#
-#
-#| echo: false
-#| output: false
-def my_mae(y_pred, y_test):
-  assert len(y_pred) == len(y_test)
-  m = len(y_pred)
-  res = np.abs(y_test-y_pred)
-  return res.mean()
 
-def my_mse(y_pred, y_test):
-  assert len(y_pred) == len(y_test)
-  m = len(y_pred)
-  res = (y_test-y_pred) ** 2
-  return res.mean()
+plt.style.use('ggplot')
+# print(f"List of seaborn datasets: \n{sns.get_dataset_names()}")
+#
+#
+#
+#
+#
+#
+diamonds = sns.load_dataset('diamonds')
+print(f"There are {diamonds.isna().sum().sum()} missing values")
+diamonds
+#
+#
+#
+#
+grouped = diamonds.groupby(['clarity', 'cut', 'color'])['price'].sum()
 
-def my_rmse(y_pred, y_test):
-  assert len(y_pred) == len(y_test)
-  m = len(y_pred)
-  res = (y_test-y_pred) ** 2
-  return (res.mean()) ** .5
+# Sort the grouped data within each 'clarity' group
+grouped_sorted = grouped.reset_index().sort_values(['clarity', 'price'], ascending=[True, False])
 
-def my_mad(y_pred, y_test):
-  assert len(y_pred) == len(y_test)
-  m = len(y_pred)
-  res = np.abs(y_pred-np.median(y_test))
-  return np.median(res)
+# Unstack the sorted grouped data
+grouped_sorted_unstacked = grouped_sorted.set_index(['clarity', 'cut', 'color']).unstack().fillna(0)
 
-def linearPredict(x, ws):
-  ones = np.ones([x.shape[0], 1])
-  x_1 = np.hstack((x, ones))
-  y_pred = np.dot(x_1,ws)
-  return y_pred
+# Create a stacked bar plot with sorted bars
+grouped_sorted_unstacked.plot(kind='bar', stacked=True, figsize=(10, 6))
 
-def linear_update_weigths(x, y, w, lr):
-  yMat = np.mat(y).T
-  y_pred = np.dot(x,w)
-  gradient = np.array(lr * 2 * np.dot(x.T, (y_pred - y).T)).flatten()
-  w -= gradient
-  y_pred = np.dot(x,w)
-  return w, y_pred
-
-def to_power(x, power):
-  x = x.reshape(x.shape[0], -1)
-  x_tmp = x[:]
-  for i in range(2, power+1):
-      x = np.append(x, x_tmp ** i, axis=1)
-  return x
-
-def sigmoid(x):
-  return 1 / (1 + np.exp(-x))
-
-def logLoss(y, h):
-  return (-y * np.log(h) - (1 - y) * np.log(1 - h)).mean()
-
-def normalize_and_binarize(y):
-  # y_normalized = (y - np.min(y)) / (np.max(y) - np.min(y))
-  # y_binarized = np.where(y_standardized >= 0.5, 1, 0)
-  y_standardized = (y - np.mean(y)) / np.std(y)
-  y_binarized = np.where(y_standardized >= 0, 1, 0)
-  return y_binarized
-
-def logistic_update_weigths(x, y, w, lr):
-  h = sigmoid(np.dot(x, w))
-  loss = logLoss(y, h)
-  gradient = np.dot(x.T, (h - y)) / y.shape[0]
-  w -= lr *gradient
-  h = sigmoid(np.dot(x, w))
-  return w, h
-
-def fit_linear(x, y, lr=0.001, num_iter=2000, func=my_rmse):
-  perform_df = pd.DataFrame(columns=['loss'])
-  ones = np.ones([x.shape[0]]).reshape(-1,1)
-  x_1 = np.hstack((x, ones))
-  weight = np.random.rand(x_1.shape[1])  # initialize weight
-  for epoch in range(num_iter):
-    weight, y_pred = linear_update_weigths(x_1, y, weight, lr)
-    # weight, y_pred = linear_update_weigths_1(x_1, y, weight, lr, func)
-    loss = func(y, y_pred)
-    perform_df.loc[epoch] = [loss]
-  return weight, y_pred, perform_df
-
-def fit_logistic(x, y, lr=0.001, num_iter=2000):
-  perform_df = pd.DataFrame(columns=['loss'])
-  ones = np.ones([x.shape[0], 1])
-  x_1 = np.hstack((x, ones))
-  weight = np.random.rand(x_1.shape[1])  # initialize weight
-  for epoch in range(num_iter):
-    weight, h = logistic_update_weigths(x_1, y, weight, lr)
-    loss = logLoss(y, h)
-    perform_df.loc[epoch] = [loss]
-  return weight, h, perform_df
-```
+plt.legend(title='Color', labels=['D', 'E', 'F', 'G', 'H', 'I', 'J'])
+# Add x-label, y-label, and title
+plt.xlabel('Clarity and Cut', fontname='serif', color='darkred',)
+plt.ylabel('Total Price', fontname='serif', color='darkred',)
+plt.title('Total Price by Clarity and Cut, Sorted within Each Clarity Group', fontname='serif', color='darkblue', fontsize=16)
+plt.show()
 #
 #
 #
 #
 #
 #
-#
-#
-# stock = 'AAPL'
-stock = 'GOOGL'
-period = '1d'
-start = '2000-1-1'
-end = '2022-12-31'
-
-tickerData = yf.Ticker(stock)
-
-tickerDf = tickerData.history(period=period, start=start, end=end)
-
-tickerDf.index = pd.to_datetime(tickerDf.index)
-
-tickerDf
-#
-#
-#
-#
-close_arr = tickerDf['Close']
-
-fig = plt.figure()
-plt.plot(close_arr.index, close_arr, label=stock)
-plt.xlabel("Date")
-plt.xticks(rotation=30)
-plt.ylabel("Price($)")
-plt.title(f"{stock} price VS. Date")
-plt.legend()
-plt.plot()
-#
-#
-#
-#
-#
-return_arr = tickerDf['Close'].pct_change().dropna()
-return_arr = (1+return_arr).cumprod()
-
-fig = plt.figure()
-plt.plot(return_arr.index, return_arr, label=stock)
-plt.xlabel("Date")
-plt.xticks(rotation=30)
-plt.ylabel("Cumulative\nReturn")
-plt.title(f"{stock} return VS. Date")
-plt.legend()
-plt.plot()
-```
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-df = pd.DataFrame()
-df['return'] = tickerDf['Close'].pct_change()
-
-# make sure not using today's data to predict today's result
-df['day_momentum'] = (1 + df['return']).shift(1) - 1
-df['week_momentum'] = (1 + df['return']).rolling(window=5).apply(np.prod, raw=True).shift(1) - 1
-df['month_momentum'] = (1 + df['return']).rolling(window=21).apply(np.prod, raw=True).shift(1) - 1
-df['quarter_momentum'] = (1 + df['return']).rolling(window=63).apply(np.prod, raw=True).shift(1) - 1
-df['year_momentum'] = (1 + df['return']).rolling(window=252).apply(np.prod, raw=True).shift(1) - 1
-df['52_weeks_high_low_ratio'] = (tickerDf['Close'] - tickerDf['Low'].rolling(window=252).min()) / (tickerDf['High'].rolling(window=252).max() - tickerDf['Low'].rolling(window=252).min())
+df = diamonds.copy()
+scaler = StandardScaler()
+df[['carat', 'depth', 'table', 'price', 'x', 'y', 'z']] = scaler.fit_transform(df[['carat', 'depth', 'table', 'price', 'x', 'y', 'z']])
 df
 #
 #
@@ -219,144 +84,152 @@ df
 #
 #
 #
-# Smoothing with a moving average
-df['day_momentum_smooth'] = df['day_momentum'].rolling(window=5).mean()
-df['week_momentum_smooth'] = df['week_momentum'].rolling(window=5).mean()
-df['month_momentum_smooth'] = df['month_momentum'].rolling(window=5).mean()
-df['quarter_momentum_smooth'] = df['quarter_momentum'].rolling(window=5).mean()
-df['year_momentum_smooth'] = df['year_momentum'].rolling(window=5).mean()
+#
+def fit(X, y):
+  classes = np.unique(y)
+  parameters = []
+  for i, c in enumerate(classes):
+    X_c = X[y == c]
+    parameters.append({
+      'prior': X_c.shape[0] / X.shape[0],
+      'mean': X_c.mean(axis=0),
+      'var': X_c.var(axis=0)
+      })
+  return classes, parameters
 
-# Risk adjustment
-df['day_momentum_risk_adj'] = df['day_momentum'] / df['return'].rolling(window=252).std()
-df['week_momentum_risk_adj'] = df['week_momentum'] / df['return'].rolling(window=252).std()
-df['month_momentum_risk_adj'] = df['month_momentum'] / df['return'].rolling(window=252).std()
-df['quarter_momentum_risk_adj'] = df['quarter_momentum'] / df['return'].rolling(window=252).std()
-df['year_momentum_risk_adj'] = df['year_momentum'] / df['return'].rolling(window=252).std()
+def predict(X, classes, parameters):
+  N, D = X.shape
+  K = len(classes)
+  P = np.zeros((N, K))
+  for k in range(K):
+    P[:, k] = np.log(parameters[k]['prior'])
+    P[:, k] += -0.5 * np.sum(np.log(2. * np.pi * parameters[k]['var']))
+    P[:, k] += -0.5 * np.sum(((X - parameters[k]['mean']) ** 2) / (parameters[k]['var']), 1)
+  return np.argmax(P, 1)
 #
 #
 #
 #
+#
+columns = ['cut', 'clarity', 'color']
+columne_name = columns[0]
+X = df[['carat', 'depth', 'table', 'price', 'x', 'y', 'z']]
+y = df[columne_name]
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+classes, parameters = fit(X_train, y_train)
+predictions = predict(X_test, classes, parameters)
+predictions_label = classes[predictions]
+accuracy = accuracy_score(y_test, predictions_label)
+print(f"Accuracy on {columne_name} is {accuracy:.2f}")
+#
+#
+#
+#
+df = diamonds.copy()
 scaler = StandardScaler()
-# scaler = MinMaxScaler()
-df_scaled = df.dropna()
-return_arr = df_scaled['return']
-df_scaled = df_scaled[df_scaled.columns[1:]]
-df_scaled = pd.DataFrame(scaler.fit_transform(df_scaled), columns=df.columns[1:])
-df_scaled.set_index(return_arr.index, inplace=True)
-df_scaled
-#
-#
-#
-#
-#
-for e in df_scaled.columns:
-  factor = df_scaled[e]
-  corr_coef = np.corrcoef(factor, return_arr)[0, 1]
-  if np.abs(corr_coef) > 0.1:
-    print(f"The correlation coefficient between {e} and target is {corr_coef:.2f}")
+df[['carat', 'depth', 'table', 'x', 'y', 'z']] = scaler.fit_transform(df[['carat', 'depth', 'table', 'x', 'y', 'z']])
 
-#
-#
-#
-#
-#
-#
-X = df_scaled
-y_linear = return_arr
-y_logistic = normalize_and_binarize(return_arr)
+X = df[['carat', 'depth', 'table', 'x', 'y', 'z']]
+y = df[['cut', 'clarity', 'color']]
 
-X_train_linear, X_test_linear, y_train_linear, y_test_linear = train_test_split(X, y_linear, test_size=0.3, shuffle=False)
-X_train_logistic, X_test_logistic, y_train_logistic, y_test_logistic = train_test_split(X, y_logistic, test_size=0.3, shuffle=False)
-#
-#
-#
-#
-#
-#
-# Fit the linear model
-learning_rate = 0.00001
-iterations = 1000
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-weights_linear, y_pred_linear, perform_df_linear = fit_linear(X_train_linear.values, y_train_linear.values, lr=learning_rate, num_iter=iterations)
+classes_cut, parameters_cut = fit(X_train, y_train['cut'])
+predictions_cut = predict(X_test, classes_cut, parameters_cut)
 
-loss = my_rmse(y_train_linear.values, y_pred_linear)
-y_train_bin = normalize_and_binarize(y_train_linear.values)
-y_pred_bin = normalize_and_binarize(y_pred_linear)
-accu = accuracy_score(y_train_bin, y_pred_bin)
-print(f"Final loss:{loss:.2f}, accuracy: {accu:.2f}")
+classes_clarity, parameters_clarity = fit(X_train, y_train['clarity'])
+predictions_clarity = predict(X_test, classes_clarity, parameters_clarity)
 
-x_axis = X_train_linear.index
-y_signal = np.where(y_train_bin == y_pred_bin, 1, -1)
-
-fig = plt.figure()
-plt.bar(x_axis, y_signal)
-plt.xlabel("Date")
-plt.xticks(rotation=30)
-plt.ylabel("Prediction\nOutcome")
-plt.title("Performance in Linear regression Training")
-# plt.legend()
-plt.show()
-# Evaluate the models
-# ... (depends on how you want to evaluate your models)
+classes_color, parameters_color = fit(X_train, y_train['color'])
+predictions_color = predict(X_test, classes_color, parameters_color)
 #
 #
 #
 #
-#
-# Fit the logistic model
-learning_rate = 0.01
-iterations = 1000
+count_df = pd.DataFrame()
+count_df['correct_cut'] = (y_test['cut'] == classes_cut[predictions_cut]).map({True: 'Correct', False: 'Incorrect'})
+count_df['correct_clarity'] = (y_test['clarity'] == classes_clarity[predictions_clarity]).map({True: 'Correct', False: 'Incorrect'})
+count_df['correct_color'] = (y_test['color'] == classes_color[predictions_color]).map({True: 'Correct', False: 'Incorrect'})
 
-weights_logistic, h_pred_logistic, perform_df_logistic = fit_logistic(X_train_logistic.values, y_train_logistic, lr=learning_rate, num_iter=iterations)
+# Count the number of correct predictions for each feature
+correct_cut = count_df['correct_cut'].value_counts()['Correct']
+correct_clarity = count_df['correct_clarity'].value_counts()['Correct']
+correct_color = count_df['correct_color'].value_counts()['Correct']
 
-y_pred_logistic = normalize_and_binarize(h_pred_logistic)
+# Count the number of incorrect predictions for each feature
+incorrect_cut = count_df['correct_cut'].value_counts()['Incorrect']
+incorrect_clarity = count_df['correct_clarity'].value_counts()['Incorrect']
+incorrect_color = count_df['correct_color'].value_counts()['Incorrect']
 
-loss = logLoss(y_train_logistic, h_pred_logistic)
-accu = accuracy_score(y_train_logistic, y_pred_logistic)
-print(f"Final loss:{loss:.2f}, accuracy: {accu:.2f}")
+accuracy_cut = accuracy_score(y_test['cut'], classes_cut[predictions_cut])
+accuracy_clarity = accuracy_score(y_test['clarity'], classes_clarity[predictions_clarity])
+accuracy_color = accuracy_score(y_test['color'], classes_color[predictions_color])
 
-x_axis = X_train_logistic.index
-y_signal = np.where(y_train_logistic == y_pred_logistic, 1, -1)
+# Create a DataFrame for the counts
+data = {'Correct': [correct_cut, correct_clarity, correct_color],
+        'Incorrect': [incorrect_cut, incorrect_clarity, incorrect_color]}
+df_counts = pd.DataFrame(data, index=['cut', 'clarity', 'color'])
 
-fig = plt.figure()
-plt.bar(x_axis, y_signal)
-plt.xlabel("Date")
-plt.xticks(rotation=30)
-plt.ylabel("Prediction\nOutcome")
-plt.title("Performance in Logistic regression Training")
-# plt.legend()
+colors=plt.get_cmap('Paired', 2)
+
+df_counts.plot(kind='barh', stacked=True, color=colors.colors)
+
+accuracies = [accuracy_cut, accuracy_clarity, accuracy_color]
+for i, (v, accuracy) in enumerate(zip(df_counts['Correct'], accuracies)):
+  plt.text(v, i, f' {v} ({accuracy*100:.2f}%)', va='center')
+
+plt.xlabel('Count', fontname='serif', color='darkred',)
+plt.ylabel('Category', fontname='serif', color='darkred',)
+plt.title('Prediction Correctness', fontname='serif', color='darkblue', fontsize=16)
 plt.show()
 #
 #
 #
 #
 #
-#
-y_pred_linear = linearPredict(X_test_linear, weights_linear)
-y_pred_logistic = linearPredict(X_test_logistic, weights_logistic)
+from matplotlib_venn import venn3
+import matplotlib.patches as mpatches
 
-test_return_arr = y_test_linear
+# Count the number of correct predictions for each pair of features
+correct_cut_clarity = count_df[(count_df['correct_cut'] == 'Correct') & (count_df['correct_clarity'] == 'Correct')].shape[0]
+correct_cut_color = count_df[(count_df['correct_cut'] == 'Correct') & (count_df['correct_color'] == 'Correct')].shape[0]
+correct_clarity_color = count_df[(count_df['correct_clarity'] == 'Correct') & (count_df['correct_color'] == 'Correct')].shape[0]
 
-# calculate the return
-y_pred_linear_return = np.where(y_pred_linear > 0, test_return_arr, -test_return_arr)
-y_pred_logistic_return = np.where(y_pred_logistic > 0, test_return_arr, -test_return_arr)
-x_axis = test_return_arr.index
+# Count the number of correct predictions for all three features
+correct_all = count_df[(count_df['correct_cut'] == 'Correct') & (count_df['correct_clarity'] == 'Correct') & (count_df['correct_color'] == 'Correct')].shape[0]
 
-cum_test_return = (1+test_return_arr).cumprod()
-cum_linear_return = (1+y_pred_linear_return).cumprod()
-cum_logistic_return = (1+y_pred_logistic_return).cumprod()
+# Create the Venn diagram
+plt.figure(figsize=(8,8))
+venn = venn3(subsets=(correct_cut, correct_clarity, correct_color, correct_cut_clarity, correct_cut_color, correct_clarity_color, correct_all), set_labels=('Cut', 'Clarity', 'Color'))
 
+for text in venn.set_labels:
+  text.set_fontname('serif')
+  text.set_color('darkred')
 
-fig = plt.figure()
-plt.plot(x_axis, cum_test_return, label='test_return')
-plt.plot(x_axis, cum_linear_return, label='test_return')
-plt.plot(x_axis, cum_logistic_return, label='test_return')
-plt.xlabel("Date")
-plt.xticks(rotation=30)
-plt.ylabel("Cumulative\nReturn")
-plt.title("Strategy comparison on testset")
-plt.legend()
+plt.title('Correct Predictions', fontname='serif', color='darkblue', fontsize=16)
+
+# Create a custom legend
+legend_elements = [mpatches.Patch(color=venn.get_patch_by_id('100').get_facecolor(), label='Cut'),
+mpatches.Patch(color=venn.get_patch_by_id('010').get_facecolor(), label='Clarity'),
+mpatches.Patch(color=venn.get_patch_by_id('001').get_facecolor(), label='Color')]
+
+# Calculate the count of the union of correct predictions
+correct_union = count_df[(count_df['correct_cut'] == 'Correct') | (count_df['correct_clarity'] == 'Correct') | (count_df['correct_color'] == 'Correct')].shape[0]
+
+# Calculate the count of the complementary set
+complement_count = len(y_test) - correct_union
+
+# Add the count of the complementary set to the plot
+plt.text(0.2, 0.5, f'Complementary set \nin Universe\n({complement_count})', horizontalalignment='center', verticalalignment='center')
+
+plt.legend(handles=legend_elements, loc='best')
+
 plt.show()
+#
+#
+#
 #
 #
 #

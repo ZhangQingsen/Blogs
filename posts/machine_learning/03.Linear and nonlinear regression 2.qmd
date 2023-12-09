@@ -1,7 +1,7 @@
 ---
 title: 'Harnessing Momentum: Predictive Analysis of Stock Prices Using Linear and Nonlinear Regression II'
 date: '2023-11-16'
-categories: ['Python', 'Linear Regression', 'Nonlinear Regression', 'Momentum Strategy', 'Stock Prediction']
+categories: ['Python', 'CS5805 23Fall', 'Machine Learning', 'Linear Regression', 'Nonlinear Regression', 'Momentum Strategy', 'Stock Prediction']
 description: 'Implement my own version of linear regression and logistic regression and construct a time series momentum strategy based on my models in stock market. Phrase II, momentum strategy'
 format: 
   html:
@@ -23,7 +23,7 @@ warnings.filterwarnings("ignore")
 
 Continue from previous blog
 
-import necessary packages
+#### __Necessary Packages__
 ```{python}
 import numpy as np
 import pandas as pd
@@ -32,8 +32,7 @@ import matplotlib.pyplot as plt
 plt.style.use('ggplot')
 
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.metrics import accuracy_score
 ```
 
@@ -152,6 +151,7 @@ tickerDf = tickerData.history(period=period, start=start, end=end)
 
 tickerDf.index = pd.to_datetime(tickerDf.index)
 
+print(f"There are {tickerDf.isna().sum().sum()} missing values")
 tickerDf
 ```
 
@@ -161,10 +161,10 @@ close_arr = tickerDf['Close']
 
 fig = plt.figure()
 plt.plot(close_arr.index, close_arr, label=stock)
-plt.xlabel("Date")
+plt.xlabel("Date", fontname='serif', color='darkred')
 plt.xticks(rotation=30)
-plt.ylabel("Price($)")
-plt.title(f"{stock} price VS. Date")
+plt.ylabel("Price($)", fontname='serif', color='darkred')
+plt.title(f"{stock} price VS. Date", fontname='serif', color='darkblue', fontsize=16)
 plt.legend()
 plt.plot()
 ```
@@ -177,13 +177,14 @@ return_arr = (1+return_arr).cumprod()
 
 fig = plt.figure()
 plt.plot(return_arr.index, return_arr, label=stock)
-plt.xlabel("Date")
+plt.xlabel("Date", fontname='serif', color='darkred')
 plt.xticks(rotation=30)
-plt.ylabel("Cumulative\nReturn")
-plt.title(f"{stock} return VS. Date")
+plt.ylabel("Cumulative\nReturn", fontname='serif', color='darkred')
+plt.title(f"{stock} return VS. Date", fontname='serif', color='darkblue', fontsize=16)
 plt.legend()
 plt.plot()
 ```
+
 Therefore, if we trade the stock everyday, and ignore the trading fee, this is how the principal (initial amount of investment) growth during this peroid.
 
 
@@ -297,10 +298,10 @@ y_signal = np.where(y_train_bin == y_pred_bin, 1, -1)
 
 fig = plt.figure()
 plt.bar(x_axis, y_signal)
-plt.xlabel("Date")
+plt.xlabel("Date", fontname='serif', color='darkred')
 plt.xticks(rotation=30)
-plt.ylabel("Prediction\nOutcome")
-plt.title("Performance in Linear regression Training")
+plt.ylabel("Prediction\nOutcome", fontname='serif', color='darkred')
+plt.title("Performance in Linear regression Training", fontname='serif', color='darkblue', fontsize=16)
 # plt.legend()
 plt.show()
 # Evaluate the models
@@ -327,10 +328,10 @@ y_signal = np.where(y_train_logistic == y_pred_logistic, 1, -1)
 
 fig = plt.figure()
 plt.bar(x_axis, y_signal)
-plt.xlabel("Date")
+plt.xlabel("Date", fontname='serif', color='darkred')
 plt.xticks(rotation=30)
-plt.ylabel("Prediction\nOutcome")
-plt.title("Performance in Logistic regression Training")
+plt.ylabel("Prediction\nOutcome", fontname='serif', color='darkred')
+plt.title("Performance in Logistic regression Training", fontname='serif', color='darkblue', fontsize=16)
 # plt.legend()
 plt.show()
 ```
@@ -358,12 +359,15 @@ fig = plt.figure()
 plt.plot(x_axis, cum_test_return, label='test_return')
 plt.plot(x_axis, cum_linear_return, label='linear_return')
 plt.plot(x_axis, cum_logistic_return, label='logistic_return')
-plt.xlabel("Date")
+plt.xlabel("Date", fontname='serif', color='darkred')
 plt.xticks(rotation=30)
-plt.ylabel("Cumulative\nReturn")
-plt.title("Strategy comparison on testset")
+plt.ylabel("Cumulative\nReturn", fontname='serif', color='darkred')
+plt.title("Strategy comparison on testset", fontname='serif', color='darkblue', fontsize=16)
 plt.legend()
 plt.show()
 ```
 
-end.
+end.  
+
+[previous](./03.Linear and nonlinear regression 1.qmd) 
+[go back](./machine_learning.qmd) 

@@ -1,8 +1,11 @@
 ---
 title: '01 week01'
 date: '2023-11-16'
-categories: ['Python', 'lang:Chinese']
+categories: ['Python', 'CS5805 23Fall', 'Machine Learning', 'Classification']
 description: 'week01 class materials, simple jupyter notebook tips'
+format: 
+  html:
+    code-fold: true
 execute: 
   message: false
   warning: false
@@ -10,6 +13,28 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{python}
+#| echo: false
+#| output: false
+
+import warnings
+warnings.filterwarnings("ignore")
+```
+
+#### __Intro__
+In this project, we aim to apply the One-Class Support Vector Machine (SVM) algorithm for anomaly detection on the Dow Jones dataset from seaborn. The dataset comprises two columns: Date and Price, making it a suitable candidate for time-series anomaly detection. The One-Class SVM method is particularly effective for such tasks as it defines a boundary around normal data, and any data point falling outside this boundary is considered an anomaly. By leveraging this method, we hope to identify unusual patterns in the Dow Jones index that could potentially indicate significant financial events or market abnormalities. This approach could provide valuable insights for financial analysis and decision-making processes. Stay tuned as we dive into the details of implementing and optimizing the One-Class SVM model for our dataset.
+
+#### __Necessary Packages__
+```{python}
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+
+plt.style.use('ggplot')
+print(f"List of seaborn datasets: \n{sns.get_dataset_names()}")
+```
 Print your full name here to replace "Hello World!"
 打印姓名
 ```{python}

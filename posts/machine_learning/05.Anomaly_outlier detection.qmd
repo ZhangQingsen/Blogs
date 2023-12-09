@@ -1,51 +1,280 @@
 ---
-title: '01 week01'
+title: 'Outlier Detection in Dow Jones using Support Vector Machines'
 date: '2023-11-16'
-categories: ['Python', 'lang:Chinese']
-description: 'week01 class materials, simple jupyter notebook tips'
+categories: ['Python', 'CS5805 23Fall', 'Machine Learning', 'Anomaly/outlier detection', 'Support Vector Machine (SVM)']
+description: 'Explore the application of SVM for anomaly detection in the Dow Jones data.'
+format: 
+  html:
+    code-fold: true
 execute: 
   message: false
   warning: false
 editor_options: 
   chunk_output_type: console
+  code-overflow: wrap
 ---
 
-Print your full name here to replace "Hello World!"
-打印姓名
 ```{python}
-print("Hello World!")
+#| echo: false
+#| output: false
+
+import warnings
+warnings.filterwarnings("ignore")
 ```
 
-view/hide line numbers in jupyter notebook
-显示/隐藏行数  
-click View -> click Toggle Line Numbers
-点击View -> 点击Toggle Line Numbers
+#### __Intro__
+In this project, we aim to apply the One-Class Support Vector Machine (SVM) algorithm for anomaly detection on the Dow Jones dataset from seaborn. The dataset comprises two columns: Date and Price, making it a suitable candidate for time-series anomaly detection. The One-Class SVM method is particularly effective for such tasks as it defines a boundary around normal data, and any data point falling outside this boundary is considered an anomaly. By leveraging this method, we hope to identify unusual patterns in the Dow Jones index that could potentially indicate significant financial events or market abnormalities. This approach could provide valuable insights for financial analysis and decision-making processes. Stay tuned as we dive into the details of implementing and optimizing the One-Class SVM model for our dataset.
 
-```{python}
-
-
-
-
-# This is line #5   这是第5行
-```
-
-the order of executing block changes results 
-jupyter notebook 中未运行的代码块对后面代码块无影响
+#### __Necessary Packages__
 ```{python}
 import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+
+plt.style.use('ggplot')
+# print(f"List of seaborn datasets: \n{sns.get_dataset_names()}")
 ```
+
+#### __Data Process__
+##### __Download Data__
 ```{python}
-print(np.__version__)
+dowjones_raw = sns.load_dataset('dowjones')
+print(f"There are {dowjones_raw.isna().sum().sum()} missing values")
+dowjones_raw
 ```
-the order of executing block changes results 
-jupyter notebook 代码运行顺序对结果有影响
+
+Next, we want to do some pre-process, although the dowjones dataset only contain 2 columns, we want to:
+- set the __Date__ column to be the index
 ```{python}
-a=5
+dowjones = dowjones_raw.copy()
+dowjones.set_index('Date', drop=True, inplace=True)
+
+plt.figure()
+plt.plot(dowjones, label="dowjones", c='g')
+plt.xlabel('Date',  fontname='serif', color='darkred')
+plt.ylabel('Price',  fontname='serif', color='darkred')
+plt.title('Dowjones Price', fontname='serif', color='darkblue', fontsize=16)
+plt.tight_layout()
+plt.show()
 ```
+
+From the plot, we can see the price data shows growth from 55 to over 800, with a peak around 1930. Direct anomaly detection on the price data would only highlight the mid-range prices, so we’re performing feature engineering on the dataset to normalize the prices.
+
+- feature engineering on __Price__
 ```{python}
-print(a)
+def minmax_scaler(window, value):
+  return (value - window.min()) / (window.max() - window.min())
+
+def zscore_scaler(window, value):
+  z_score = (value - np.mean(window)) / (np.std(window))
+  return z_score
+
+
+def add_normalized_price(price, period):
+    scaler = MinMaxScaler()
+    price_normalized = pd.Series(index=price.index)
+    half_period = np.round(period/2).astype(np.int16)
+
+    for i, e in enumerate(price):
+        start = max(0, i-half_period)
+        end = min(price.shape[0], i+half_period)
+
+        window = price.iloc[start:end]
+        nromed_value = minmax_scaler(window, price.iloc[i])
+        price_normalized.iloc[i] = nromed_value
+
+    return price_normalized
+
+
+    
+
+price_norm = add_normalized_price(dowjones['Price'], 12)
+dowjones['Normalized_Price'] = price_norm
+dowjones
 ```
+
+Each price is normalized within a 12-month time frame, with the price ideally situated in the middle of this period. This approach aids in anomaly detection by identifying prices that are extreme for their specific time context, potentially signaling significant market events.
+
+##### __Data Preview__
 ```{python}
-a=6
+colors=plt.get_cmap('Paired', 2)
+fig, ax1 = plt.subplots()
+
+ax1.plot(dowjones.index, dowjones.Price, color=colors(0), alpha=0.9, lw=3)
+ax1.set_ylabel('Price', color=colors(0))
+ax1.tick_params(axis='y', labelcolor=colors(0))
+ax1.set_ylim(-200, 1000)
+
+ax2 = ax1.twinx()
+deviation = np.abs(dowjones.Normalized_Price-0.5)
+ax2.fill_between(dowjones.index, 0, deviation, color=colors(1))
+ax2.set_ylabel('Deviation', color=colors(1))
+ax2.tick_params(axis='y', labelcolor=colors(1))
+ax2.set_ylim(-3, 0.6)
+ax2.grid()
+ax2.invert_yaxis()
+
+plt.title("Dow Jones Index: Price and Normalized Deviation Over Time", fontname='serif', color='darkblue', fontsize=16)
+plt.show()
 ```
-If you run the last code block before the print block, the output will show that a is 6.
+
+Try use IQR to detect outlier in dataset
+
+```{python}
+# column_name = 'Price'
+column_name = 'Normalized_Price'
+q1 = dowjones[column_name].quantile(0.25)
+q3 = dowjones[column_name].quantile(0.75)
+iqr = q3 - q1
+
+print(f"Q1 and Q3 of {column_name} column is {q1:.2f} & {q3:.2f}.\nIQR is {iqr:.2f}")
+
+lower_bound = q1 - 1.5 * iqr
+upper_bound = q3 + 1.5 * iqr
+print(f"Any value < {lower_bound:.2f} and  > {upper_bound:.2f} is an outlier.")
+
+outliers = dowjones[(dowjones[column_name] < lower_bound) | (dowjones[column_name] > upper_bound)]
+print(f"There are {outliers.shape[0]} outliers.")
+
+
+plt.figure(figsize=(10, 6))
+sns.boxplot(x=dowjones[column_name])
+
+plt.axvline(x=lower_bound, color='r', linestyle='--')
+plt.axvline(x=upper_bound, color='r', linestyle='--')
+
+ticks = list(plt.xticks()[0]) + [lower_bound] + [upper_bound]
+labels = [str(t) for t in ticks]
+labels[-2] = f'\nQ1: {lower_bound:.2f}'
+labels[-1] = f'\nQ2: {upper_bound:.2f}'
+plt.xticks(ticks, labels)
+
+plt.xlabel(column_name, fontname='serif', color='darkred')
+plt.ylabel('Frequency', fontname='serif', color='darkred')
+plt.title(f'Box plot of {column_name} with outliers', fontname='serif', color='darkblue', fontsize=16)
+
+# Show the plot
+plt.show()
+```
+
+This plot shows the price and the deviation, notice that deviation is the absolute value of (normalized price - 0.5)  this may shows how far the price is from the center of the year period.
+
+### __Support Vector Machine (SVM)__
+- __Loss Function:__ $\text{Loss} = \frac{1}{2} \sum_{i=1}^{n} w_i^2 - \rho$
+- __Update Weights:__ $w = w + \frac{\sum_{i=1}^{n} X_i}{n} - w$
+- __Compute Rho:__ $\rho = \text{percentile}(\text{distance}, \nu \times 100)$
+- __Predict Function:__ 
+$$
+\text{{prediction}} = 
+\begin{cases} 
+1 & \text{{if }} x \cdot w \geq \rho \\
+-1 & \text{{otherwise}}
+\end{cases}
+$$
+
+```{python}
+def compute_loss(X, w, rho):
+    return (1/2) * np.sum(w**2) - rho
+
+def compute_rho(X, w, nu):
+    dist = np.dot(X, w)
+    return np.percentile(dist, nu * 100)
+
+def update_weights(X, w, rho):
+    dist = np.dot(X, w)
+    outliers = dist < rho
+    if np.any(outliers):
+      w += np.sum(X[outliers], axis=0)/len(X[outliers]) - w
+    else:
+      w += np.random.normal(0, 1e-18, size=w.shape)
+
+    return w
+
+def fit(X, nu, max_iter, tol):
+    n_samples, n_features = X.shape
+    w = np.zeros(n_features)
+    rho = np.min(X)
+
+    for _ in range(max_iter):
+        loss_old = compute_loss(X, w, rho)
+        w = update_weights(X, w, rho)
+        rho = compute_rho(X, w, nu)
+        loss_new = compute_loss(X, w, rho)
+
+        if np.abs(loss_new - loss_old) < tol:
+            break
+
+    return w, rho
+
+def predict(X, w, rho):
+    dist = np.dot(X, w)
+    return np.where(dist >= rho, 1, 0)
+```
+
+fit the model
+```{python}
+column_name = 'Price'
+X = dowjones[column_name].values.reshape(-1, 1)
+
+nu = 0.05
+max_iter = 1000
+tol = 1e-3
+
+w, rho = fit(X, nu, max_iter, tol)
+
+predictions = predict(X, w, rho)
+print(f"there is {X.shape[0] - predictions.sum()} outliers detected by column {column_name}")
+
+outlier_indices = np.where(predictions == 0)[0]
+outlier = dowjones.iloc[outlier_indices]
+# outlier
+```
+
+
+```{python}
+plt.figure()
+plt.plot(dowjones.Price, label="Dow Jones", c='g')
+plt.scatter(outlier.index, outlier.Price, color='r', label='Outliers', s=10, marker='8')
+plt.xlabel('Date',  fontname='serif', color='darkred')
+plt.ylabel('Price',  fontname='serif', color='darkred')
+plt.title(f'Dow Jones Price with Anomalies by {column_name}', fontname='serif', color='darkblue', fontsize=16)
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+
+```{python}
+column_name = 'Normalized_Price'
+X = dowjones[column_name].values.reshape(-1, 1)
+
+nu = 0.05
+max_iter = 1000
+tol = 1e-3
+
+w, rho = fit(X, nu, max_iter, tol)
+
+predictions = predict(X, w, rho)
+print(f"there is {X.shape[0] - predictions.sum()} outliers detected by column {column_name}")
+
+outlier_indices = np.where(predictions == 0)[0]
+outlier = dowjones.iloc[outlier_indices]
+# outlier
+```
+
+```{python}
+plt.figure()
+plt.plot(dowjones.Price, label="Dow Jones", c='g')
+plt.scatter(outlier.index, outlier.Price, color='r', label='Outliers', s=10, marker='8')
+plt.xlabel('Date',  fontname='serif', color='darkred')
+plt.ylabel('Price',  fontname='serif', color='darkred')
+plt.title(f'Dow Jones Price with Anomalies by {column_name}', fontname='serif', color='darkblue', fontsize=16)
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+end.  
+[go back](./machine_learning.qmd) 

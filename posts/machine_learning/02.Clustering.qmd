@@ -1,8 +1,11 @@
 ---
-title: '01 week01'
+title: 'Clustering on Brain Networks Observations'
 date: '2023-11-16'
-categories: ['Python', 'lang:Chinese']
-description: 'week01 class materials, simple jupyter notebook tips'
+categories: ['Python', 'CS5805 23Fall', 'Machine Learning', 'Clustering', 'DBSCAN', 'Scikit-Learn']
+description: 'This project applies clustering algorithms on seaborn’s brain_networks dataset, notably implementing DBSCAN from scratch and comparing results from various scikit-learn models.'
+format: 
+  html:
+    code-fold: true
 execute: 
   message: false
   warning: false
@@ -10,43 +13,241 @@ editor_options:
   chunk_output_type: console
 ---
 
-implement DBSCAN on 
-Print your full name here to replace "Hello World!"
-打印姓名
 ```{python}
-print("Hello World!")
+#| echo: false
+#| output: false
+
+import warnings
+warnings.filterwarnings("ignore")
 ```
 
-view/hide line numbers in jupyter notebook
-显示/隐藏行数  
-click View -> click Toggle Line Numbers
-点击View -> 点击Toggle Line Numbers
+#### __Intro__
+This project is a practical exploration into the workings of clustering algorithms. The brain_networks dataset from seaborn is used as a basis for experimentation. A highlight of the project is the implementation of the DBSCAN algorithm from scratch, providing a deeper understanding of its inner workings. Other models from scikit-learn are also utilized to observe the unique characteristics and results each model produces.
 
+#### __Necessary Packages__
 ```{python}
-
-
-
-
-# This is line #5   这是第5行
-```
-
-the order of executing block changes results 
-jupyter notebook 中未运行的代码块对后面代码块无影响
-```{python}
+import re
 import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+
+plt.style.use('ggplot')
+print(f"List of seaborn datasets: \n{sns.get_dataset_names()}")
+```
+
+#### __Data Process__
+##### __Download Data__
+```{python}
+brain_networks = sns.load_dataset('brain_networks', header=[0, 1, 2], index_col=0)
+print(f"There are {brain_networks.isna().sum().sum()} missing values")
+brain_networks
+```
+It seems this dateset has 3 columns, we need to merge the columns.
+```{python}
+brain_networks_merge = brain_networks.copy()
+brain_networks_merge.columns = brain_networks_merge.columns.map(lambda x: '_'.join(str(i) for i in x))
+brain_networks_merge.head()
+```
+
+---
+# sample code that is hidden
+---
+```{python}
+#| echo: false
+#| output: false
+# # example filter
+# data_1 = brain_networks_merge.filter(regex='^1_', axis=1)
+
+# # Slicing by the second number (from 1 to 4)
+# data_2 = brain_networks_merge.filter(regex='_1_', axis=1)
+
+# # Slicing by the last label (lh to rh)
+# data_lh = brain_networks_merge.filter(regex='_lh$', axis=1)
+# data_rh = brain_networks_merge.filter(regex='_rh$', axis=1)
+
+
+# # sample 
+# network = 1
+# node = 1
+# hemi = 'rh'
+
+
+# data_filter = brain_networks_merge.filter(regex=f'^{network}_{node}_{hemi}$', axis=1)
+
+# sns.scatterplot(data=data_filter)
+# # data_rh
+```
+---
+# end
+---
+
+```{python}
+fig = plt.figure(figsize=(18, 72))
+for network in range(1, 18):
+  network_columns = [col for col in brain_networks_merge.columns if re.match(f'^{network}_', col)]
+  nodes_len = len(set(int(re.search('_([0-9]+)_', col).group(1)) for col in network_columns))
+  for node in range(1, nodes_len+1):
+
+    index = (network - 1) * nodes_len + node
+    plt.subplot(17, nodes_len, index)
+    data_filter = brain_networks_merge.filter(regex=f'^{network}_{node}_', axis=1)
+    
+    sns.scatterplot(data=data_filter)
+
+# Set the super title
+plt.suptitle('Brain Networks Data', fontname='serif', color='darkblue', fontsize=20, y=0.885)
+
+# Set the super x and y labels
+fig.text(0.5, 0.105, 'Node', ha='center', va='center', fontsize=16, fontname='serif', color='darkred')
+fig.text(0.08, 0.5, 'Network', ha='center', va='center', rotation='vertical', fontsize=16, fontname='serif', color='darkred')
+
+# plt.tight_layout()
+plt.show()
+```
+
+### __DBSCAN__
+```{python}
+def euclidean_distance(a, b):
+    return np.sqrt(np.sum((a - b)**2))
+
+def region_query(data, point_id, eps):
+    n_points = data.shape[1]
+    seeds = []
+    for i in range(0, n_points):
+        if euclidean_distance(data[:, point_id], data[:, i]) < eps:
+            seeds.append(i)
+    return seeds
+
+def expand_cluster(data, classifications, point_id, cluster_id, eps, min_points):
+    seeds = region_query(data, point_id, eps)
+    if len(seeds) < min_points:
+        classifications[point_id] = -1
+        return False
+    else:
+        classifications[point_id] = cluster_id
+        for seed_id in seeds:
+            classifications[seed_id] = cluster_id
+
+        while len(seeds) > 0:
+            current_point = seeds[0]
+            results = region_query(data, current_point, eps)
+            if len(results) >= min_points:
+                for i in range(0, len(results)):
+                    result_point = results[i]
+                    if classifications[result_point] == 0 or classifications[result_point] == -1:
+                        if classifications[result_point] == 0:
+                            seeds.append(result_point)
+                        classifications[result_point] = cluster_id
+            seeds = seeds[1:]
+        return True
+
+def dbscan(data, eps, min_points):
+    cluster_id = 1
+    n_points = data.shape[1]
+    classifications = [0]*n_points
+    for point_id in range(0, n_points):
+        point = data[:, point_id]
+        if classifications[point_id] == 0:
+            if expand_cluster(data, classifications, point_id, cluster_id, eps, min_points):
+                cluster_id = cluster_id + 1
+    return classifications
 ```
 ```{python}
-print(np.__version__)
+data = brain_networks_merge
+data = brain_networks_merge.filter(regex=f'^{17}_{4}_', axis=1)
+data = brain_networks_merge.values.T
+
+scaler = StandardScaler()
+data = scaler.fit_transform(data)
+
+eps = 7
+min_points = 8
+
+dbscan_labels = dbscan(data, eps, min_points)
+dbscan_labels = [label + 1 for label in dbscan_labels]
+
+counts = np.bincount(dbscan_labels)
+
+for i in range(len(counts)):
+    if i == 0:
+        print(f"Noise points: {counts[i]}")
+    else:
+        print(f"Cluster {i}: {counts[i]} points")
 ```
-the order of executing block changes results 
-jupyter notebook 代码运行顺序对结果有影响
+
+Try other functions from sklearn
 ```{python}
-a=5
+from sklearn.cluster import KMeans, SpectralClustering, AgglomerativeClustering, OPTICS
+from sklearn.mixture import GaussianMixture
+
+data = brain_networks_merge
+
+# K-Means
+kmeans = KMeans(n_clusters=3, init='k-means++', n_init=10)
+kmeans_labels = kmeans.fit_predict(data)
+
+# Spectral Clustering
+spectral = SpectralClustering(n_clusters=3, eigen_solver='arpack', n_init=10)
+spectral_labels = spectral.fit_predict(data)
+
+# Agglomerative Clustering
+agglo = AgglomerativeClustering(n_clusters=3, metric='euclidean', linkage='ward')
+agglo_labels = agglo.fit_predict(data)
+
+# OPTICS
+optics = OPTICS(min_samples=5, xi=0.05, min_cluster_size=0.05)
+optics_labels = optics.fit_predict(data)
+
+# Gaussian Mixture Models
+gmm = GaussianMixture(n_components=3, covariance_type='full', tol=0.001)
+gmm_labels = gmm.fit_predict(data)
 ```
 ```{python}
-print(a)
+model_name = ['DBSCAN', 'K-means', 'Spectral Clustering', 'Agglomerative Clustering', 'OPTICS', 'Gaussian Mixture Models']
+model_labels = [dbscan_labels, kmeans_labels, spectral_labels, agglo_labels, optics_labels, gmm_labels]
+
+plt.figure(figsize=(15,10))
+
+for i, e in enumerate(model_name):
+  labels = model_labels[i]
+  plt.subplot(3, 2, i+1)
+  df = brain_networks_merge.copy()
+  df[e] = labels 
+  plt.subplot(3, 2, i+1)
+  sns.scatterplot(data=df, x=df.index, y=df.columns[0], hue=e, palette='viridis')
+  plt.xlabel('Index', fontname='serif', color='darkred')
+  plt.ylabel('Value', fontname='serif', color='darkred')
+  plt.title(f"{e} Result", fontname='serif', color='darkblue')
+
+
+plt.suptitle('Clustering Results', fontname='serif', color='blue', fontsize=16, y=1.0)
+plt.tight_layout()
+plt.show()
 ```
+
+We can have a violin plot for more clear view of how many observations in each cluster by each model
 ```{python}
-a=6
+df_labels = pd.DataFrame()
+
+df_labels['DBSCAN'] = dbscan_labels
+df_labels['K-means'] = kmeans_labels
+df_labels['Spectral Clustering'] = spectral_labels
+df_labels['Agglomerative Clustering'] = agglo_labels
+df_labels['OPTICS'] = optics_labels
+df_labels['Gaussian Mixture Models'] = gmm_labels
+
+df_melt = df_labels.melt(var_name='model', value_name='label')
+
+plt.figure(figsize=(12,6))
+sns.violinplot(x='model', y='label', hue='model', data=df_melt, palette='viridis', legend=False)
+plt.title('Clustering Results', fontname='serif', color='darkblue', fontsize=16)
+plt.xlabel('Model', fontname='serif', color='darkred')
+plt.ylabel('Label', fontname='serif', color='darkred')
+plt.tight_layout()
+plt.show()
 ```
-If you run the last code block before the print block, the output will show that a is 6.
+
+end.  
+[go back](./machine_learning.qmd) 

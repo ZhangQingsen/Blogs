@@ -151,6 +151,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </div>
                           <div class="quarto-categories">
                 <div class="quarto-category">Python</div>
+                <div class="quarto-category">CS5805 23Fall</div>
+                <div class="quarto-category">Machine Learning</div>
                 <div class="quarto-category">Linear Regression</div>
                 <div class="quarto-category">Nonlinear Regression</div>
                 <div class="quarto-category">Momentum Strategy</div>
@@ -191,7 +193,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Continue from previous blog</p>
-<p>import necessary packages</p>
+<section id="necessary-packages" class="level4">
+<h4 class="anchored" data-anchor-id="necessary-packages"><strong>Necessary Packages</strong></h4>
 <div class="cell" data-execution_count="2">
 <details>
 <summary>Code</summary>
@@ -202,11 +205,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'ggplot'</span>)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> MinMaxScaler</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> MinMaxScaler, StandardScaler</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+</section>
 <section id="data-process" class="level3">
 <h3 class="anchored" data-anchor-id="data-process">Data Process</h3>
 <section id="download-data" class="level4">
@@ -227,8 +230,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>tickerDf.index <span class="op">=</span> pd.to_datetime(tickerDf.index)</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>tickerDf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"There are </span><span class="sc">{</span>tickerDf<span class="sc">.</span>isna()<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss"> missing values"</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>tickerDf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>There are 0 missing values</code></pre>
+</div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div>
 
@@ -380,22 +387,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-execution_count="5">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>close_arr <span class="op">=</span> tickerDf[<span class="st">'Close'</span>]</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>plt.plot(close_arr.index, close_arr, label<span class="op">=</span>stock)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Date"</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">30</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Price($)"</span>)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"</span><span class="sc">{</span>stock<span class="sc">}</span><span class="ss"> price VS. Date"</span>)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>plt.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>close_arr <span class="op">=</span> tickerDf[<span class="st">'Close'</span>]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>plt.plot(close_arr.index, close_arr, label<span class="op">=</span>stock)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Date"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Price($)"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"</span><span class="sc">{</span>stock<span class="sc">}</span><span class="ss"> price VS. Date"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkblue'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>plt.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>[]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="03.Linear and nonlinear regression 2_files/figure-html/cell-6-output-2.png" width="596" height="469"></p>
+<p><img src="03.Linear and nonlinear regression 2_files/figure-html/cell-6-output-2.png" width="596" height="472"></p>
 </div>
 </div>
 </section>
@@ -405,23 +412,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-execution_count="6">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>return_arr <span class="op">=</span> tickerDf[<span class="st">'Close'</span>].pct_change().dropna()</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>return_arr <span class="op">=</span> (<span class="dv">1</span><span class="op">+</span>return_arr).cumprod()</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>plt.plot(return_arr.index, return_arr, label<span class="op">=</span>stock)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Date"</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">30</span>)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Cumulative</span><span class="ch">\n</span><span class="st">Return"</span>)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"</span><span class="sc">{</span>stock<span class="sc">}</span><span class="ss"> return VS. Date"</span>)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>plt.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>return_arr <span class="op">=</span> tickerDf[<span class="st">'Close'</span>].pct_change().dropna()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>return_arr <span class="op">=</span> (<span class="dv">1</span><span class="op">+</span>return_arr).cumprod()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>plt.plot(return_arr.index, return_arr, label<span class="op">=</span>stock)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Date"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Cumulative</span><span class="ch">\n</span><span class="st">Return"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"</span><span class="sc">{</span>stock<span class="sc">}</span><span class="ss"> return VS. Date"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkblue'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>plt.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>[]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="03.Linear and nonlinear regression 2_files/figure-html/cell-7-output-2.png" width="605" height="469"></p>
+<p><img src="03.Linear and nonlinear regression 2_files/figure-html/cell-7-output-2.png" width="605" height="472"></p>
 </div>
 </div>
 <p>Therefore, if we trade the stock everyday, and ignore the trading fee, this is how the principal (initial amount of investment) growth during this peroid.</p>
@@ -439,22 +446,22 @@ Notice that there are about 252 trading days in one year.</p>
 <li><p><strong>52_weeks_high_low_ratio:</strong> This is the ratio of the difference between the current close price and the 52-week low to the range of the 52-week high and low. It measures how close the current price is to the 52-week high relative to the 52-week range.</p></li>
 </ul>
 <p><strong>52-week high:<strong>The 52-week high momentum strategy is a trading strategy where investors go long or short on a stock when its current price is near (or far from) its 52-week high. This can be measured using the formula:<br>
-<font color="#e8b004" size="14"></font></strong><font color="#e8b004" size="14"><span class="math inline">\(\frac{P_{(i, t-1)}}{High_{(i,t-1)}}\)</span></font></strong><br>
+<font color="#e8b004" size="10"></font></strong><font color="#e8b004" size="10"><span class="math inline">\(\frac{P_{(i, t-1)}}{High_{(i,t-1)}}\)</span></font></strong><br>
 where<font color="#5bae23"><strong><span class="math inline">\(P_{(i, t-1)}\)</span></strong></font> is is the price of the stock at time t−1, and <font color="#5bae23"><strong><span class="math inline">\(High_{(i,t-1)}\)</span></strong></font> is the highest price the stock reached in the past 52 weeks.</p>
 <div class="cell" data-execution_count="7">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame()</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'return'</span>] <span class="op">=</span> tickerDf[<span class="st">'Close'</span>].pct_change()</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure not using today's data to predict today's result</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'day_momentum'</span>] <span class="op">=</span> (<span class="dv">1</span> <span class="op">+</span> df[<span class="st">'return'</span>]).shift(<span class="dv">1</span>) <span class="op">-</span> <span class="dv">1</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'week_momentum'</span>] <span class="op">=</span> (<span class="dv">1</span> <span class="op">+</span> df[<span class="st">'return'</span>]).rolling(window<span class="op">=</span><span class="dv">5</span>).<span class="bu">apply</span>(np.prod, raw<span class="op">=</span><span class="va">True</span>).shift(<span class="dv">1</span>) <span class="op">-</span> <span class="dv">1</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'month_momentum'</span>] <span class="op">=</span> (<span class="dv">1</span> <span class="op">+</span> df[<span class="st">'return'</span>]).rolling(window<span class="op">=</span><span class="dv">21</span>).<span class="bu">apply</span>(np.prod, raw<span class="op">=</span><span class="va">True</span>).shift(<span class="dv">1</span>) <span class="op">-</span> <span class="dv">1</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'quarter_momentum'</span>] <span class="op">=</span> (<span class="dv">1</span> <span class="op">+</span> df[<span class="st">'return'</span>]).rolling(window<span class="op">=</span><span class="dv">63</span>).<span class="bu">apply</span>(np.prod, raw<span class="op">=</span><span class="va">True</span>).shift(<span class="dv">1</span>) <span class="op">-</span> <span class="dv">1</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'year_momentum'</span>] <span class="op">=</span> (<span class="dv">1</span> <span class="op">+</span> df[<span class="st">'return'</span>]).rolling(window<span class="op">=</span><span class="dv">252</span>).<span class="bu">apply</span>(np.prod, raw<span class="op">=</span><span class="va">True</span>).shift(<span class="dv">1</span>) <span class="op">-</span> <span class="dv">1</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'52_weeks_high_low_ratio'</span>] <span class="op">=</span> (tickerDf[<span class="st">'Close'</span>] <span class="op">-</span> tickerDf[<span class="st">'Low'</span>].rolling(window<span class="op">=</span><span class="dv">252</span>).<span class="bu">min</span>()) <span class="op">/</span> (tickerDf[<span class="st">'High'</span>].rolling(window<span class="op">=</span><span class="dv">252</span>).<span class="bu">max</span>() <span class="op">-</span> tickerDf[<span class="st">'Low'</span>].rolling(window<span class="op">=</span><span class="dv">252</span>).<span class="bu">min</span>())</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'return'</span>] <span class="op">=</span> tickerDf[<span class="st">'Close'</span>].pct_change()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure not using today's data to predict today's result</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'day_momentum'</span>] <span class="op">=</span> (<span class="dv">1</span> <span class="op">+</span> df[<span class="st">'return'</span>]).shift(<span class="dv">1</span>) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'week_momentum'</span>] <span class="op">=</span> (<span class="dv">1</span> <span class="op">+</span> df[<span class="st">'return'</span>]).rolling(window<span class="op">=</span><span class="dv">5</span>).<span class="bu">apply</span>(np.prod, raw<span class="op">=</span><span class="va">True</span>).shift(<span class="dv">1</span>) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'month_momentum'</span>] <span class="op">=</span> (<span class="dv">1</span> <span class="op">+</span> df[<span class="st">'return'</span>]).rolling(window<span class="op">=</span><span class="dv">21</span>).<span class="bu">apply</span>(np.prod, raw<span class="op">=</span><span class="va">True</span>).shift(<span class="dv">1</span>) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'quarter_momentum'</span>] <span class="op">=</span> (<span class="dv">1</span> <span class="op">+</span> df[<span class="st">'return'</span>]).rolling(window<span class="op">=</span><span class="dv">63</span>).<span class="bu">apply</span>(np.prod, raw<span class="op">=</span><span class="va">True</span>).shift(<span class="dv">1</span>) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'year_momentum'</span>] <span class="op">=</span> (<span class="dv">1</span> <span class="op">+</span> df[<span class="st">'return'</span>]).rolling(window<span class="op">=</span><span class="dv">252</span>).<span class="bu">apply</span>(np.prod, raw<span class="op">=</span><span class="va">True</span>).shift(<span class="dv">1</span>) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'52_weeks_high_low_ratio'</span>] <span class="op">=</span> (tickerDf[<span class="st">'Close'</span>] <span class="op">-</span> tickerDf[<span class="st">'Low'</span>].rolling(window<span class="op">=</span><span class="dv">252</span>).<span class="bu">min</span>()) <span class="op">/</span> (tickerDf[<span class="st">'High'</span>].rolling(window<span class="op">=</span><span class="dv">252</span>).<span class="bu">max</span>() <span class="op">-</span> tickerDf[<span class="st">'Low'</span>].rolling(window<span class="op">=</span><span class="dv">252</span>).<span class="bu">min</span>())</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
@@ -611,19 +618,19 @@ where<font color="#5bae23"><strong><span class="math inline">\(P_{(i, t-1)}\)</s
 <div class="cell" data-execution_count="8">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Smoothing with a moving average</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'day_momentum_smooth'</span>] <span class="op">=</span> df[<span class="st">'day_momentum'</span>].rolling(window<span class="op">=</span><span class="dv">5</span>).mean()</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'week_momentum_smooth'</span>] <span class="op">=</span> df[<span class="st">'week_momentum'</span>].rolling(window<span class="op">=</span><span class="dv">5</span>).mean()</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'month_momentum_smooth'</span>] <span class="op">=</span> df[<span class="st">'month_momentum'</span>].rolling(window<span class="op">=</span><span class="dv">5</span>).mean()</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'quarter_momentum_smooth'</span>] <span class="op">=</span> df[<span class="st">'quarter_momentum'</span>].rolling(window<span class="op">=</span><span class="dv">5</span>).mean()</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'year_momentum_smooth'</span>] <span class="op">=</span> df[<span class="st">'year_momentum'</span>].rolling(window<span class="op">=</span><span class="dv">5</span>).mean()</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Risk adjustment</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'day_momentum_risk_adj'</span>] <span class="op">=</span> df[<span class="st">'day_momentum'</span>] <span class="op">/</span> df[<span class="st">'return'</span>].rolling(window<span class="op">=</span><span class="dv">252</span>).std()</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'week_momentum_risk_adj'</span>] <span class="op">=</span> df[<span class="st">'week_momentum'</span>] <span class="op">/</span> df[<span class="st">'return'</span>].rolling(window<span class="op">=</span><span class="dv">252</span>).std()</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'month_momentum_risk_adj'</span>] <span class="op">=</span> df[<span class="st">'month_momentum'</span>] <span class="op">/</span> df[<span class="st">'return'</span>].rolling(window<span class="op">=</span><span class="dv">252</span>).std()</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'quarter_momentum_risk_adj'</span>] <span class="op">=</span> df[<span class="st">'quarter_momentum'</span>] <span class="op">/</span> df[<span class="st">'return'</span>].rolling(window<span class="op">=</span><span class="dv">252</span>).std()</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'year_momentum_risk_adj'</span>] <span class="op">=</span> df[<span class="st">'year_momentum'</span>] <span class="op">/</span> df[<span class="st">'return'</span>].rolling(window<span class="op">=</span><span class="dv">252</span>).std()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Smoothing with a moving average</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'day_momentum_smooth'</span>] <span class="op">=</span> df[<span class="st">'day_momentum'</span>].rolling(window<span class="op">=</span><span class="dv">5</span>).mean()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'week_momentum_smooth'</span>] <span class="op">=</span> df[<span class="st">'week_momentum'</span>].rolling(window<span class="op">=</span><span class="dv">5</span>).mean()</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'month_momentum_smooth'</span>] <span class="op">=</span> df[<span class="st">'month_momentum'</span>].rolling(window<span class="op">=</span><span class="dv">5</span>).mean()</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'quarter_momentum_smooth'</span>] <span class="op">=</span> df[<span class="st">'quarter_momentum'</span>].rolling(window<span class="op">=</span><span class="dv">5</span>).mean()</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'year_momentum_smooth'</span>] <span class="op">=</span> df[<span class="st">'year_momentum'</span>].rolling(window<span class="op">=</span><span class="dv">5</span>).mean()</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Risk adjustment</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'day_momentum_risk_adj'</span>] <span class="op">=</span> df[<span class="st">'day_momentum'</span>] <span class="op">/</span> df[<span class="st">'return'</span>].rolling(window<span class="op">=</span><span class="dv">252</span>).std()</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'week_momentum_risk_adj'</span>] <span class="op">=</span> df[<span class="st">'week_momentum'</span>] <span class="op">/</span> df[<span class="st">'return'</span>].rolling(window<span class="op">=</span><span class="dv">252</span>).std()</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'month_momentum_risk_adj'</span>] <span class="op">=</span> df[<span class="st">'month_momentum'</span>] <span class="op">/</span> df[<span class="st">'return'</span>].rolling(window<span class="op">=</span><span class="dv">252</span>).std()</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'quarter_momentum_risk_adj'</span>] <span class="op">=</span> df[<span class="st">'quarter_momentum'</span>] <span class="op">/</span> df[<span class="st">'return'</span>].rolling(window<span class="op">=</span><span class="dv">252</span>).std()</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'year_momentum_risk_adj'</span>] <span class="op">=</span> df[<span class="st">'year_momentum'</span>] <span class="op">/</span> df[<span class="st">'return'</span>].rolling(window<span class="op">=</span><span class="dv">252</span>).std()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -632,14 +639,14 @@ where<font color="#5bae23"><strong><span class="math inline">\(P_{(i, t-1)}\)</s
 <div class="cell" data-execution_count="9">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># scaler = MinMaxScaler()</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>df_scaled <span class="op">=</span> df.dropna()</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>return_arr <span class="op">=</span> df_scaled[<span class="st">'return'</span>]</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>df_scaled <span class="op">=</span> df_scaled[df_scaled.columns[<span class="dv">1</span>:]]</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>df_scaled <span class="op">=</span> pd.DataFrame(scaler.fit_transform(df_scaled), columns<span class="op">=</span>df.columns[<span class="dv">1</span>:])</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>df_scaled.set_index(return_arr.index, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>df_scaled</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># scaler = MinMaxScaler()</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>df_scaled <span class="op">=</span> df.dropna()</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>return_arr <span class="op">=</span> df_scaled[<span class="st">'return'</span>]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>df_scaled <span class="op">=</span> df_scaled[df_scaled.columns[<span class="dv">1</span>:]]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>df_scaled <span class="op">=</span> pd.DataFrame(scaler.fit_transform(df_scaled), columns<span class="op">=</span>df.columns[<span class="dv">1</span>:])</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>df_scaled.set_index(return_arr.index, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>df_scaled</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
@@ -907,11 +914,11 @@ where<font color="#5bae23"><strong><span class="math inline">\(P_{(i, t-1)}\)</s
 <div class="cell" data-execution_count="10">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> e <span class="kw">in</span> df_scaled.columns:</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  factor <span class="op">=</span> df_scaled[e]</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  corr_coef <span class="op">=</span> np.corrcoef(factor, return_arr)[<span class="dv">0</span>, <span class="dv">1</span>]</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> np.<span class="bu">abs</span>(corr_coef) <span class="op">&gt;</span> <span class="fl">0.1</span>:</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"The correlation coefficient between </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss"> and target is </span><span class="sc">{</span>corr_coef<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> e <span class="kw">in</span> df_scaled.columns:</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  factor <span class="op">=</span> df_scaled[e]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  corr_coef <span class="op">=</span> np.corrcoef(factor, return_arr)[<span class="dv">0</span>, <span class="dv">1</span>]</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> np.<span class="bu">abs</span>(corr_coef) <span class="op">&gt;</span> <span class="fl">0.1</span>:</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"The correlation coefficient between </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss"> and target is </span><span class="sc">{</span>corr_coef<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>The correlation coefficient between 52_weeks_high_low_ratio and target is 0.13</code></pre>
@@ -922,12 +929,12 @@ Split train-test datasets to evaluate the performance of each model.</p>
 <div class="cell" data-execution_count="11">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df_scaled</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>y_linear <span class="op">=</span> return_arr</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>y_logistic <span class="op">=</span> normalize_and_binarize(return_arr)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>X_train_linear, X_test_linear, y_train_linear, y_test_linear <span class="op">=</span> train_test_split(X, y_linear, test_size<span class="op">=</span><span class="fl">0.3</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>X_train_logistic, X_test_logistic, y_train_logistic, y_test_logistic <span class="op">=</span> train_test_split(X, y_logistic, test_size<span class="op">=</span><span class="fl">0.3</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df_scaled</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>y_linear <span class="op">=</span> return_arr</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>y_logistic <span class="op">=</span> normalize_and_binarize(return_arr)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>X_train_linear, X_test_linear, y_train_linear, y_test_linear <span class="op">=</span> train_test_split(X, y_linear, test_size<span class="op">=</span><span class="fl">0.3</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>X_train_logistic, X_test_logistic, y_train_logistic, y_test_logistic <span class="op">=</span> train_test_split(X, y_logistic, test_size<span class="op">=</span><span class="fl">0.3</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -940,37 +947,37 @@ Split train-test datasets to evaluate the performance of each model.</p>
 <div class="cell" data-execution_count="12">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the linear model</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>learning_rate <span class="op">=</span> <span class="fl">0.00001</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>iterations <span class="op">=</span> <span class="dv">1000</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>weights_linear, y_pred_linear, perform_df_linear <span class="op">=</span> fit_linear(X_train_linear.values, y_train_linear.values, lr<span class="op">=</span>learning_rate, num_iter<span class="op">=</span>iterations)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> my_rmse(y_train_linear.values, y_pred_linear)</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>y_train_bin <span class="op">=</span> normalize_and_binarize(y_train_linear.values)</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>y_pred_bin <span class="op">=</span> normalize_and_binarize(y_pred_linear)</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>accu <span class="op">=</span> accuracy_score(y_train_bin, y_pred_bin)</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Final loss:</span><span class="sc">{</span>loss<span class="sc">:.2f}</span><span class="ss">, accuracy: </span><span class="sc">{</span>accu<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>x_axis <span class="op">=</span> X_train_linear.index</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>y_signal <span class="op">=</span> np.where(y_train_bin <span class="op">==</span> y_pred_bin, <span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>plt.bar(x_axis, y_signal)</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Date"</span>)</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">30</span>)</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Prediction</span><span class="ch">\n</span><span class="st">Outcome"</span>)</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Performance in Linear regression Training"</span>)</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.legend()</span></span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the models</span></span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="co"># ... (depends on how you want to evaluate your models)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the linear model</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>learning_rate <span class="op">=</span> <span class="fl">0.00001</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>iterations <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>weights_linear, y_pred_linear, perform_df_linear <span class="op">=</span> fit_linear(X_train_linear.values, y_train_linear.values, lr<span class="op">=</span>learning_rate, num_iter<span class="op">=</span>iterations)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> my_rmse(y_train_linear.values, y_pred_linear)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>y_train_bin <span class="op">=</span> normalize_and_binarize(y_train_linear.values)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>y_pred_bin <span class="op">=</span> normalize_and_binarize(y_pred_linear)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>accu <span class="op">=</span> accuracy_score(y_train_bin, y_pred_bin)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Final loss:</span><span class="sc">{</span>loss<span class="sc">:.2f}</span><span class="ss">, accuracy: </span><span class="sc">{</span>accu<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>x_axis <span class="op">=</span> X_train_linear.index</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>y_signal <span class="op">=</span> np.where(y_train_bin <span class="op">==</span> y_pred_bin, <span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>plt.bar(x_axis, y_signal)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Date"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Prediction</span><span class="ch">\n</span><span class="st">Outcome"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Performance in Linear regression Training"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkblue'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.legend()</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the models</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="co"># ... (depends on how you want to evaluate your models)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final loss:0.05, accuracy: 0.49</code></pre>
+<pre><code>Final loss:0.03, accuracy: 0.51</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="03.Linear and nonlinear regression 2_files/figure-html/cell-13-output-2.png" width="631" height="469"></p>
+<p><img src="03.Linear and nonlinear regression 2_files/figure-html/cell-13-output-2.png" width="631" height="472"></p>
 </div>
 </div>
 </section>
@@ -980,35 +987,35 @@ Split train-test datasets to evaluate the performance of each model.</p>
 <div class="cell" data-execution_count="13">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the logistic model</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>learning_rate <span class="op">=</span> <span class="fl">0.01</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>iterations <span class="op">=</span> <span class="dv">1000</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>weights_logistic, h_pred_logistic, perform_df_logistic <span class="op">=</span> fit_logistic(X_train_logistic.values, y_train_logistic, lr<span class="op">=</span>learning_rate, num_iter<span class="op">=</span>iterations)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>y_pred_logistic <span class="op">=</span> normalize_and_binarize(h_pred_logistic)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> logLoss(y_train_logistic, h_pred_logistic)</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>accu <span class="op">=</span> accuracy_score(y_train_logistic, y_pred_logistic)</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Final loss:</span><span class="sc">{</span>loss<span class="sc">:.2f}</span><span class="ss">, accuracy: </span><span class="sc">{</span>accu<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>x_axis <span class="op">=</span> X_train_logistic.index</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>y_signal <span class="op">=</span> np.where(y_train_logistic <span class="op">==</span> y_pred_logistic, <span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>plt.bar(x_axis, y_signal)</span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Date"</span>)</span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">30</span>)</span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Prediction</span><span class="ch">\n</span><span class="st">Outcome"</span>)</span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Performance in Logistic regression Training"</span>)</span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.legend()</span></span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the logistic model</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>learning_rate <span class="op">=</span> <span class="fl">0.01</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>iterations <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>weights_logistic, h_pred_logistic, perform_df_logistic <span class="op">=</span> fit_logistic(X_train_logistic.values, y_train_logistic, lr<span class="op">=</span>learning_rate, num_iter<span class="op">=</span>iterations)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>y_pred_logistic <span class="op">=</span> normalize_and_binarize(h_pred_logistic)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> logLoss(y_train_logistic, h_pred_logistic)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>accu <span class="op">=</span> accuracy_score(y_train_logistic, y_pred_logistic)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Final loss:</span><span class="sc">{</span>loss<span class="sc">:.2f}</span><span class="ss">, accuracy: </span><span class="sc">{</span>accu<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>x_axis <span class="op">=</span> X_train_logistic.index</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>y_signal <span class="op">=</span> np.where(y_train_logistic <span class="op">==</span> y_pred_logistic, <span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>plt.bar(x_axis, y_signal)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Date"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Prediction</span><span class="ch">\n</span><span class="st">Outcome"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Performance in Logistic regression Training"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkblue'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.legend()</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final loss:0.69, accuracy: 0.54</code></pre>
+<pre><code>Final loss:0.68, accuracy: 0.56</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="03.Linear and nonlinear regression 2_files/figure-html/cell-14-output-2.png" width="631" height="469"></p>
+<p><img src="03.Linear and nonlinear regression 2_files/figure-html/cell-14-output-2.png" width="631" height="472"></p>
 </div>
 </div>
 </section>
@@ -1019,37 +1026,38 @@ Split train-test datasets to evaluate the performance of each model.</p>
 <div class="cell" data-execution_count="14">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>y_pred_linear <span class="op">=</span> linearPredict(X_test_linear, weights_linear)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>y_pred_logistic <span class="op">=</span> linearPredict(X_test_logistic, weights_logistic)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>test_return_arr <span class="op">=</span> y_test_linear</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the return</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>y_pred_linear_return <span class="op">=</span> np.where(y_pred_linear <span class="op">&gt;</span> <span class="dv">0</span>, test_return_arr, <span class="op">-</span>test_return_arr)</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>y_pred_logistic_return <span class="op">=</span> np.where(y_pred_logistic <span class="op">&gt;</span> <span class="dv">0</span>, test_return_arr, <span class="op">-</span>test_return_arr)</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>x_axis <span class="op">=</span> test_return_arr.index</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>cum_test_return <span class="op">=</span> (<span class="dv">1</span><span class="op">+</span>test_return_arr).cumprod()</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>cum_linear_return <span class="op">=</span> (<span class="dv">1</span><span class="op">+</span>y_pred_linear_return).cumprod()</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>cum_logistic_return <span class="op">=</span> (<span class="dv">1</span><span class="op">+</span>y_pred_logistic_return).cumprod()</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>plt.plot(x_axis, cum_test_return, label<span class="op">=</span><span class="st">'test_return'</span>)</span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>plt.plot(x_axis, cum_linear_return, label<span class="op">=</span><span class="st">'linear_return'</span>)</span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>plt.plot(x_axis, cum_logistic_return, label<span class="op">=</span><span class="st">'logistic_return'</span>)</span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Date"</span>)</span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">30</span>)</span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Cumulative</span><span class="ch">\n</span><span class="st">Return"</span>)</span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Strategy comparison on testset"</span>)</span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>y_pred_linear <span class="op">=</span> linearPredict(X_test_linear, weights_linear)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>y_pred_logistic <span class="op">=</span> linearPredict(X_test_logistic, weights_logistic)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>test_return_arr <span class="op">=</span> y_test_linear</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the return</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>y_pred_linear_return <span class="op">=</span> np.where(y_pred_linear <span class="op">&gt;</span> <span class="dv">0</span>, test_return_arr, <span class="op">-</span>test_return_arr)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>y_pred_logistic_return <span class="op">=</span> np.where(y_pred_logistic <span class="op">&gt;</span> <span class="dv">0</span>, test_return_arr, <span class="op">-</span>test_return_arr)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>x_axis <span class="op">=</span> test_return_arr.index</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>cum_test_return <span class="op">=</span> (<span class="dv">1</span><span class="op">+</span>test_return_arr).cumprod()</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>cum_linear_return <span class="op">=</span> (<span class="dv">1</span><span class="op">+</span>y_pred_linear_return).cumprod()</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>cum_logistic_return <span class="op">=</span> (<span class="dv">1</span><span class="op">+</span>y_pred_logistic_return).cumprod()</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>plt.plot(x_axis, cum_test_return, label<span class="op">=</span><span class="st">'test_return'</span>)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>plt.plot(x_axis, cum_linear_return, label<span class="op">=</span><span class="st">'linear_return'</span>)</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>plt.plot(x_axis, cum_logistic_return, label<span class="op">=</span><span class="st">'logistic_return'</span>)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Date"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Cumulative</span><span class="ch">\n</span><span class="st">Return"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Strategy comparison on testset"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkblue'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<p><img src="03.Linear and nonlinear regression 2_files/figure-html/cell-15-output-1.png" width="605" height="469"></p>
+<p><img src="03.Linear and nonlinear regression 2_files/figure-html/cell-15-output-1.png" width="605" height="471"></p>
 </div>
 </div>
 <p>end.</p>
+<p><a href="../../posts/machine_learning/03.Linear and nonlinear regression 1.html">previous</a> <a href="../../posts/machine_learning/machine_learning.html">go back</a></p>
 
 
 </section>

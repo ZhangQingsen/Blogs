@@ -1,7 +1,7 @@
 ---
 title: 'Harnessing Momentum: Predictive Analysis of Stock Prices Using Linear and Nonlinear Regression I'
 date: '2023-11-16'
-categories: ['Python', 'Linear Regression', 'Nonlinear Regression', 'Momentum Strategy', 'Stock Prediction']
+categories: ['Python', 'CS5805 23Fall', 'Machine Learning', 'Linear Regression', 'Nonlinear Regression', 'Momentum Strategy', 'Stock Prediction']
 description: 'Implement my own version of linear regression and logistic regression and construct a momentum strategy based on my models in stock market. Phrase I, model implementation'
 format: 
   html:
@@ -127,11 +127,11 @@ y_pred = linearPredict(x, ws)
 rmse = my_rmse(y_pred, y)
 print(f"The loss is: {rmse:.2f}")
 plt.figure()
-plt.title("Prediced y VS. Actual y")
+plt.title("Prediced y VS. Actual y", fontname='serif', color='darkblue', fontsize=16)
 plt.plot(y, label=r'$y = 2x_1 + 7x_2 - 9x_3 + 18$')
 plt.plot(y_pred, 'm--', label='prediced y')
-plt.xlabel("Observations")
-plt.ylabel("Values")
+plt.xlabel("Observations",  fontname='serif', color='darkred')
+plt.ylabel("Values",  fontname='serif', color='darkred')
 plt.legend()
 plt.tight_layout()
 plt.show()
@@ -252,17 +252,17 @@ left, bottom, width, height = 0, 0, 1, 1
 ax1 = fig.add_axes([left, bottom, width, height])
 ax1.plot(y, label=r'$y = 3x_1 - 7x_2 + 6x_3 + 11$')
 ax1.plot(y_pred, 'm--', label='prediced y')
-ax1.set_xlabel("Observations")
-ax1.set_ylabel("Values")
-ax1.set_title("Prediced y VS. Actual y")
+ax1.set_xlabel("Observations", fontname='serif', color='darkred')
+ax1.set_ylabel("Values", fontname='serif', color='darkred')
+ax1.set_title("Prediced y VS. Actual y", fontname='serif', color='darkblue', fontsize=16)
 ax1.legend()
 
 left, bottom, width, height = 0.6, 0.5, 0.3, 0.3
 ax2 = fig.add_axes([left, bottom, width, height])
 ax2.plot(perform_df, label=r'loss', color='#51c4d3')
-ax2.set_xlabel("Epoch")
-ax2.set_ylabel("Loss")
-ax2.set_title("Loss y VS. Epoch")
+ax2.set_xlabel("Epoch", fontname='serif', color='darkred')
+ax2.set_ylabel("Loss", fontname='serif', color='darkred')
+ax2.set_title("Loss y VS. Epoch", fontname='serif', color='darkblue', fontsize=16)
 ax2.legend()
 ax2.grid()
 plt.tight_layout()
@@ -292,17 +292,17 @@ left, bottom, width, height = 0, 0, 1, 1
 ax1 = fig.add_axes([left, bottom, width, height])
 ax1.plot(y, label=r'$y = -7x + 11x^2 - x^3 - 27$')
 ax1.plot(y_pred, 'm--', label='prediced y')
-ax1.set_xlabel("Observations")
-ax1.set_ylabel("Values")
-ax1.set_title("Prediced y VS. Actual y")
+ax1.set_xlabel("Observations", fontname='serif', color='darkred')
+ax1.set_ylabel("Values", fontname='serif', color='darkred')
+ax1.set_title("Prediced y VS. Actual y", fontname='serif', color='darkblue', fontsize=16)
 ax1.legend()
 
 left, bottom, width, height = 0.6, 0.5, 0.3, 0.3
 ax2 = fig.add_axes([left, bottom, width, height])
 ax2.plot(perform_df, label=r'loss', color='#51c4d3')
-ax2.set_xlabel("Epoch")
-ax2.set_ylabel("Loss")
-ax2.set_title("Loss y VS. Epoch")
+ax2.set_xlabel("Epoch", fontname='serif', color='darkred')
+ax2.set_ylabel("Loss", fontname='serif', color='darkred')
+ax2.set_title("Loss y VS. Epoch", fontname='serif', color='darkblue', fontsize=16)
 ax2.legend()
 ax2.grid()
 plt.tight_layout()
@@ -312,15 +312,15 @@ plt.show()
 
 
 ### __Logistic(NonLinear) Regression__  
-Sigmoid Function: <font color=#e8b004>$\sigma(x) = \frac{1}{1+e^{-x}}$  
+- __Sigmoid Function:__ <font color=#e8b004>$\sigma(x) = \frac{1}{1+e^{-x}}$  
 Sigmoid Functio maps any real value into another value between 0 and 1, it is used to model the probability that the target variable belongs to a particular category.
 
-Loss Function: <font color=#e8b004>$J(\theta) = -\frac{1}{m} \sum^{m}_{i=1}[y^i log(h_{\theta}(x^i)) + (1-y^i)log(1-h_{\theta}(x^i)]$</font>  
+- __Loss Function:__ <font color=#e8b004>$J(\theta) = -\frac{1}{m} \sum^{m}_{i=1}[y^i log(h_{\theta}(x^i)) + (1-y^i)log(1-h_{\theta}(x^i)]$</font>  
 where <font color=#5bae23>$h_{\theta}​(x)$</font> is the predicted value.  
 In logistic regression, it’s generally better use log loss.
 
-Gradient:<font color=#e8b004>$\triangledown J(\theta) = \frac{1}{m}X^T(h-y)$</font>  
-Weight Update Rule:<font color=#e8b004>$\theta = \theta - \alpha\triangledown J(\theta)$</font>  
+- __Gradient:__ <font color=#e8b004>$\triangledown J(\theta) = \frac{1}{m}X^T(h-y)$</font>  
+- __Weight Update Rule:__ <font color=#e8b004>$\theta = \theta - \alpha\triangledown J(\theta)$</font>  
 
 ```{python}
 def sigmoid(x):
@@ -410,15 +410,15 @@ ax1.plot(y, label=r'$y = [3x_1 - 7x_2 + 6x_3 + 11] > -8$')
 ax1.plot(y_pred, 'm--', label='prediced y')
 ax1.set_xlabel("Observations")
 ax1.set_ylabel("Values")
-ax1.set_title("Prediced y VS. Actual y")
+ax1.set_title("Prediced y VS. Actual y", fontname='serif', color='darkblue', fontsize=16)
 ax1.legend()
 
 left, bottom, width, height = 0.6, 0.5, 0.3, 0.3
 ax2 = fig.add_axes([left, bottom, width, height])
 ax2.plot(perform_df, label=r'loss', color='#51c4d3')
-ax2.set_xlabel("Epoch")
-ax2.set_ylabel("Loss")
-ax2.set_title("Loss y VS. Epoch")
+ax2.set_xlabel("Epoch", fontname='serif', color='darkred',)
+ax2.set_ylabel("Loss", fontname='serif', color='darkred',)
+ax2.set_title("Loss y VS. Epoch", fontname='serif', color='darkblue', fontsize=16)
 ax2.legend()
 ax2.grid()
 plt.tight_layout()
@@ -451,4 +451,7 @@ app = App(app_ui, server)
 
 ```
 
-continue in next blog.
+continue in next blog.  
+
+[next](./03.Linear and nonlinear regression 2.qmd)  
+[go back](./machine_learning.qmd) 

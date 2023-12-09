@@ -153,6 +153,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </div>
                           <div class="quarto-categories">
                 <div class="quarto-category">Python</div>
+                <div class="quarto-category">CS5805 23Fall</div>
+                <div class="quarto-category">Machine Learning</div>
                 <div class="quarto-category">Linear Regression</div>
                 <div class="quarto-category">Nonlinear Regression</div>
                 <div class="quarto-category">Momentum Strategy</div>
@@ -306,11 +308,11 @@ b   \\
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>rmse <span class="op">=</span> my_rmse(y_pred, y)</span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The loss is: </span><span class="sc">{</span>rmse<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Prediced y VS. Actual y"</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Prediced y VS. Actual y"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkblue'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>plt.plot(y, label<span class="op">=</span><span class="vs">r'$y = 2x_1 + 7x_2 - 9x_3 + 18$'</span>)</span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>plt.plot(y_pred, <span class="st">'m--'</span>, label<span class="op">=</span><span class="st">'prediced y'</span>)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Observations"</span>)</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Values"</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Observations"</span>,  fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Values"</span>,  fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -319,7 +321,7 @@ b   \\
 <pre><code>The loss is: nan</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="03.Linear and nonlinear regression 1_files/figure-html/cell-6-output-2.png" width="663" height="470"></p>
+<p><img src="03.Linear and nonlinear regression 1_files/figure-html/cell-6-output-2.png" width="661" height="470"></p>
 </div>
 </div>
 <p>The formular method has several limitations. It requires the matrix <span class="math inline">\(X^TX\)</span> has inverse, and the plot shows it could not fit_linear well. Therefore, I would prefer the approximation method.</p>
@@ -363,8 +365,8 @@ Where <span class="math inline">\(\alpha\)</span> is the learning rate</p>
 <span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"loss in this test linear regression update_1: </span><span class="sc">{</span>loss<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>loss in this test linear regression update: 18.87
-loss in this test linear regression update_1: 19.01</code></pre>
+<pre><code>loss in this test linear regression update: 18.29
+loss in this test linear regression update_1: 18.39</code></pre>
 </div>
 </div>
 <p><font color="#3b818c"><strong>Power Regression</strong></font><br>
@@ -398,8 +400,8 @@ Treat <font color="#5bae23"><strong><span class="math inline">\(x^n\)</span></st
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"loss in this test power regression update_1: </span><span class="sc">{</span>loss<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>loss in this test power regression update: 359.08
-loss in this test power regression update_1: 318.27</code></pre>
+<pre><code>loss in this test power regression update: 332.84
+loss in this test power regression update_1: 295.04</code></pre>
 </div>
 </div>
 <section id="train-and-evaluate-approximation-method" class="level4">
@@ -445,17 +447,17 @@ loss in this test power regression update_1: 318.27</code></pre>
 <span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> fig.add_axes([left, bottom, width, height])</span>
 <span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>ax1.plot(y, label<span class="op">=</span><span class="vs">r'$y = 3x_1 - 7x_2 + 6x_3 + 11$'</span>)</span>
 <span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>ax1.plot(y_pred, <span class="st">'m--'</span>, label<span class="op">=</span><span class="st">'prediced y'</span>)</span>
-<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="st">"Observations"</span>)</span>
-<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">"Values"</span>)</span>
-<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">"Prediced y VS. Actual y"</span>)</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="st">"Observations"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">"Values"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">"Prediced y VS. Actual y"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkblue'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
 <span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>ax1.legend()</span>
 <span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>left, bottom, width, height <span class="op">=</span> <span class="fl">0.6</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fl">0.3</span></span>
 <span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> fig.add_axes([left, bottom, width, height])</span>
 <span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>ax2.plot(perform_df, label<span class="op">=</span><span class="vs">r'loss'</span>, color<span class="op">=</span><span class="st">'#51c4d3'</span>)</span>
-<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">"Epoch"</span>)</span>
-<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">"Loss"</span>)</span>
-<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">"Loss y VS. Epoch"</span>)</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">"Epoch"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">"Loss"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">"Loss y VS. Epoch"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkblue'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
 <span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>ax2.legend()</span>
 <span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>ax2.grid()</span>
 <span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
@@ -465,7 +467,7 @@ loss in this test power regression update_1: 318.27</code></pre>
 <pre><code>Final loss:0.00</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="03.Linear and nonlinear regression 1_files/figure-html/cell-9-output-2.png" width="749" height="564"></p>
+<p><img src="03.Linear and nonlinear regression 1_files/figure-html/cell-9-output-2.png" width="749" height="567"></p>
 </div>
 </div>
 <p><strong>Power regression</strong></p>
@@ -492,17 +494,17 @@ loss in this test power regression update_1: 318.27</code></pre>
 <span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> fig.add_axes([left, bottom, width, height])</span>
 <span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>ax1.plot(y, label<span class="op">=</span><span class="vs">r'$y = -7x + 11x^2 - x^3 - 27$'</span>)</span>
 <span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>ax1.plot(y_pred, <span class="st">'m--'</span>, label<span class="op">=</span><span class="st">'prediced y'</span>)</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="st">"Observations"</span>)</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">"Values"</span>)</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">"Prediced y VS. Actual y"</span>)</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="st">"Observations"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">"Values"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">"Prediced y VS. Actual y"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkblue'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
 <span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>ax1.legend()</span>
 <span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>left, bottom, width, height <span class="op">=</span> <span class="fl">0.6</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fl">0.3</span></span>
 <span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> fig.add_axes([left, bottom, width, height])</span>
 <span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>ax2.plot(perform_df, label<span class="op">=</span><span class="vs">r'loss'</span>, color<span class="op">=</span><span class="st">'#51c4d3'</span>)</span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">"Epoch"</span>)</span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">"Loss"</span>)</span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">"Loss y VS. Epoch"</span>)</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">"Epoch"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">"Loss"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>)</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">"Loss y VS. Epoch"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkblue'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
 <span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>ax2.legend()</span>
 <span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>ax2.grid()</span>
 <span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
@@ -512,20 +514,23 @@ loss in this test power regression update_1: 318.27</code></pre>
 <pre><code>Final loss:0.00</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="03.Linear and nonlinear regression 1_files/figure-html/cell-10-output-2.png" width="749" height="564"></p>
+<p><img src="03.Linear and nonlinear regression 1_files/figure-html/cell-10-output-2.png" width="749" height="567"></p>
 </div>
 </div>
 </section>
 </section>
 <section id="logisticnonlinear-regression" class="level3">
 <h3 class="anchored" data-anchor-id="logisticnonlinear-regression"><strong>Logistic(NonLinear) Regression</strong></h3>
-<p>Sigmoid Function: <font color="#e8b004"><span class="math inline">\(\sigma(x) = \frac{1}{1+e^{-x}}\)</span><br>
-Sigmoid Functio maps any real value into another value between 0 and 1, it is used to model the probability that the target variable belongs to a particular category.</font></p><font color="#e8b004">
-<p>Loss Function: <font color="#e8b004"><span class="math inline">\(J(\theta) = -\frac{1}{m} \sum^{m}_{i=1}[y^i log(h_{\theta}(x^i)) + (1-y^i)log(1-h_{\theta}(x^i)]\)</span></font><br>
+<ul>
+<li><p><strong>Sigmoid Function:</strong> <font color="#e8b004"><span class="math inline">\(\sigma(x) = \frac{1}{1+e^{-x}}\)</span><br>
+Sigmoid Functio maps any real value into another value between 0 and 1, it is used to model the probability that the target variable belongs to a particular category.</font></p></li><font color="#e8b004">
+<li><p><strong>Loss Function:</strong> <font color="#e8b004"><span class="math inline">\(J(\theta) = -\frac{1}{m} \sum^{m}_{i=1}[y^i log(h_{\theta}(x^i)) + (1-y^i)log(1-h_{\theta}(x^i)]\)</span></font><br>
 where <font color="#5bae23"><span class="math inline">\(h_{\theta}​(x)\)</span></font> is the predicted value.<br>
-In logistic regression, it’s generally better use log loss.</p>
-<p>Gradient:<font color="#e8b004"><span class="math inline">\(\triangledown J(\theta) = \frac{1}{m}X^T(h-y)\)</span></font><br>
-Weight Update Rule:<font color="#e8b004"><span class="math inline">\(\theta = \theta - \alpha\triangledown J(\theta)\)</span></font></p>
+In logistic regression, it’s generally better use log loss.</p></li>
+<li><p><strong>Gradient:</strong> <font color="#e8b004"><span class="math inline">\(\triangledown J(\theta) = \frac{1}{m}X^T(h-y)\)</span></font><br>
+</p></li>
+<li><p><strong>Weight Update Rule:</strong> <font color="#e8b004"><span class="math inline">\(\theta = \theta - \alpha\triangledown J(\theta)\)</span></font></p></li>
+</font></ul><font color="#e8b004">
 <div class="cell" data-execution_count="10">
 <details>
 <summary>Code</summary>
@@ -572,7 +577,7 @@ Weight Update Rule:<font color="#e8b004"><span class="math inline">\(\theta = \t
 <span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"loss, accuray in this test logistic regression update: loss:</span><span class="sc">{</span>loss<span class="sc">:.2f}</span><span class="ss">,accuracy:</span><span class="sc">{</span>accu<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>loss, accuray in this test logistic regression update: loss:6.15,accuracy:0.21</code></pre>
+<pre><code>loss, accuray in this test logistic regression update: loss:2.46,accuracy:0.16</code></pre>
 </div>
 </div>
 <section id="train-and-evaluate-logistic-regression" class="level4">
@@ -621,25 +626,25 @@ Weight Update Rule:<font color="#e8b004"><span class="math inline">\(\theta = \t
 <span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>ax1.plot(y_pred, <span class="st">'m--'</span>, label<span class="op">=</span><span class="st">'prediced y'</span>)</span>
 <span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="st">"Observations"</span>)</span>
 <span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">"Values"</span>)</span>
-<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">"Prediced y VS. Actual y"</span>)</span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">"Prediced y VS. Actual y"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkblue'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
 <span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>ax1.legend()</span>
 <span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>left, bottom, width, height <span class="op">=</span> <span class="fl">0.6</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fl">0.3</span></span>
 <span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> fig.add_axes([left, bottom, width, height])</span>
 <span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>ax2.plot(perform_df, label<span class="op">=</span><span class="vs">r'loss'</span>, color<span class="op">=</span><span class="st">'#51c4d3'</span>)</span>
-<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">"Epoch"</span>)</span>
-<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">"Loss"</span>)</span>
-<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">"Loss y VS. Epoch"</span>)</span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">"Epoch"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>,)</span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">"Loss"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkred'</span>,)</span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">"Loss y VS. Epoch"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkblue'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
 <span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>ax2.legend()</span>
 <span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>ax2.grid()</span>
 <span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final loss:0.24, accuracy: 0.96</code></pre>
+<pre><code>Final loss:0.31, accuracy: 0.94</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="03.Linear and nonlinear regression 1_files/figure-html/cell-12-output-2.png" width="743" height="564"></p>
+<p><img src="03.Linear and nonlinear regression 1_files/figure-html/cell-12-output-2.png" width="743" height="567"></p>
 </div>
 </div>
 </section>
@@ -664,6 +669,8 @@ def server(input, output, session):
 app = App(app_ui, server)
 </code></pre>
 <p>continue in next blog.</p>
+<p><a href="../../posts/machine_learning/03.Linear and nonlinear regression 2.html">next</a><br>
+<a href="../../posts/machine_learning/machine_learning.html">go back</a></p>
 
 
 </section>
