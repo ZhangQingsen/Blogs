@@ -369,5 +369,5 @@ plt.show()
 
 end.  
 
-[previous](./03.Linear and nonlinear regression 1.qmd) 
+[previous](./03.Linear and nonlinear regression 1.qmd)  
 [go back](./machine_learning.qmd) 

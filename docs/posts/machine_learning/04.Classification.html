@@ -8,9 +8,9 @@
 
 <meta name="author" content="Qingsen Zhang">
 <meta name="dcterms.date" content="2023-11-16">
-<meta name="description" content="week01 class materials, simple jupyter notebook tips">
+<meta name="description" content="Mnist dataset classification">
 
-<title>Blogs - 01 week01</title>
+<title>Blogs - Mnist dataset classification</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -97,6 +97,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -138,10 +140,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-page">
-      <h1 class="title">01 week01</h1>
+      <h1 class="title">Mnist dataset classification</h1>
                   <div>
         <div class="description">
-          week01 class materials, simple jupyter notebook tips
+          Mnist dataset classification
         </div>
       </div>
                           <div class="quarto-categories">
@@ -198,74 +200,226 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> MinMaxScaler, StandardScaler</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'ggplot'</span>)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"List of seaborn datasets: </span><span class="ch">\n</span><span class="sc">{</span>sns<span class="sc">.</span>get_dataset_names()<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'ggplot'</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># print(f"List of seaborn datasets: \n{sns.get_dataset_names()}")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>List of seaborn datasets: 
-['anagrams', 'anscombe', 'attention', 'brain_networks', 'car_crashes', 'diamonds', 'dots', 'dowjones', 'exercise', 'flights', 'fmri', 'geyser', 'glue', 'healthexp', 'iris', 'mpg', 'penguins', 'planets', 'seaice', 'taxis', 'tips', 'titanic']</code></pre>
 </div>
-</div>
-<p>Print your full name here to replace “Hello World!” 打印姓名</p>
+</section>
+<section id="data-process" class="level4">
+<h4 class="anchored" data-anchor-id="data-process"><strong>Data Process</strong></h4>
+<section id="download-data" class="level5">
+<h5 class="anchored" data-anchor-id="download-data"><strong>Download Data</strong></h5>
 <div class="cell" data-execution_count="3">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Hello World!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>url<span class="op">=</span><span class="st">"https://raw.githubusercontent.com/rjafari979/Information-Visualization-Data-Analytics-Dataset-/main/mnist_test.csv"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>minst_df <span class="op">=</span> pd.read_csv(url)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>minst_df.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Hello World!</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>(10000, 785)</code></pre>
 </div>
 </div>
-<p>view/hide line numbers in jupyter notebook 显示/隐藏行数<br>
-click View -&gt; click Toggle Line Numbers 点击View -&gt; 点击Toggle Line Numbers</p>
+</section>
+</section>
+<section id="data-preview" class="level4">
+<h4 class="anchored" data-anchor-id="data-preview"><strong>Data Preview</strong></h4>
 <div class="cell" data-execution_count="4">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is line #5   这是第5行</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> minst_df.iloc[:<span class="dv">100</span>].copy(deep<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>rows.sort_values(by<span class="op">=</span><span class="st">"label"</span>,ascending<span class="op">=</span><span class="va">True</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">12</span>))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"MNIST Data Preview"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkblue'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  row <span class="op">=</span> rows.iloc[i]</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  pic <span class="op">=</span> row[<span class="dv">1</span>:].values.reshape(<span class="dv">28</span>,<span class="dv">28</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  plt.subplot(<span class="dv">10</span>,<span class="dv">10</span>,i<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  plt.imshow(pic)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-display">
+<p><img src="04.Classification_files/figure-html/cell-5-output-1.png" width="940" height="1044"></p>
 </div>
-<p>the order of executing block changes results jupyter notebook 中未运行的代码块对后面代码块无影响</p>
+</div>
+</section>
+<section id="z-score-normalization" class="level4">
+<h4 class="anchored" data-anchor-id="z-score-normalization"><strong>z-score normalization</strong></h4>
 <div class="cell" data-execution_count="5">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> minst_df.drop(columns<span class="op">=</span>[<span class="st">'label'</span>]).values</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> minst_df[<span class="st">'label'</span>].values</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> scaler.fit_transform(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<p>Images after normalization</p>
 <div class="cell" data-execution_count="6">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.__version__)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> pd.DataFrame(X)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> x1.iloc[:<span class="dv">10</span>].copy(deep<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># rows.sort_values(by="label",ascending=True, inplace=True)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">2</span>))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"MNIST Data after Nromalization"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkblue'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  row <span class="op">=</span> rows.iloc[i]</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  pic <span class="op">=</span> row.values.reshape(<span class="dv">28</span>,<span class="dv">28</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  plt.subplot(<span class="dv">1</span>,<span class="dv">10</span>,i<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  plt.imshow(pic)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>1.26.0</code></pre>
+<div class="cell-output cell-output-display">
+<p><img src="04.Classification_files/figure-html/cell-7-output-1.png" width="940" height="172"></p>
 </div>
 </div>
-<p>the order of executing block changes results jupyter notebook 代码运行顺序对结果有影响</p>
+</section>
+<section id="model-defination" class="level3">
+<h3 class="anchored" data-anchor-id="model-defination"><strong>Model Defination</strong></h3>
+<ul>
+<li><strong>Sigmoid Function:</strong> <font color="#e8b004"><span class="math display">\[ \sigma(x) = \frac{1}{1 + e^{-x}} \]</span></font><br>
+</li>
+<li><strong>Sigmoid Derivative:</strong> <font color="#e8b004"><span class="math display">\[ \sigma'(x) = \sigma(x) \cdot (1 - \sigma(x)) \]</span></font><br>
+</li>
+<li><strong>Forward Propagation:</strong> <font color="#e8b004"><span class="math display">\[ y_{\text{hat}} = \sigma(XW + b) \]</span></font><br>
+</li>
+<li><strong>Back Propagation:</strong> <font color="#e8b004"><span class="math display">\[ W_{\text{l}+1} = W_{\text{l}} + \alpha \cdot X^T \cdot ((y - y_{\text{hat}}) \cdot \sigma'(y_{\text{hat}})) \]</span></font></li>
+</ul>
+<section id="model-structure" class="level4">
+<h4 class="anchored" data-anchor-id="model-structure"><strong>Model Structure</strong></h4>
+<ul>
+<li>Input Layer: 784 neurons (corresponding to the 28*28 pixel values)</li>
+<li>Output Layer: 1 neuron (corresponding to the predicted label)</li>
+<li>Activation Function: Sigmoid</li>
+</ul>
 <div class="cell" data-execution_count="7">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>a<span class="op">=</span><span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sigmoid(x):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  x <span class="op">=</span> np.clip(x, <span class="op">-</span><span class="dv">500</span>, <span class="dv">500</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> np.exp(<span class="op">-</span>x))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sigmoid_derivative(x):</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> x <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> x)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_loss(y, y_hat):</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> np.mean((y <span class="op">-</span> y_hat)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward_propagation(X, weights, biases):</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  z <span class="op">=</span> np.dot(X, weights) <span class="op">+</span> biases</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> sigmoid(z)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> back_propagation(X, y, y_hat, weights, learning_rate):</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  error <span class="op">=</span> y <span class="op">-</span> y_hat</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  d_weights <span class="op">=</span> np.dot(X.T, error <span class="op">*</span> sigmoid_derivative(y_hat))</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  d_weights <span class="op">=</span> np.mean(d_weights, axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  weights <span class="op">+=</span> learning_rate <span class="op">*</span> d_weights</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> weights</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit(X, y, epochs, learning_rate):</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  weights <span class="op">=</span> np.random.rand(X.shape[<span class="dv">1</span>], <span class="dv">1</span>)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  biases <span class="op">=</span> np.zeros((<span class="dv">1</span>,))</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    y_hat <span class="op">=</span> forward_propagation(X, weights, biases)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> compute_loss(y, y_hat)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    weights <span class="op">=</span> back_propagation(X, y, y_hat, weights, learning_rate)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> epoch <span class="op">%</span> <span class="dv">100</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>      <span class="bu">print</span>(<span class="ss">f"Epoch </span><span class="sc">{</span>epoch<span class="sc">}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> weights, biases</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(X, weights, biases):</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> forward_propagation(X, weights, biases)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+</section>
+<section id="prediction" class="level4">
+<h4 class="anchored" data-anchor-id="prediction"><strong>Prediction</strong></h4>
 <div class="cell" data-execution_count="8">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>weights, biases <span class="op">=</span> fit(X_train, y_train, epochs<span class="op">=</span><span class="dv">1000</span>, learning_rate<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>y_train_pred <span class="op">=</span> predict(X_train, weights, biases)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>y_test_pred <span class="op">=</span> predict(X_test, weights, biases)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>train_accuracy <span class="op">=</span> accuracy_score(y_train, np.<span class="bu">round</span>(y_train_pred.flatten()).astype(np.int8))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>test_accuracy <span class="op">=</span> accuracy_score(y_test, np.<span class="bu">round</span>(y_test_pred.flatten()).astype(np.int8))</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Train Accuracy: </span><span class="sc">{</span>train_accuracy<span class="sc">:.2f}</span><span class="ss">'</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Test Accuracy: </span><span class="sc">{</span>test_accuracy<span class="sc">:.2f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>5</code></pre>
+<pre><code>Epoch 0, Loss: 24.75
+Epoch 100, Loss: 22.65
+Epoch 200, Loss: 22.53
+Epoch 300, Loss: 22.47
+Epoch 400, Loss: 22.44
+Epoch 500, Loss: 22.37
+Epoch 600, Loss: 22.38
+Epoch 700, Loss: 22.34
+Epoch 800, Loss: 22.36
+Epoch 900, Loss: 22.34
+Train Accuracy: 0.00
+Test Accuracy: 0.01</code></pre>
 </div>
 </div>
+</section>
+<section id="predicted-labels-in-train-dataset" class="level4">
+<h4 class="anchored" data-anchor-id="predicted-labels-in-train-dataset">Predicted Labels in train dataset</h4>
 <div class="cell" data-execution_count="9">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>a<span class="op">=</span><span class="dv">6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>x_train1 <span class="op">=</span> pd.DataFrame(X_train)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> x_train1.iloc[:<span class="dv">10</span>].copy(deep<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">2</span>))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"Predicted Labels in train dataset"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkblue'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  row <span class="op">=</span> rows.iloc[i]</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  pic <span class="op">=</span> row.values.reshape(<span class="dv">28</span>,<span class="dv">28</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  plt.subplot(<span class="dv">1</span>,<span class="dv">10</span>,i<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  plt.xlabel(<span class="ss">f"true:</span><span class="sc">{</span>y_train[i]<span class="sc">}</span><span class="ch">\n</span><span class="ss">pred:</span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(y_train_pred.flatten()[i])<span class="sc">.</span>astype(np.int8)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  plt.imshow(pic)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-display">
+<p><img src="04.Classification_files/figure-html/cell-10-output-1.png" width="940" height="211"></p>
 </div>
-<p>If you run the last code block before the print block, the output will show that a is 6.</p>
+</div>
+</section>
+<section id="predicted-labels-in-test-dataset" class="level4">
+<h4 class="anchored" data-anchor-id="predicted-labels-in-test-dataset">Predicted Labels in test dataset</h4>
+<div class="cell" data-execution_count="10">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>x_test1 <span class="op">=</span> pd.DataFrame(X_test)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> x_test1.iloc[:<span class="dv">10</span>].copy(deep<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">2</span>))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"Predicted Labels in test dataset"</span>, fontname<span class="op">=</span><span class="st">'serif'</span>, color<span class="op">=</span><span class="st">'darkblue'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  row <span class="op">=</span> rows.iloc[i]</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  pic <span class="op">=</span> row.values.reshape(<span class="dv">28</span>,<span class="dv">28</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  plt.subplot(<span class="dv">1</span>,<span class="dv">10</span>,i<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  plt.xlabel(<span class="ss">f"true:</span><span class="sc">{</span>y_test[i]<span class="sc">}</span><span class="ch">\n</span><span class="ss">pred:</span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(y_test_pred.flatten()[i])<span class="sc">.</span>astype(np.int8)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  plt.imshow(pic)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="04.Classification_files/figure-html/cell-11-output-1.png" width="940" height="211"></p>
+</div>
+</div>
+<p>end.<br>
+<a href="../../posts/machine_learning/machine_learning.html">go back</a></p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -15,6 +15,7 @@
 #
 #
 #
+#
 #| echo: false
 #| output: false
 
@@ -31,7 +32,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import OneHotEncoder, MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
@@ -42,30 +43,46 @@ plt.style.use('ggplot')
 #
 #
 #
-#
-diamonds = sns.load_dataset('diamonds')
-print(f"There are {diamonds.isna().sum().sum()} missing values")
-diamonds
-#
+url="https://raw.githubusercontent.com/rjafari979/Information-Visualization-Data-Analytics-Dataset-/main/mnist_test.csv"
+minst_df = pd.read_csv(url)
+minst_df.shape
 #
 #
 #
-grouped = diamonds.groupby(['clarity', 'cut', 'color'])['price'].sum()
+#
+rows = minst_df.iloc[:100].copy(deep=True)
+rows.sort_values(by="label",ascending=True, inplace=True)
+plt.figure(figsize=(12,12))
+plt.suptitle("MNIST Data Preview", fontname='serif', color='darkblue', fontsize=16)
+for i in range(100):
+  row = rows.iloc[i]
+  pic = row[1:].values.reshape(28,28)
+  plt.subplot(10,10,i+1)
+  plt.imshow(pic)
+plt.show()
+#
+#
+#
+#
+X = minst_df.drop(columns=['label']).values
+y = minst_df['label'].values
 
-# Sort the grouped data within each 'clarity' group
-grouped_sorted = grouped.reset_index().sort_values(['clarity', 'price'], ascending=[True, False])
-
-# Unstack the sorted grouped data
-grouped_sorted_unstacked = grouped_sorted.set_index(['clarity', 'cut', 'color']).unstack().fillna(0)
-
-# Create a stacked bar plot with sorted bars
-grouped_sorted_unstacked.plot(kind='bar', stacked=True, figsize=(10, 6))
-
-plt.legend(title='Color', labels=['D', 'E', 'F', 'G', 'H', 'I', 'J'])
-# Add x-label, y-label, and title
-plt.xlabel('Clarity and Cut', fontname='serif', color='darkred',)
-plt.ylabel('Total Price', fontname='serif', color='darkred',)
-plt.title('Total Price by Clarity and Cut, Sorted within Each Clarity Group', fontname='serif', color='darkblue', fontsize=16)
+scaler = StandardScaler()
+X = scaler.fit_transform(X)
+#
+#
+#
+#
+x1 = pd.DataFrame(X)
+rows = x1.iloc[:10].copy(deep=True)
+# rows.sort_values(by="label",ascending=True, inplace=True)
+plt.figure(figsize=(12,2))
+plt.suptitle("MNIST Data after Nromalization", fontname='serif', color='darkblue', fontsize=16)
+for i in range(10):
+  row = rows.iloc[i]
+  pic = row.values.reshape(28,28)
+  plt.subplot(1,10,i+1)
+  plt.imshow(pic)
 plt.show()
 #
 #
@@ -73,10 +90,6 @@ plt.show()
 #
 #
 #
-df = diamonds.copy()
-scaler = StandardScaler()
-df[['carat', 'depth', 'table', 'price', 'x', 'y', 'z']] = scaler.fit_transform(df[['carat', 'depth', 'table', 'price', 'x', 'y', 'z']])
-df
 #
 #
 #
@@ -85,147 +98,87 @@ df
 #
 #
 #
-def fit(X, y):
-  classes = np.unique(y)
-  parameters = []
-  for i, c in enumerate(classes):
-    X_c = X[y == c]
-    parameters.append({
-      'prior': X_c.shape[0] / X.shape[0],
-      'mean': X_c.mean(axis=0),
-      'var': X_c.var(axis=0)
-      })
-  return classes, parameters
+def sigmoid(x):
+  x = np.clip(x, -500, 500)
+  return 1 / (1 + np.exp(-x))
 
-def predict(X, classes, parameters):
-  N, D = X.shape
-  K = len(classes)
-  P = np.zeros((N, K))
-  for k in range(K):
-    P[:, k] = np.log(parameters[k]['prior'])
-    P[:, k] += -0.5 * np.sum(np.log(2. * np.pi * parameters[k]['var']))
-    P[:, k] += -0.5 * np.sum(((X - parameters[k]['mean']) ** 2) / (parameters[k]['var']), 1)
-  return np.argmax(P, 1)
-#
-#
-#
-#
-#
-columns = ['cut', 'clarity', 'color']
-columne_name = columns[0]
-X = df[['carat', 'depth', 'table', 'price', 'x', 'y', 'z']]
-y = df[columne_name]
+def sigmoid_derivative(x):
+  return x * (1 - x)
 
+def compute_loss(y, y_hat):
+  return np.mean((y - y_hat)**2)
 
+def forward_propagation(X, weights, biases):
+  z = np.dot(X, weights) + biases
+  return sigmoid(z)
+
+def back_propagation(X, y, y_hat, weights, learning_rate):
+  error = y - y_hat
+  d_weights = np.dot(X.T, error * sigmoid_derivative(y_hat))
+  d_weights = np.mean(d_weights, axis=1, keepdims=True)
+  weights += learning_rate * d_weights
+  return weights
+
+def fit(X, y, epochs, learning_rate):
+  weights = np.random.rand(X.shape[1], 1)
+  biases = np.zeros((1,))
+
+  for epoch in range(epochs):
+    y_hat = forward_propagation(X, weights, biases)
+    loss = compute_loss(y, y_hat)
+    weights = back_propagation(X, y, y_hat, weights, learning_rate)
+
+    if epoch % 100 == 0:
+      print(f"Epoch {epoch}, Loss: {loss:.2f}")
+
+  return weights, biases
+
+def predict(X, weights, biases):
+    return forward_propagation(X, weights, biases)
+
+#
+#
+#
+#
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-classes, parameters = fit(X_train, y_train)
-predictions = predict(X_test, classes, parameters)
-predictions_label = classes[predictions]
-accuracy = accuracy_score(y_test, predictions_label)
-print(f"Accuracy on {columne_name} is {accuracy:.2f}")
+weights, biases = fit(X_train, y_train, epochs=10, learning_rate=0.1)
+y_train_pred = predict(X_train, weights, biases)
+y_test_pred = predict(X_test, weights, biases)
+
+train_accuracy = accuracy_score(y_train, np.round(y_train_pred.flatten()).astype(np.int8))
+test_accuracy = accuracy_score(y_test, np.round(y_test_pred.flatten()).astype(np.int8))
+
+print(f'Train Accuracy: {train_accuracy:.2f}')
+print(f'Test Accuracy: {test_accuracy:.2f}')
 #
 #
 #
 #
-df = diamonds.copy()
-scaler = StandardScaler()
-df[['carat', 'depth', 'table', 'x', 'y', 'z']] = scaler.fit_transform(df[['carat', 'depth', 'table', 'x', 'y', 'z']])
-
-X = df[['carat', 'depth', 'table', 'x', 'y', 'z']]
-y = df[['cut', 'clarity', 'color']]
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-classes_cut, parameters_cut = fit(X_train, y_train['cut'])
-predictions_cut = predict(X_test, classes_cut, parameters_cut)
-
-classes_clarity, parameters_clarity = fit(X_train, y_train['clarity'])
-predictions_clarity = predict(X_test, classes_clarity, parameters_clarity)
-
-classes_color, parameters_color = fit(X_train, y_train['color'])
-predictions_color = predict(X_test, classes_color, parameters_color)
-#
-#
-#
-#
-count_df = pd.DataFrame()
-count_df['correct_cut'] = (y_test['cut'] == classes_cut[predictions_cut]).map({True: 'Correct', False: 'Incorrect'})
-count_df['correct_clarity'] = (y_test['clarity'] == classes_clarity[predictions_clarity]).map({True: 'Correct', False: 'Incorrect'})
-count_df['correct_color'] = (y_test['color'] == classes_color[predictions_color]).map({True: 'Correct', False: 'Incorrect'})
-
-# Count the number of correct predictions for each feature
-correct_cut = count_df['correct_cut'].value_counts()['Correct']
-correct_clarity = count_df['correct_clarity'].value_counts()['Correct']
-correct_color = count_df['correct_color'].value_counts()['Correct']
-
-# Count the number of incorrect predictions for each feature
-incorrect_cut = count_df['correct_cut'].value_counts()['Incorrect']
-incorrect_clarity = count_df['correct_clarity'].value_counts()['Incorrect']
-incorrect_color = count_df['correct_color'].value_counts()['Incorrect']
-
-accuracy_cut = accuracy_score(y_test['cut'], classes_cut[predictions_cut])
-accuracy_clarity = accuracy_score(y_test['clarity'], classes_clarity[predictions_clarity])
-accuracy_color = accuracy_score(y_test['color'], classes_color[predictions_color])
-
-# Create a DataFrame for the counts
-data = {'Correct': [correct_cut, correct_clarity, correct_color],
-        'Incorrect': [incorrect_cut, incorrect_clarity, incorrect_color]}
-df_counts = pd.DataFrame(data, index=['cut', 'clarity', 'color'])
-
-colors=plt.get_cmap('Paired', 2)
-
-df_counts.plot(kind='barh', stacked=True, color=colors.colors)
-
-accuracies = [accuracy_cut, accuracy_clarity, accuracy_color]
-for i, (v, accuracy) in enumerate(zip(df_counts['Correct'], accuracies)):
-  plt.text(v, i, f' {v} ({accuracy*100:.2f}%)', va='center')
-
-plt.xlabel('Count', fontname='serif', color='darkred',)
-plt.ylabel('Category', fontname='serif', color='darkred',)
-plt.title('Prediction Correctness', fontname='serif', color='darkblue', fontsize=16)
+x_train1 = pd.DataFrame(X_train)
+rows = x_train1.iloc[:10].copy(deep=True)
+plt.figure(figsize=(12,2))
+plt.suptitle("Predicted Labels in train dataset", fontname='serif', color='darkblue', fontsize=16)
+for i in range(10):
+  row = rows.iloc[i]
+  pic = row.values.reshape(28,28)
+  plt.subplot(1,10,i+1)
+  plt.xlabel(f"true:{y_train[i]}\npred:{np.round(y_train_pred.flatten()[i]).astype(np.int8)}")
+  plt.imshow(pic)
 plt.show()
 #
 #
 #
 #
-#
-from matplotlib_venn import venn3
-import matplotlib.patches as mpatches
-
-# Count the number of correct predictions for each pair of features
-correct_cut_clarity = count_df[(count_df['correct_cut'] == 'Correct') & (count_df['correct_clarity'] == 'Correct')].shape[0]
-correct_cut_color = count_df[(count_df['correct_cut'] == 'Correct') & (count_df['correct_color'] == 'Correct')].shape[0]
-correct_clarity_color = count_df[(count_df['correct_clarity'] == 'Correct') & (count_df['correct_color'] == 'Correct')].shape[0]
-
-# Count the number of correct predictions for all three features
-correct_all = count_df[(count_df['correct_cut'] == 'Correct') & (count_df['correct_clarity'] == 'Correct') & (count_df['correct_color'] == 'Correct')].shape[0]
-
-# Create the Venn diagram
-plt.figure(figsize=(8,8))
-venn = venn3(subsets=(correct_cut, correct_clarity, correct_color, correct_cut_clarity, correct_cut_color, correct_clarity_color, correct_all), set_labels=('Cut', 'Clarity', 'Color'))
-
-for text in venn.set_labels:
-  text.set_fontname('serif')
-  text.set_color('darkred')
-
-plt.title('Correct Predictions', fontname='serif', color='darkblue', fontsize=16)
-
-# Create a custom legend
-legend_elements = [mpatches.Patch(color=venn.get_patch_by_id('100').get_facecolor(), label='Cut'),
-mpatches.Patch(color=venn.get_patch_by_id('010').get_facecolor(), label='Clarity'),
-mpatches.Patch(color=venn.get_patch_by_id('001').get_facecolor(), label='Color')]
-
-# Calculate the count of the union of correct predictions
-correct_union = count_df[(count_df['correct_cut'] == 'Correct') | (count_df['correct_clarity'] == 'Correct') | (count_df['correct_color'] == 'Correct')].shape[0]
-
-# Calculate the count of the complementary set
-complement_count = len(y_test) - correct_union
-
-# Add the count of the complementary set to the plot
-plt.text(0.2, 0.5, f'Complementary set \nin Universe\n({complement_count})', horizontalalignment='center', verticalalignment='center')
-
-plt.legend(handles=legend_elements, loc='best')
-
+x_test1 = pd.DataFrame(X_test)
+rows = x_train1.iloc[:10].copy(deep=True)
+plt.figure(figsize=(12,2))
+plt.suptitle("Predicted Labels in test dataset", fontname='serif', color='darkblue', fontsize=16)
+for i in range(10):
+  row = rows.iloc[i]
+  pic = row.values.reshape(28,28)
+  plt.subplot(1,10,i+1)
+  plt.xlabel(f"true:{y_train[i]}\npred:{np.round(y_train_pred.flatten()[i]).astype(np.int8)}")
+  plt.imshow(pic)
 plt.show()
 #
 #
