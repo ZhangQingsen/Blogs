@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "Blogs"
+  title: "Home"
   site-url: https://zhangqingsen.github.io/Blogs/
   description: "Keeping my notes here."
   navbar:
