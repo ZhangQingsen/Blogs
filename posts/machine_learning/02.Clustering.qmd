@@ -44,7 +44,7 @@ brain_networks = sns.load_dataset('brain_networks', header=[0, 1, 2], index_col=
 print(f"There are {brain_networks.isna().sum().sum()} missing values")
 brain_networks
 ```
-It seems this dateset has 3 columns, we need to merge the columns.
+It seems this dateset has 3 categories of columns, we need to merge the columns.
 ```{python}
 brain_networks_merge = brain_networks.copy()
 brain_networks_merge.columns = brain_networks_merge.columns.map(lambda x: '_'.join(str(i) for i in x))

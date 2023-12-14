@@ -366,6 +366,8 @@ plt.title("Strategy comparison on testset", fontname='serif', color='darkblue', 
 plt.legend()
 plt.show()
 ```
+This shows the comparison among strategies, and the logistic regression predicted strategy seems shows the best performance.
+However, this project ignore the transaction fee, which could be very large for trading everyday. Future work could analysis the performance among strategies among differet trading frequences, e.g. make transaction every week, month, quarter, or year.
 
 end.  
 

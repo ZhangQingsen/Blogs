@@ -245,6 +245,7 @@ plt.tight_layout()
 plt.show()
 ```
 
+Without normalization, we can see the Anomalies are concentrated on a small period.
 
 ```{python}
 column_name = 'Normalized_Price'
@@ -264,6 +265,7 @@ outlier = dowjones.iloc[outlier_indices]
 # outlier
 ```
 
+
 ```{python}
 plt.figure()
 plt.plot(dowjones.Price, label="Dow Jones", c='g')
@@ -275,6 +277,8 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 ```
+
+With normalization, we can see the Anomalies in each period. I think this provides more information on the performance of the stock market.
 
 end.  
 [go back](./machine_learning.qmd) 
