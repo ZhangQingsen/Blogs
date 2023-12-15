@@ -11,7 +11,7 @@ website:
       - text: Blog
         href: blog.qmd 
       - icon: github
-        href: https://zhangqingsen.github.io/Blogs/
+        href: https://github.com/ZhangQingsen/Blogs
 format:
   html:
     theme: spacelab
