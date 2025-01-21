@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Qingsen Zhang">
 
-<title>Blogs – Home</title>
+<title>Series: CS5805 Machine Learning – Home</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +24,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-9f447091f8b1454dcd9b1558d5056ce7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-listing/list.min.js"></script>
+<script src="../../site_libs/quarto-listing/quarto-listing.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-9f447091f8b1454dcd9b1558d5056ce7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -78,9 +79,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-date','listing-title','listing-reading-time','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -128,7 +129,7 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -138,7 +139,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Home</span>
     </a>
   </div>
@@ -149,7 +150,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./blog.html" aria-current="page"> 
+    <a class="nav-link" href="../../blog.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item compact">
@@ -167,14 +168,20 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Blogs</h1>
+    <div class="quarto-title column-page">
+      <h1 class="title">Series: CS5805 Machine Learning</h1>
                       </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta column-page">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Qingsen Zhang </p>
+            </div>
+    </div>
       
     
       
@@ -184,63 +191,307 @@ window.Quarto = {
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bmV3cw==">news <span class="quarto-category-count">(1)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
 
 
 
 
 
-<section id="series" class="level1">
-<h1>Series</h1>
-<section id="intro-to-python" class="level5">
-<h5 class="anchored" data-anchor-id="intro-to-python"><a href="posts\intro_to_python\intro_to_python.html">Intro to Python</a></h5>
-</section>
-<section id="machine-learning" class="level5">
-<h5 class="anchored" data-anchor-id="machine-learning"><a href="posts\machine_learning\machine_learning.html">Machine Learning</a></h5>
-</section>
-<section id="misc" class="level5">
-<h5 class="anchored" data-anchor-id="misc"><a href="posts\misc\misc.html">Misc</a></h5>
+<p>About this series</p>
+<p>Course projects for CS5805</p>
+<ol type="1">
+<li>5 blog posts are required, not 3</li>
+<li>Topics are pre-defined, not up to you to decide:
+<ol type="1">
+<li>Probability theory and random variables</li>
+<li>Clustering</li>
+<li>Linear and nonlinear regression</li>
+<li>Classification</li>
+<li>Anomaly/outlier detection</li>
+</ol></li>
+<li>The requirements for Machine Learning code and at least one data visualization are still in effect.</li>
+<li>Also unchanged is my expectation that everyone will build their own blog, preferably using Quarto, and publish it online, preferably on GitHub Pages. You can build the site with something else, like a JavaScript framework, and publish it elsewhere: https://quarto.org/docs/websites/website-blog.html#publishing,Links to an external site. as long as the blog is built from source files programmatically (not using a GUI) and it is accessible for free via a URL.</li>
+</ol>
 
 
 
-</section>
-</section>
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="bmV3cw==" data-listing-date-sort="1694232000000" data-listing-file-modified-sort="1737477870000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="32">
-<div class="thumbnail">
-<p><a href="./posts/welcome/index.html" class="no-external"></a></p><a href="./posts/welcome/index.html" class="no-external">
-<p class="card-img-top"><img src="posts\welcome\thumbnail.jpg"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/welcome/index.html" class="no-external"></a></p>
-</div>
+<div class="quarto-post image-right" data-index="0" data-categories="UHl0aG9uJTJDQ1M1ODA1JTIwMjNGYWxsJTJDTWFjaGluZSUyMExlYXJuaW5nJTJDUHJvYmFiaWxpdHklMkNOYWl2ZSUyMEJheWVz" data-listing-date-sort="1700110800000" data-listing-file-modified-sort="1737477868000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="878">
 <div class="body">
 <h3 class="no-anchor listing-title">
-<a href="./posts/welcome/index.html" class="no-external">Welcome To My Blog</a>
+<a href="../../posts/machine_learning/01.Probability.html" class="no-external">Predicting Diamond Prices: A Naive Bayes Approach</a>
 </h3>
 <div class="listing-subtitle">
-<a href="./posts/welcome/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('bmV3cw=='); return false;">
-news
-</div>
+<a href="../../posts/machine_learning/01.Probability.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<a href="./posts/welcome/index.html" class="no-external">This is the first post in a Quarto blog. Welcome!</a>
+<a href="../../posts/machine_learning/01.Probability.html" class="no-external">This project applies Probability and the Naive Bayes algorithm to predict diamond prices using the categorical features of the Seaborn’s diamonds dataset, demonstrating the algorithm’s efficiency in handling such data.</a>
 </div>
 </div>
 <div class="metadata">
-<a href="./posts/welcome/index.html" class="no-external">
+<a href="../../posts/machine_learning/01.Probability.html" class="no-external">
 <div class="listing-date">
-Sep 9, 2023
+Nov 16, 2023
 </div>
-<div class="listing-author">
-Tristan O’Malley
+<div class="listing-reading-time">
+5 min
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="UHl0aG9uJTJDQ1M1ODA1JTIwMjNGYWxsJTJDTWFjaGluZSUyMExlYXJuaW5nJTJDQ2x1c3RlcmluZyUyQ0RCU0NBTiUyQ1NjaWtpdC1MZWFybg==" data-listing-date-sort="1700110800000" data-listing-file-modified-sort="1737477868000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1035">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/machine_learning/02.Clustering.html" class="no-external">Clustering on Brain Networks Observations</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../../posts/machine_learning/02.Clustering.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="../../posts/machine_learning/02.Clustering.html" class="no-external">This project applies clustering algorithms on seaborn’s brain_networks dataset, notably implementing DBSCAN from scratch and comparing results from various scikit-learn models.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../../posts/machine_learning/02.Clustering.html" class="no-external">
+<div class="listing-date">
+Nov 16, 2023
+</div>
+<div class="listing-reading-time">
+6 min
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="UHl0aG9uJTJDQ1M1ODA1JTIwMjNGYWxsJTJDTWFjaGluZSUyMExlYXJuaW5nJTJDTGluZWFyJTIwUmVncmVzc2lvbiUyQ05vbmxpbmVhciUyMFJlZ3Jlc3Npb24lMkNNb21lbnR1bSUyMFN0cmF0ZWd5JTJDU3RvY2slMjBQcmVkaWN0aW9u" data-listing-date-sort="1700110800000" data-listing-file-modified-sort="1737477868000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1661">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/machine_learning/03.Linear and nonlinear regression 1.html" class="no-external">Harnessing Momentum: Predictive Analysis of Stock Prices Using Linear and Nonlinear Regression I</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../../posts/machine_learning/03.Linear and nonlinear regression 1.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="../../posts/machine_learning/03.Linear and nonlinear regression 1.html" class="no-external">Implement my own version of linear regression and logistic regression and construct a momentum strategy based on my models in stock market. Phrase I, model implementation</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../../posts/machine_learning/03.Linear and nonlinear regression 1.html" class="no-external">
+<div class="listing-date">
+Nov 16, 2023
+</div>
+<div class="listing-reading-time">
+9 min
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-categories="UHl0aG9uJTJDQ1M1ODA1JTIwMjNGYWxsJTJDTWFjaGluZSUyMExlYXJuaW5nJTJDTGluZWFyJTIwUmVncmVzc2lvbiUyQ05vbmxpbmVhciUyMFJlZ3Jlc3Npb24lMkNNb21lbnR1bSUyMFN0cmF0ZWd5JTJDU3RvY2slMjBQcmVkaWN0aW9u" data-listing-date-sort="1700110800000" data-listing-file-modified-sort="1737477868000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1357">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/machine_learning/03.Linear and nonlinear regression 2.html" class="no-external">Harnessing Momentum: Predictive Analysis of Stock Prices Using Linear and Nonlinear Regression II</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../../posts/machine_learning/03.Linear and nonlinear regression 2.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="../../posts/machine_learning/03.Linear and nonlinear regression 2.html" class="no-external">Implement my own version of linear regression and logistic regression and construct a time series momentum strategy based on my models in stock market. Phrase II, momentum strategy</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../../posts/machine_learning/03.Linear and nonlinear regression 2.html" class="no-external">
+<div class="listing-date">
+Nov 16, 2023
+</div>
+<div class="listing-reading-time">
+7 min
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="4" data-categories="UHl0aG9uJTJDQ1M1ODA1JTIwMjNGYWxsJTJDTWFjaGluZSUyMExlYXJuaW5nJTJDQ2xhc3NpZmljYXRpb24lMkNQZXJjZXB0cm9uJTJDTmVydWFsJTIwTmV0d29yaw==" data-listing-date-sort="1700110800000" data-listing-file-modified-sort="1737477868000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="601">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/machine_learning/04.Classification.html" class="no-external">Mnist dataset classification</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../../posts/machine_learning/04.Classification.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="../../posts/machine_learning/04.Classification.html" class="no-external">This project applies a one-layer perceptron, a simple form of a neural network, to classify handwritten digits from the MNIST dataset, providing insights into image recognition and machine learning model development.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../../posts/machine_learning/04.Classification.html" class="no-external">
+<div class="listing-date">
+Nov 16, 2023
+</div>
+<div class="listing-reading-time">
+4 min
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="5" data-categories="UHl0aG9uJTJDQ1M1ODA1JTIwMjNGYWxsJTJDTWFjaGluZSUyMExlYXJuaW5nJTJDQW5vbWFseSUyRm91dGxpZXIlMjBkZXRlY3Rpb24lMkNTdXBwb3J0JTIwVmVjdG9yJTIwTWFjaGluZSUyMChTVk0p" data-listing-date-sort="1700110800000" data-listing-file-modified-sort="1737477868000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1006">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/machine_learning/05.Anomaly_outlier detection.html" class="no-external">Outlier Detection in Dow Jones using Support Vector Machines</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../../posts/machine_learning/05.Anomaly_outlier detection.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="../../posts/machine_learning/05.Anomaly_outlier detection.html" class="no-external">Explore the application of SVM for anomaly detection in the Dow Jones data.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../../posts/machine_learning/05.Anomaly_outlier detection.html" class="no-external">
+<div class="listing-date">
+Nov 16, 2023
+</div>
+<div class="listing-reading-time">
+6 min
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="6" data-categories="UHl0aG9uJTJDbGFuZyUzQUNoaW5lc2U=" data-listing-date-sort="1696564800000" data-listing-file-modified-sort="1737477868000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="66">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/machine_learning/06.Page Rank Algorithm.html" class="no-external">01 week01</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../../posts/machine_learning/06.Page Rank Algorithm.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="../../posts/machine_learning/06.Page Rank Algorithm.html" class="no-external">week01 class materials, simple jupyter notebook tips</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../../posts/machine_learning/06.Page Rank Algorithm.html" class="no-external">
+<div class="listing-date">
+Oct 6, 2023
+</div>
+<div class="listing-reading-time">
+1 min
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="7" data-categories="UHl0aG9uJTJDUXVhbnR1bSUyMENvbXB1dGluZw==" data-listing-date-sort="NaN" data-listing-file-modified-sort="1737465612000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="445">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/machine_learning/07.hhl_imp1.html" class="no-external">HHL Algorithm Implementation in Qiskit - State Preparation</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../../posts/machine_learning/07.hhl_imp1.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="../../posts/machine_learning/07.hhl_imp1.html" class="no-external">Implement my verison of HHL step by step with a numerical example</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../../posts/machine_learning/07.hhl_imp1.html" class="no-external">
+<div class="listing-date">
+Invalid Date
+</div>
+<div class="listing-reading-time">
+3 min
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="8" data-categories="UHl0aG9uJTJDUXVhbnR1bSUyMENvbXB1dGluZw==" data-listing-date-sort="NaN" data-listing-file-modified-sort="1737465568000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="773">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/machine_learning/08.hhl_imp2.html" class="no-external">HHL Algorithm Implementation in Qiskit - Quantum Phase Estimation (QPE)</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../../posts/machine_learning/08.hhl_imp2.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="../../posts/machine_learning/08.hhl_imp2.html" class="no-external">Implement my verison of HHL step by step with a numerical example</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../../posts/machine_learning/08.hhl_imp2.html" class="no-external">
+<div class="listing-date">
+Invalid Date
+</div>
+<div class="listing-reading-time">
+4 min
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="9" data-categories="UHl0aG9uJTJDUXVhbnR1bSUyMENvbXB1dGluZw==" data-listing-date-sort="NaN" data-listing-file-modified-sort="1737465590000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="747">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/machine_learning/09.hhl_imp3.html" class="no-external">HHL Algorithm Implementation in Qiskit - Controlled Rotation &amp; Measurement of the Ancilla Qubit</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../../posts/machine_learning/09.hhl_imp3.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="../../posts/machine_learning/09.hhl_imp3.html" class="no-external">Implement my verison of HHL step by step with a numerical example</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../../posts/machine_learning/09.hhl_imp3.html" class="no-external">
+<div class="listing-date">
+Invalid Date
+</div>
+<div class="listing-reading-time">
+4 min
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="10" data-categories="UHl0aG9uJTJDUXVhbnR1bSUyMENvbXB1dGluZw==" data-listing-date-sort="NaN" data-listing-file-modified-sort="1737465600000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="747">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/machine_learning/10.hhl_imp4.html" class="no-external">HHL Algorithm Implementation in Qiskit - Uncomputation (Inverse QPE)</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../../posts/machine_learning/10.hhl_imp4.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="../../posts/machine_learning/10.hhl_imp4.html" class="no-external">Implement my verison of HHL step by step with a numerical example</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../../posts/machine_learning/10.hhl_imp4.html" class="no-external">
+<div class="listing-date">
+Invalid Date
+</div>
+<div class="listing-reading-time">
+4 min
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="11" data-categories="UHl0aG9uJTJDUXVhbnR1bSUyMENvbXB1dGluZw==" data-listing-date-sort="NaN" data-listing-file-modified-sort="1737465606000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="737">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/machine_learning/11.hhl_imp5.html" class="no-external">HHL Algorithm Implementation in Qiskit - Complete Version</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../../posts/machine_learning/11.hhl_imp5.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="../../posts/machine_learning/11.hhl_imp5.html" class="no-external">Implement my verison of HHL step by step with a numerical example</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../../posts/machine_learning/11.hhl_imp5.html" class="no-external">
+<div class="listing-date">
+Invalid Date
+</div>
+<div class="listing-reading-time">
+4 min
 </div>
 </a>
 </div>

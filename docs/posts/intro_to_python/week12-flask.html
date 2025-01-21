@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Qingsen Zhang">
+<meta name="description" content="Sample source code for a simple web application built by flask">
 
-<title>Blogs – Home</title>
+<title>12 Flask – Home</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +25,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-9f447091f8b1454dcd9b1558d5056ce7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-9f447091f8b1454dcd9b1558d5056ce7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,67 +68,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -138,7 +80,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Home</span>
     </a>
   </div>
@@ -149,7 +91,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./blog.html" aria-current="page"> 
+    <a class="nav-link" href="../../blog.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item compact">
@@ -167,14 +109,25 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Blogs</h1>
-                      </div>
+    <div class="quarto-title column-page">
+      <h1 class="title">12 Flask</h1>
+                  <div>
+        <div class="description">
+          Sample source code for a simple web application built by flask
+        </div>
+      </div>
+                </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta column-page">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Qingsen Zhang </p>
+            </div>
+    </div>
       
     
       
@@ -184,72 +137,202 @@ window.Quarto = {
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bmV3cw==">news <span class="quarto-category-count">(1)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
 
 
 
 
 
-<section id="series" class="level1">
-<h1>Series</h1>
-<section id="intro-to-python" class="level5">
-<h5 class="anchored" data-anchor-id="intro-to-python"><a href="posts\intro_to_python\intro_to_python.html">Intro to Python</a></h5>
+<section id="falsk" class="level3">
+<h3 class="anchored" data-anchor-id="falsk">Falsk</h3>
+<p>install.bat</p>
+<p>#| code-fold: true #| eval: false # from tkinter import N from flask import Flask, render_template, request, redirect, url_for, make_response from urllib.request import urlopen</p>
+<p>import re import numpy as np import pandas as pd import matplotlib.pyplot as plt</p>
 </section>
-<section id="machine-learning" class="level5">
-<h5 class="anchored" data-anchor-id="machine-learning"><a href="posts\machine_learning\machine_learning.html">Machine Learning</a></h5>
+<section id="helpflaskname" class="level1">
+<h1>help(Flask(<strong>name</strong>))</h1>
 </section>
-<section id="misc" class="level5">
-<h5 class="anchored" data-anchor-id="misc"><a href="posts\misc\misc.html">Misc</a></h5>
+<section id="param-import_name-the-name-of-the-application-package" class="level1">
+<h1>| :param import_name: the name of the application package</h1>
+</section>
+<section id="param-static_url_path-can-be-used-to-specify-a-different-path-for-the" class="level1">
+<h1>| :param static_url_path: can be used to specify a different path for the</h1>
+</section>
+<section id="static-files-on-the-web.-defaults-to-the-name" class="level1">
+<h1>| static files on the web. Defaults to the name</h1>
+</section>
+<section id="of-the-static_folder-folder." class="level1">
+<h1>| of the <code>static_folder</code> folder.</h1>
+</section>
+<section id="param-static_folder-the-folder-with-static-files-that-is-served-at" class="level1">
+<h1>| :param static_folder: The folder with static files that is served at</h1>
+</section>
+<section id="static_url_path.-relative-to-the-application-root_path" class="level1">
+<h1>| <code>static_url_path</code>. Relative to the application <code>root_path</code></h1>
+</section>
+<section id="or-an-absolute-path.-defaults-to-static." class="level1">
+<h1>| or an absolute path. Defaults to <code>'static'</code>.</h1>
+</section>
+<section id="param-static_host-the-host-to-use-when-adding-the-static-route." class="level1">
+<h1>| :param static_host: the host to use when adding the static route.</h1>
+</section>
+<section id="defaults-to-none.-required-when-using-host_matchingtrue" class="level1">
+<h1>| Defaults to None. Required when using <code>host_matching=True</code></h1>
+</section>
+<section id="with-a-static_folder-configured." class="level1">
+<h1>| with a <code>static_folder</code> configured.</h1>
+</section>
+<section id="param-host_matching-set-url_map.host_matching-attribute." class="level1">
+<h1>| :param host_matching: set <code>url_map.host_matching</code> attribute.</h1>
+</section>
+<section id="defaults-to-false." class="level1">
+<h1>| Defaults to False.</h1>
+</section>
+<section id="param-subdomain_matching-consider-the-subdomain-relative-to" class="level1">
+<h1>| :param subdomain_matching: consider the subdomain relative to</h1>
+</section>
+<section id="dataserver_name-when-matching-routes.-defaults-to-false." class="level1">
+<h1>| :data:<code>SERVER_NAME</code> when matching routes. Defaults to False.</h1>
+</section>
+<section id="param-template_folder-the-folder-that-contains-the-templates-that-should" class="level1">
+<h1>| :param template_folder: the folder that contains the templates that should</h1>
+</section>
+<section id="be-used-by-the-application.-defaults-to" class="level1">
+<h1>| be used by the application. Defaults to</h1>
+</section>
+<section id="templates-folder-in-the-root-path-of-the" class="level1">
+<h1>| <code>'templates'</code> folder in the root path of the</h1>
+</section>
+<section id="application." class="level1">
+<h1>| application.</h1>
+</section>
+<section id="param-instance_path-an-alternative-instance-path-for-the-application." class="level1">
+<h1>| :param instance_path: An alternative instance path for the application.</h1>
+</section>
+<section id="by-default-the-folder-instance-next-to-the" class="level1">
+<h1>| By default the folder <code>'instance'</code> next to the</h1>
+</section>
+<section id="package-or-module-is-assumed-to-be-the-instance" class="level1">
+<h1>| package or module is assumed to be the instance</h1>
+</section>
+<section id="path." class="level1">
+<h1>| path.</h1>
+</section>
+<section id="param-instance_relative_config-if-set-to-true-relative-filenames" class="level1">
+<h1>| :param instance_relative_config: if set to <code>True</code> relative filenames</h1>
+</section>
+<section id="for-loading-the-config-are-assumed-to" class="level1">
+<h1>| for loading the config are assumed to</h1>
+</section>
+<section id="be-relative-to-the-instance-path-instead" class="level1">
+<h1>| be relative to the instance path instead</h1>
+</section>
+<section id="of-the-application-root." class="level1">
+<h1>| of the application root.</h1>
+</section>
+<section id="param-root_path-the-path-to-the-root-of-the-application-files." class="level1">
+<h1>| :param root_path: The path to the root of the application files.</h1>
+</section>
+<section id="this-should-only-be-set-manually-when-it-cant-be-detected" class="level1">
+<h1>| This should only be set manually when it can’t be detected</h1>
+</section>
+<section id="automatically-such-as-for-namespace-packages." class="level1">
+<h1>| automatically, such as for namespace packages.</h1>
+<p>app = Flask(<strong>name</strong>, template_folder=‘./’) print(app.template_folder)</p>
+<span class="citation" data-cites="app.route">@app.route</span>(‘/’) def hello_world(): return “
+<h1>
+Hello World Flask!
+</h1>
+<p>”</p>
+<span class="citation" data-cites="app.route">@app.route</span>(‘/h1’, methods=[‘POST’, ‘GET’]) def hello_h1(): return f”
+<h1>
+Hello h1!
+</h1>
+<p>”</p>
+<span class="citation" data-cites="app.route">@app.route</span>(‘/zqs’) def hello_zqs(): return “
+<h1>
+Hello 张晴森!
+</h1>
+<p>”</p>
+<span class="citation" data-cites="app.route">@app.route</span>(‘/<int:age>’) def hello_age(age): return f”
+<h1>
+Hello World Flask! age is {age}
+</h1>
+<p>”</p>
+<span class="citation" data-cites="app.route">@app.route</span>(‘/hello/<string:n>’) def hello_name(n): return f”
+<h1>
+Hello {n}!
+</h1>
+<p>”</p>
+</string:n></int:age></section>
+<section id="请求" class="level1">
+<h1>请求</h1>
+<span class="citation" data-cites="app.route">@app.route</span>(‘/register’, methods=[‘GET’, ‘POST’]) def register(): if request.method == ‘POST’: name = request.form.get(‘name’) password = request.form.get(‘password’) print(f”name: {name}, password: {password}“) return redirect(url_for(”hello_zqs”)) # return f’Hello {name}!’ if request.method == ‘GET’: return render_template(‘Register.html’) # return ’’’&lt;!DOCTYPE html&gt; #
 
+#
+
+#
+<meta charset="UTF-8">
+#
+<meta name="Generator" content="EditPlus®">
+#
+<meta name="Author" content="">
+#
+<meta name="Keywords" content="">
+#
+<meta name="Description" content="">
+#
+<title>
+Register
+</title>
+#
+
+#
+
+#
+<form action="">
+</form></section>
+<section id="账号" class="level1">
+<h1>账号:</h1>
+</section>
+<section id="section" class="level1">
+<h1><input type="text" name="name"></h1>
+</section>
+<section id="section-1" class="level1">
+<h1><br></h1>
+</section>
+<section id="密码" class="level1">
+<h1>密码:</h1>
+</section>
+<section id="section-2" class="level1">
+<h1><input type="password" name="password"></h1>
+</section>
+<section id="section-3" class="level1">
+<h1><br></h1>
+</section>
+<section id="section-4" class="level1">
+<h1><input type="submit" name="submit"></h1>
+#
+
+#
+
+</section>
+<section id="section-5" class="level1">
+<h1>’’’</h1>
+</section>
+<section id="重定向" class="level1">
+<h1>重定向</h1>
+<p><span class="citation" data-cites="app.route">@app.route</span>(‘/redirect/<int:a>’) def redire_idx(a): if not a: return redirect(‘https://www.jxuspt.com/’) elif a % 2: return redirect(url_for(“hello_name”, n=f’{a} is odd’)) else: return redirect(url_for(“hello_name”, n=f’{a} is even’))</int:a></p>
+<p>url = “http://jse.amstat.org/datasets/normtemp.dat.txt” html = urlopen(url).read().decode() pattern = re.compile(r’^(?P<t>[]+?)+?(?P<g>+?(?P<h>)$‘, re.M) items = re.findall(pattern, html) df = pd.DataFrame(items, columns=[’体温’,’性别’,’心率’]) df[’体温’] = df[’体温’].apply(lambda x : round((float(x)-32)/1.8,2)) # 显示df <span class="citation" data-cites="app.route">@app.route</span>(’/pd’) def from_pd(): # response = make_response(df.to_json(force_ascii=False)) # response.miteypte = ‘application/json’ # return response # return df.to_json(force_ascii=False) return df.to_html()</h></g></t></p>
+<p><span class="citation" data-cites="app.route">@app.route</span>(‘/mpl’) def mpl(): x_arr = np.arange(df.shape[0]) plt.scatter(x_arr, df[‘心率’], s=df[‘体温’], c=np.arctan2(df[‘体温’], x_arr), marker=‘8’) img_name = “scatter_plot.jpg” plt.savefig(‘./’+img_name) img_data = open(‘./’+img_name, “rb”).read() response = make_response(img_data) response.headers[‘Content-Type’] = ‘image/jpg’ return response</p>
+<p>if <strong>name</strong> == “<strong>main</strong>”: app.run(debug=True)</p>
 
 
 </section>
-</section>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="bmV3cw==" data-listing-date-sort="1694232000000" data-listing-file-modified-sort="1737477870000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="32">
-<div class="thumbnail">
-<p><a href="./posts/welcome/index.html" class="no-external"></a></p><a href="./posts/welcome/index.html" class="no-external">
-<p class="card-img-top"><img src="posts\welcome\thumbnail.jpg"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/welcome/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/welcome/index.html" class="no-external">Welcome To My Blog</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/welcome/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('bmV3cw=='); return false;">
-news
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/welcome/index.html" class="no-external">This is the first post in a Quarto blog. Welcome!</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/welcome/index.html" class="no-external">
-<div class="listing-date">
-Sep 9, 2023
-</div>
-<div class="listing-author">
-Tristan O’Malley
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

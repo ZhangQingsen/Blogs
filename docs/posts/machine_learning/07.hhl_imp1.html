@@ -244,7 +244,7 @@ The goal is to get <span class="math inline">\(\vec{x}\)</span></p>
 <ul>
 <li>eigenvalue and eigenvecter</li>
 </ul>
-<div id="749cb0e7" class="cell" data-execution_count="2">
+<div id="0f549395" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>], [<span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">1</span>]])</span>
@@ -264,7 +264,7 @@ eigenvectors:
  [-0.71  0.71]]</code></pre>
 </div>
 </div>
-<div id="705eef6f" class="cell" data-execution_count="3">
+<div id="27ad2e86" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">### The eigenvalue and eigenvectors given by paper</span></span>
@@ -286,7 +286,7 @@ eigenvectors:
 <p><span class="math inline">\(n_c\)</span>: # of qubits in <code>c-register</code></p>
 <p>a larger <span class="math inline">\(n_c\)</span> results in higher accuracy when the encoding is not exact</p>
 <p><span class="math inline">\(N=2^n\)</span></p>
-<div id="1d65fbeb" class="cell" data-execution_count="4">
+<div id="30c92a5a" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>N_b <span class="op">=</span> <span class="dv">2</span> <span class="co"># number of variables (b.shape[0])</span></span>
@@ -313,7 +313,7 @@ eigenvectors:
 &amp;= |0\rangle^{\otimes n_b}|0\rangle^{\otimes n}|0\rangle
 \end{align}
 \]</span></p>
-<div id="784f4cec" class="cell" data-execution_count="5">
+<div id="1b95c687" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qiskit <span class="im">import</span> QuantumRegister, QuantumCircuit, transpile</span>
@@ -345,7 +345,7 @@ eigenvectors:
 <section id="prepare-brangle" class="level3">
 <h3 class="anchored" data-anchor-id="prepare-brangle">Prepare <span class="math inline">\(|b\rangle\)</span></h3>
 <p>In the state preparation, <span class="math inline">\(|0\dots 0\rangle_b\)</span> in the <code>b-register</code> needs to be rotated to have the amplitudes correspond to the coefficients of <span class="math inline">\(\vec{b}\)</span>. <span class="math inline">\(\vec{b}=\left(\begin{matrix}\beta_0\\\beta_1\\\vdots\\\beta_{N_b-1}\end{matrix}\right)\Leftrightarrow\beta_0|0\rangle+\beta_1|1\rangle+\dots+\beta_{N_b-1}|N_b-1\rangle=|b\rangle\)</span> <span class="math inline">\(|\psi_1\rangle=|b\rangle_b|0\dots0\rangle_c|0\rangle_a\)</span></p>
-<div id="bede52b0" class="cell" data-execution_count="6">
+<div id="5d4228a4" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># normalize b to make sure the aggregate possibility is 1</span></span>
@@ -388,7 +388,7 @@ eigenvectors:
 </section>
 <section id="all-in-one-function" class="level3">
 <h3 class="anchored" data-anchor-id="all-in-one-function">All in one function</h3>
-<div id="17536b55" class="cell" data-execution_count="7">
+<div id="03485dc6" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> state_prep(mat_A, vec_b, n_c<span class="op">=</span><span class="dv">1</span>):</span>

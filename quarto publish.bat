@@ -15,11 +15,11 @@ if %ERRORLEVEL% NEQ 0 (
     goto :eof
 )
 
-quarto publish gh-pages
-if %ERRORLEVEL% NEQ 0 (
-    echo Quarto publish failed.
-    goto :eof
-)
+@REM quarto publish gh-pages
+@REM if %ERRORLEVEL% NEQ 0 (
+@REM     echo Quarto publish failed.
+@REM     goto :eof
+@REM )
 
 REM 显示完成效果
 echo.

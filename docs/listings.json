@@ -1,17 +1,5 @@
 [
   {
-    "listing": "/blog.html",
-    "items": [
-      "/posts/welcome/index.html"
-    ]
-  },
-  {
-    "listing": "/posts/misc/misc.html",
-    "items": [
-      "/posts/misc/01.Private Server Setup notes.html"
-    ]
-  },
-  {
     "listing": "/posts/machine_learning/machine_learning.html",
     "items": [
       "/posts/machine_learning/01.Probability.html",
@@ -26,6 +14,18 @@
       "/posts/machine_learning/09.hhl_imp3.html",
       "/posts/machine_learning/10.hhl_imp4.html",
       "/posts/machine_learning/11.hhl_imp5.html"
+    ]
+  },
+  {
+    "listing": "/posts/misc/misc.html",
+    "items": [
+      "/posts/misc/01.Private Server Setup notes.html"
+    ]
+  },
+  {
+    "listing": "/blog.html",
+    "items": [
+      "/posts/welcome/index.html"
     ]
   }
 ]
