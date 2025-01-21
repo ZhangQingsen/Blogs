@@ -16,183 +16,166 @@
 #
 #
 #
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 #| echo: false
 #| output: false
 
-import warnings
-warnings.filterwarnings("ignore")
-#
-#
-#
-#
-#
-#
-#
+# Import necessary libraries
+import qiskit
 import numpy as np
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-from sklearn.preprocessing import MinMaxScaler, StandardScaler, OneHotEncoder
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from numpy import pi
+```
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+A = np.array([[1, -1/3], [-1/3, 1]])
+eigenvalues, eigenvectors = np.linalg.eig(A)
+print(f"eigenvalues:\n{np.round(eigenvalues,2)}")
+print(f"eigenvectors:\n{np.round(eigenvectors,2)}")
 
-plt.style.use('ggplot')
-# print(f"List of seaborn datasets: \n{sns.get_dataset_names()}")
+# Verify the eigenvalue-eigenvector relationship
+assert np.allclose(np.dot(A, eigenvectors.T[0]), eigenvalues[0] * eigenvectors.T[0])
+assert np.allclose(np.dot(A, eigenvectors.T[1]), eigenvalues[1] * eigenvectors.T[1])
 #
 #
 #
-#
-#
-url="https://raw.githubusercontent.com/rjafari979/Information-Visualization-Data-Analytics-Dataset-/main/mnist_test.csv"
-minst_df = pd.read_csv(url)
-minst_df.shape
-#
-#
-#
-#
-rows = minst_df.iloc[:100].copy(deep=True)
-rows.sort_values(by="label",ascending=True, inplace=True)
-plt.figure(figsize=(12,12))
-plt.suptitle("MNIST Data Preview", fontname='serif', color='darkblue', fontsize=16)
-for i in range(100):
-  row = rows.iloc[i]
-  pic = row[1:].values.reshape(28,28)
-  plt.subplot(10,10,i+1)
-  plt.imshow(pic)
-plt.show()
-#
-#
-#
-#
-X = minst_df.drop(columns=['label']).values
-y = minst_df['label'].values
+### The eigenvalue and eigenvectors given by paper
+A = np.array([[1, -1/3], [-1/3, 1]])
+b = np.array([0,1])
+eigenvalues = [2/3, 4/3]
+eigenvectors = np.array([[-1/(2**0.5), -1/(2**0.5)],[-1/(2**0.5), 1/(2**0.5)]])
 
-# scaler = StandardScaler()
-scaler = MinMaxScaler()
-X = scaler.fit_transform(X)
+assert np.allclose(np.dot(A, eigenvectors.T[0]), eigenvalues[0] * eigenvectors.T[0])
+assert np.allclose(np.dot(A, eigenvectors.T[1]), eigenvalues[1] * eigenvectors.T[1])
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+N_b = 2 # number of variables (b.shape[0])
+n_b = np.log2(N_b) # number of qubits in b-register
+# n_b = 1 # N_b = 2^(n_b), n_b = np.log2(N_b)
+n_c = 1 # number of qubits in c-register
+N_c = 2 # N_c = 2^(n_c)
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+from qiskit import QuantumRegister, QuantumCircuit, transpile
+from qiskit_aer import Aer
+
+qr_b = QuantumRegister(n_b, name='b')  # b-register
+qr_c = QuantumRegister(n_c, name='c')  # c-register
+qr_a = QuantumRegister(1, name='a')    # a-register
+qc = QuantumCircuit(qr_c, qr_b, qr_a)  # complete circuit
+# Initialize the quantum circuitz
+print("Initial quantum circuit:")
+# print(qc.draw(output='text'))
+qc.draw(output='mpl')
+# latex_source = qc.draw(output='latex_source')
+# print(latex_source)
+#
+#
+#
+#
+#
+#
+#
+
+# normalize b to make sure the aggregate possibility is 1
+norm_b = b / np.linalg.norm(b)
+qc.initialize(norm_b, qr_b)  # Apply to b-register
 
 
-encoder = OneHotEncoder(sparse=False)
-y = encoder.fit_transform(y.reshape(-1, 1))
-#
-#
-#
-#
-x1 = pd.DataFrame(X)
-rows = x1.iloc[:10].copy(deep=True)
-# rows.sort_values(by="label",ascending=True, inplace=True)
-plt.figure(figsize=(12,2))
-plt.suptitle("MNIST Data after Nromalization", fontname='serif', color='darkblue', fontsize=16)
-for i in range(10):
-  row = rows.iloc[i]
-  pic = row.values.reshape(28,28)
-  plt.subplot(1,10,i+1)
-  plt.imshow(pic)
-plt.show()
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-def softmax(x):
-  e_x = np.exp(x - np.max(x))
-  return e_x / e_x.sum(axis=0)
+#----------Print states--------------------------------
+# Simulate the circuit
+simulator = Aer.get_backend('statevector_simulator')
 
-def cross_entropy(y, y_hat):
-  m = y.shape[0]
-  y_hat = np.clip(y_hat, 1e-10, 1 - 1e-10)
-  log_likelihood = -np.log(y_hat[range(m), y])
-  loss = np.sum(log_likelihood) / m
-  return loss
+# Transpile the circuit for the simulator
+transpiled_circuit = transpile(qc, simulator)
 
-# update weight
-def back_propagation(X, y, y_hat, weights, learning_rate):
-  error = y_hat
-  error[range(y.shape[0]), y] -= 1
-  d_weights = np.dot(X.T, error)
-  weights -= learning_rate * d_weights
-  return weights
+# Run the transpiled circuit
+result = simulator.run(transpiled_circuit).result()
 
-# predict y_hat
-def forward_propagation(X, weights, biases):
-  z = np.dot(X, weights) + biases
-  return softmax(z)
+# Extract the statevector
+statevector = result.get_statevector(qc)
+print("Statevector after initialization:", statevector)
 
-def fit(X, y, epochs, learning_rate):
-  weights = np.random.rand(X.shape[1], 10) * 0.01
-  biases = np.zeros((10,))
+# Optional: Visualize the circuit (if needed)
+qc.draw(output='mpl')
 
-  for epoch in range(epochs):
-    y_hat = forward_propagation(X, weights, biases)
-    loss = cross_entropy(y, y_hat)
-    weights = back_propagation(X, y, y_hat, weights, learning_rate)
-
-    if epoch % 100 == 0:
-      print(f"Epoch {epoch}, Loss: {loss:.2f}")
-      print(f"Weights: {weights}")
-      print(f"Predictions: {y_hat}")
-
-  return weights, biases
-
-def predict(X, weights, biases):
-  return np.argmax(forward_propagation(X, weights, biases), axis=1)
+#----------Print states--------------------------------
 
 #
 #
 #
 #
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+def state_prep(mat_A, vec_b, n_c=1):
+  N_b = vec_b.shape[0]
+  n_b = np.round(np.log2(N_b))
+  qr_b = QuantumRegister(n_b, name='b')  # b-register
+  qr_c = QuantumRegister(n_c, name='c')  # c-register
+  qr_a = QuantumRegister(1, name='a')    # a-register
+  qc = QuantumCircuit(qr_c, qr_b, qr_a)  # complete circuit
 
-weights, biases = fit(X_train, np.argmax(y_train, axis=1), epochs=300, learning_rate=0.001)
+  norm_b = vec_b / np.linalg.norm(vec_b)
+  qc.initialize(norm_b, qr_b)
+  return qc
 
-y_train_pred = predict(X_train, weights, biases)
-y_test_pred = predict(X_test, weights, biases)
+mat_A = np.array([[1, -1/3], [-1/3, 1]])
+vec_b = np.array([0,1])
 
-train_accuracy = accuracy_score(np.argmax(y_train, axis=1), y_train_pred)
-test_accuracy = accuracy_score(np.argmax(y_test, axis=1), y_test_pred)
-
-print(f'Train Accuracy: {train_accuracy:.2f}')
-print(f'Test Accuracy: {test_accuracy:.2f}')
-#
-#
-#
-#
-x_train1 = pd.DataFrame(X_train)
-rows = x_train1.iloc[:10].copy(deep=True)
-plt.figure(figsize=(12,2))
-plt.suptitle("Predicted Labels in train dataset", fontname='serif', color='darkblue', fontsize=16)
-for i in range(10):
-  row = rows.iloc[i]
-  pic = row.values.reshape(28,28)
-  plt.subplot(1,10,i+1)
-  plt.xlabel(f"True: {np.argmax(y_train[i])}\nPred: {y_train_pred[i]}")
-  plt.imshow(pic)
-plt.show()
-#
-#
-#
-#
-x_test1 = pd.DataFrame(X_test)
-rows = x_test1.iloc[:10].copy(deep=True)
-plt.figure(figsize=(12,2))
-plt.suptitle("Predicted Labels in test dataset", fontname='serif', color='darkblue', fontsize=16)
-for i in range(10):
-  row = rows.iloc[i]
-  pic = row.values.reshape(28,28)
-  plt.subplot(1,10,i+1)
-  plt.xlabel(f"True: {np.argmax(y_train[i])}\nPred: {y_train_pred[i]}")
-  plt.imshow(pic)
-plt.show()
+psi_1 = state_prep(mat_A, vec_b, n_c=1)
+psi_1.draw(output='mpl')
 #
 #
 #

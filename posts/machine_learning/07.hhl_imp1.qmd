@@ -1,0 +1,179 @@
+---
+title: "HHL Algorithm Implementation in Qiskit - State Preparation"
+author: "Qingsen Zhang"
+date: "`2025-01-15"
+categories: ['Python', 'Quantum Computing']
+description: 'Implement my verison of HHL step by step with a numerical example'
+format: 
+  html:
+    code-fold: true
+execute: 
+  message: false
+  warning: false
+editor_options: 
+  chunk_output_type: console
+---
+
+# HHL Algorithm Implementation in Qiskit
+
+## Introduction
+
+This document provides a step-by-step implementation of the HHL algorithm using Qiskit. The algorithm is broken into four key phases:
+
+1. **State Preparation**
+2. **Quantum Phase Estimation (QPE)**
+3. **Controlled Rotation & Measurement of the Ancilla Qubit**
+4. **Uncomputation (Inverse QPE)**
+
+```{python}
+#| echo: false
+#| output: false
+
+# Import necessary libraries
+import qiskit
+import numpy as np
+from numpy import pi
+```
+## Phase 0: Environment Setup
+
+### Overall
+$A\vec{x}=\vec{b}~~\rightarrow~~\vec{x}=A^{-1}\vec{b}$  
+The goal is to get $\vec{x}$
+
+
+### Numerical Example
+$A=\begin{bmatrix}1 & -\frac{1}{3}\\-\frac{1}{3} & 1\end{bmatrix}$  
+$\vec{b}=\begin{bmatrix}0\\1\end{bmatrix}$
+
+- eigenvalue and eigenvecter
+```{python}
+A = np.array([[1, -1/3], [-1/3, 1]])
+eigenvalues, eigenvectors = np.linalg.eig(A)
+print(f"eigenvalues:\n{np.round(eigenvalues,2)}")
+print(f"eigenvectors:\n{np.round(eigenvectors,2)}")
+
+# Verify the eigenvalue-eigenvector relationship
+assert np.allclose(np.dot(A, eigenvectors.T[0]), eigenvalues[0] * eigenvectors.T[0])
+assert np.allclose(np.dot(A, eigenvectors.T[1]), eigenvalues[1] * eigenvectors.T[1])
+```
+
+```{python}
+### The eigenvalue and eigenvectors given by paper
+A = np.array([[1, -1/3], [-1/3, 1]])
+b = np.array([0,1])
+eigenvalues = [2/3, 4/3]
+eigenvectors = np.array([[-1/(2**0.5), -1/(2**0.5)],[-1/(2**0.5), 1/(2**0.5)]])
+
+assert np.allclose(np.dot(A, eigenvectors.T[0]), eigenvalues[0] * eigenvectors.T[0])
+assert np.allclose(np.dot(A, eigenvectors.T[1]), eigenvalues[1] * eigenvectors.T[1])
+```
+
+Therefore, the eigenvectors are $\vec{u_0}=\begin{bmatrix}-\frac{1}{\sqrt2}\\-\frac{1}{\sqrt2}\end{bmatrix}$ and $\vec{u_1}=\begin{bmatrix}-\frac{1}{\sqrt2}\\\frac{1}{\sqrt2}\end{bmatrix}$
+The eigenvalues are $\lambda_0=\frac{2}{3}$, $\lambda_1=\frac{4}{3}$
+
+### Variables
+$n_b$: # of qubits in `b-register` 
+
+$N_b=2^{n_b}$: # of unknows (length of $\vec{b}$, $len(\vec{b})=len(\vec{x})$)
+
+$n_c$: # of qubits in ``c-register``
+
+a larger $n_c$ results in higher accuracy when the encoding is not exact 
+
+$N=2^n$ 
+
+```{python}
+N_b = 2 # number of variables (b.shape[0])
+n_b = np.log2(N_b) # number of qubits in b-register
+# n_b = 1 # N_b = 2^(n_b), n_b = np.log2(N_b)
+n_c = 1 # number of qubits in c-register
+N_c = 2 # N_c = 2^(n_c)
+```
+
+### Propreties
+
+$A$ is $N_b \times N_b$ Hermitian matrix
+
+HHL is $O(\log(N))$ 
+
+## Phase 1: State Preparation
+
+### Initial State
+Given $n_b$, $n_c$, there are total $n_b+n_c+1$ qubits
+$$
+\begin{align}
+|\psi_0\rangle &= |0\dots0\rangle_b|0\dots0\rangle_c|0\rangle_a \\
+&= |0\rangle^{\otimes n_b}|0\rangle^{\otimes n}|0\rangle
+\end{align}
+$$
+
+```{python}
+from qiskit import QuantumRegister, QuantumCircuit, transpile
+from qiskit_aer import Aer
+
+qr_b = QuantumRegister(n_b, name='b')  # b-register
+qr_c = QuantumRegister(n_c, name='c')  # c-register
+qr_a = QuantumRegister(1, name='a')    # a-register
+qc = QuantumCircuit(qr_c, qr_b, qr_a)  # complete circuit
+# Initialize the quantum circuitz
+print("Initial quantum circuit:")
+# print(qc.draw(output='text'))
+qc.draw(output='mpl')
+# latex_source = qc.draw(output='latex_source')
+# print(latex_source)
+```
+
+### Prepare $|b\rangle$
+In the state preparation, $|0\dots 0\rangle_b$ in the `b-register` needs to be rotated to have the amplitudes correspond to the coefficients of $\vec{b}$.
+$\vec{b}=\left(\begin{matrix}\beta_0\\\beta_1\\\vdots\\\beta_{N_b-1}\end{matrix}\right)\Leftrightarrow\beta_0|0\rangle+\beta_1|1\rangle+\dots+\beta_{N_b-1}|N_b-1\rangle=|b\rangle$
+$|\psi_1\rangle=|b\rangle_b|0\dots0\rangle_c|0\rangle_a$
+```{python}
+
+# normalize b to make sure the aggregate possibility is 1
+norm_b = b / np.linalg.norm(b)
+qc.initialize(norm_b, qr_b)  # Apply to b-register
+
+
+#----------Print states--------------------------------
+# Simulate the circuit
+simulator = Aer.get_backend('statevector_simulator')
+
+# Transpile the circuit for the simulator
+transpiled_circuit = transpile(qc, simulator)
+
+# Run the transpiled circuit
+result = simulator.run(transpiled_circuit).result()
+
+# Extract the statevector
+statevector = result.get_statevector(qc)
+print("Statevector after initialization:", statevector)
+
+# Optional: Visualize the circuit (if needed)
+qc.draw(output='mpl')
+
+#----------Print states--------------------------------
+
+```
+
+### All in one function
+```{python}
+def state_prep(mat_A, vec_b, n_c=1):
+  N_b = vec_b.shape[0]
+  n_b = np.round(np.log2(N_b))
+  qr_b = QuantumRegister(n_b, name='b')  # b-register
+  qr_c = QuantumRegister(n_c, name='c')  # c-register
+  qr_a = QuantumRegister(1, name='a')    # a-register
+  qc = QuantumCircuit(qr_c, qr_b, qr_a)  # complete circuit
+
+  norm_b = vec_b / np.linalg.norm(vec_b)
+  qc.initialize(norm_b, qr_b)
+  return qc
+
+mat_A = np.array([[1, -1/3], [-1/3, 1]])
+vec_b = np.array([0,1])
+
+psi_1 = state_prep(mat_A, vec_b, n_c=1)
+psi_1.draw(output='mpl')
+```
+
+next step is [Quantum Phase Estimation](./08.hhl_imp2.qmd)

@@ -1,14 +1,8 @@
 [
   {
-    "listing": "/posts/machine_learning/machine_learning.html",
+    "listing": "/blog.html",
     "items": [
-      "/posts/machine_learning/01.Probability.html",
-      "/posts/machine_learning/02.Clustering.html",
-      "/posts/machine_learning/03.Linear and nonlinear regression 1.html",
-      "/posts/machine_learning/03.Linear and nonlinear regression 2.html",
-      "/posts/machine_learning/04.Classification.html",
-      "/posts/machine_learning/05.Anomaly_outlier detection.html",
-      "/posts/machine_learning/06.Page Rank Algorithm.html"
+      "/posts/welcome/index.html"
     ]
   },
   {
@@ -18,9 +12,20 @@
     ]
   },
   {
-    "listing": "/blog.html",
+    "listing": "/posts/machine_learning/machine_learning.html",
     "items": [
-      "/posts/welcome/index.html"
+      "/posts/machine_learning/01.Probability.html",
+      "/posts/machine_learning/02.Clustering.html",
+      "/posts/machine_learning/03.Linear and nonlinear regression 1.html",
+      "/posts/machine_learning/03.Linear and nonlinear regression 2.html",
+      "/posts/machine_learning/04.Classification.html",
+      "/posts/machine_learning/05.Anomaly_outlier detection.html",
+      "/posts/machine_learning/06.Page Rank Algorithm.html",
+      "/posts/machine_learning/07.hhl_imp1.html",
+      "/posts/machine_learning/08.hhl_imp2.html",
+      "/posts/machine_learning/09.hhl_imp3.html",
+      "/posts/machine_learning/10.hhl_imp4.html",
+      "/posts/machine_learning/11.hhl_imp5.html"
     ]
   }
 ]
