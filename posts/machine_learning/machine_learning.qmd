@@ -1,5 +1,5 @@
 ---
-title: "Series: CS5805 Machine Learning"
+title: "Blogs in Machine Learning"
 listing:
   contents: ../machine_learning/*.qmd
   sort: "date desc"
@@ -14,7 +14,9 @@ title-block-banner: true
 
 About this series
 
-Course projects for CS5805
+Some blogs in Machine learning
+
+Blog 1-6 contains __Course projects for CS5805__
 
 1. 5 blog posts are required, not 3
 2. Topics are pre-defined, not up to you to decide:

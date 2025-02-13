@@ -23,7 +23,7 @@ This document provides a step-by-step implementation of the HHL algorithm using 
 1. **State Preparation**
 2. **Quantum Phase Estimation (QPE)**
 3. **Controlled Rotation & Measurement of the Ancilla Qubit**
-4. **Uncomputation (Inverse QPE)**
+4. ***Uncomputation (Inverse QPE)**
 
 ```{python}
 #| echo: false
@@ -33,43 +33,95 @@ This document provides a step-by-step implementation of the HHL algorithm using 
 import qiskit
 import numpy as np
 from numpy import pi
+from qiskit import ClassicalRegister, QuantumRegister, QuantumCircuit, transpile
+from qiskit_aer import Aer
+from qiskit.circuit.library import UnitaryGate, QFT, RYGate, MCXGate
+from scipy.linalg import expm
+
+# previous functions
+def state_prep(mat_A, vec_b, n_c=1):
+  N_b = vec_b.shape[0]
+  n_b = np.round(np.log2(N_b))
+  qr_b = QuantumRegister(n_b, name='b')  # b-register
+  qr_c = QuantumRegister(n_c, name='c')  # c-register
+  qr_a = QuantumRegister(1, name='a')    # a-register
+  qc = QuantumCircuit(qr_c, qr_b, qr_a)  # complete circuit
+
+  norm_b = vec_b / np.linalg.norm(vec_b)
+  qc.initialize(norm_b, qr_b)
+  return qc, qr_b, qr_c, qr_a
+
+def phase_estimation(qc, qr_b, qr_c, mat_A, t):
+    n_c = len(qr_c)
+    
+    # 1. Hadamard on c-register
+    qc.h(qr_c)
+    
+    # 2. Apply controlled-U^(2^j) operations
+    U = expm(1j * t * mat_A)  # 计算 e^(iAt)
+    U_gate = UnitaryGate(U, label="e^{iAt}")  # 创建 U gate
+  
+    for j in range(n_c):
+        power = 2**j  # 计算 U^(2^j)
+        controlled_U_pow = U_gate.power(power).control(1)  # 控制操作
+        qc.append(controlled_U_pow, [qr_c[j], *qr_b]) 
+    
+    # 3. Apply IQFT on c-register
+    iqft = QFT(num_qubits=n_c, do_swaps=False).inverse()
+    qc.append(iqft, qr_c)  # 作用于 c-register
+    
+    return qc
+
+def controlled_rotation(qc, qr_c, qr_a, C, t, n_c):
+    """
+    实现受控旋转门，作用于 a-register，基于 c-register 的相位估计结果
+    :param qc: 量子电路（需已经过相位估计到 |psi_4> 状态）
+    :param qr_c: c-register（存储相位估计结果）
+    :param qr_a: a-register（辅助比特）
+    :param C: 缩放常数
+    :param t: 时间参数（用于计算真实特征值）
+    :param n_c: c-register 的量子比特数
+    """
+    # 遍历所有可能的相位估计结果 k（从1到2^n_c -1）
+    for k in range(1, 2**n_c):
+        # Step 1: 将二进制状态k转换为控制条件（设置X门）
+        # 保存需要翻转的量子比特索引
+        flip_qubits = []
+        for i in range(n_c):
+            if (k & (1 << i)) == 0:  # 如果第i位是0，需要翻转
+                qc.x(qr_c[i])
+                flip_qubits.append(i)
+        
+        # Step 2: 计算旋转角度 theta_j
+        # 计算相位 phi（注意处理补码）
+        phi = k / (2**n_c)
+        if k > 2**(n_c - 1):
+            phi -= 1.0  # 处理负相位（二进制补码）
+        
+        # 计算真实特征值 lambda_j = (2π / t) * phi
+        lambda_j = (2 * np.pi / t) * phi
+        
+        # 计算旋转角度 theta_j = 2*arcsin(C / lambda_j)
+        if abs(lambda_j) > 1e-8:  # 避免除以零
+            theta_j = 2 * np.arcsin(C / lambda_j)
+        else:
+            theta_j = 0  # 若lambda_j太小，跳过旋转
+        
+        # Step 3: 应用多控制 RY 门到 a-register
+        if abs(theta_j) > 1e-8:  # 仅当角度有效时应用
+            ry_gate = RYGate(theta_j).control(num_ctrl_qubits=n_c, ctrl_state='1'*n_c)
+            qc.append(ry_gate, qr_c[:] + [qr_a[0]])
+        
+        # Step 4: 恢复被翻转的量子比特
+        for i in flip_qubits:
+            qc.x(qr_c[i])
+
+    return qc
 ```
-## Phase 0: Environment Setup
-
-### Overall
-$A\vec{x}=\vec{b}~~\rightarrow~~\vec{x}=A^{-1}\vec{b}$  
-The goal is to get $\vec{x}$
-
 
 ### Numerical Example
 $A=\begin{bmatrix}1 & -\frac{1}{3}\\-\frac{1}{3} & 1\end{bmatrix}$  
 $\vec{b}=\begin{bmatrix}0\\1\end{bmatrix}$
-
-- eigenvalue and eigenvecter
-```{python}
-A = np.array([[1, -1/3], [-1/3, 1]])
-eigenvalues, eigenvectors = np.linalg.eig(A)
-print(f"eigenvalues:\n{np.round(eigenvalues,2)}")
-print(f"eigenvectors:\n{np.round(eigenvectors,2)}")
-
-# Verify the eigenvalue-eigenvector relationship
-assert np.allclose(np.dot(A, eigenvectors.T[0]), eigenvalues[0] * eigenvectors.T[0])
-assert np.allclose(np.dot(A, eigenvectors.T[1]), eigenvalues[1] * eigenvectors.T[1])
-```
-
-```{python}
-### The eigenvalue and eigenvectors given by paper
-A = np.array([[1, -1/3], [-1/3, 1]])
-b = np.array([0,1])
-eigenvalues = [2/3, 4/3]
-eigenvectors = np.array([[-1/(2**0.5), -1/(2**0.5)],[-1/(2**0.5), 1/(2**0.5)]])
-
-assert np.allclose(np.dot(A, eigenvectors.T[0]), eigenvalues[0] * eigenvectors.T[0])
-assert np.allclose(np.dot(A, eigenvectors.T[1]), eigenvalues[1] * eigenvectors.T[1])
-```
-
-Therefore, the eigenvectors are $\vec{u_0}=\begin{bmatrix}-\frac{1}{\sqrt2}\\-\frac{1}{\sqrt2}\end{bmatrix}$ and $\vec{u_1}=\begin{bmatrix}-\frac{1}{\sqrt2}\\\frac{1}{\sqrt2}\end{bmatrix}$
-The eigenvalues are $\lambda_0=\frac{2}{3}$, $\lambda_1=\frac{4}{3}$
 
 ### Variables
 $n_b$: # of qubits in `b-register` 
@@ -82,154 +134,163 @@ a larger $n_c$ results in higher accuracy when the encoding is not exact
 
 $N=2^n$ 
 
+$t=\frac{\pi}{8}$: time variable, should be multiple of $2\pi$ 
+
+$C=0.01$: a constant to pick, try to make $C$ as large as possible while $-1\leq\frac{C}{\tilde{\lambda_j}} \leq 1$
+
 ```{python}
 N_b = 2 # number of variables (b.shape[0])
 n_b = np.log2(N_b) # number of qubits in b-register
 # n_b = 1 # N_b = 2^(n_b), n_b = np.log2(N_b)
 n_c = 1 # number of qubits in c-register
 N_c = 2 # N_c = 2^(n_c)
+t = np.pi/8
+C = 0.01
 ```
 
-### Propreties
+## Phase 4: Uncomputation (Inverse QPE)
+The goal for this phase is to remove unnecessary entanglements such that ensures correct final measurement. After uncomputing, the quantum state should ideally be close to $|x\rangle$, where $|x\rangle = A^{-1}|b\rangle$.
 
-$A$ is $N_b \times N_b$ Hermitian matrix
+After Uncomputation, we will finally get $\psi_{final}=|x\rangle\otimes|0\rangle_c\otimes|0\rangle_a$
 
-HHL is $O(\log(N))$ 
+```{python}
+# prepare the previous steps
+mat_A = np.array([[1, -1/3], [-1/3, 1]])
+vec_b = np.array([0,1])
+psi_1, qr_b, qr_c, qr_a = state_prep(mat_A, vec_b, n_c=1)
+psi_4 = phase_estimation(psi_1, qr_b, qr_c, mat_A, t)
+psi_6 = controlled_rotation(psi_4, qr_c, qr_a, C=C, t=t, n_c=n_c)
 
-## Phase 1: State Preparation
+# psi_6.draw(output='mpl')
+```
 
-### Initial State
-Given $n_b$, $n_c$, there are total $n_b+n_c+1$ qubits
+### Step 1. Apply QFT on `c-register`
+Apply QFT on `c-register` to move the phase-encoded eigenvalue information into a superposition of computational basis states.
+
+Given $|\psi_6\rangle=\frac{1}{\sqrt{\sum\limits^{2^{n_b}-1}_{j=0}|\frac{b_jC}{\tilde{\lambda_j}}|^2}}\sum\limits^{2^{n_b}-1}_{j=0}b_j|u_j\rangle|\tilde{\lambda_j}\rangle\frac{C}{\tilde{\lambda_j}}|1\rangle_a$
 $$
 \begin{align}
-|\psi_0\rangle &= |0\dots0\rangle_b|0\dots0\rangle_c|0\rangle_a \\
-&= |0\rangle^{\otimes n_b}|0\rangle^{\otimes n}|0\rangle
+|\psi_7\rangle &= \frac{1}{\sqrt{\sum\limits^{2^{n_b}-1}*{j=0}|\frac{b_jC}{\tilde{\lambda_j}}|^2}}\sum\limits^{2^{n_b}-1}_{j=0}\frac{b_jC}{\tilde{\lambda_j}}|u_j\rangle\text{QFT}|\tilde{\lambda_j}\rangle|1\rangle_a\\&=\frac{1}{\sqrt{\sum\limits^{2^{n_b}-1}*{j=0}|\frac{b_jC}{\tilde{\lambda_j}}|^2}}\sum\limits^{2^{n_b}-1}_{j=0}\frac{b_jC}{\tilde{\lambda_j}}|u_j\rangle~~~(\frac{1}{2^{\frac{2}{n}}}\sum\limits^{2^n-1}_{y=0}e^{2\pi i y\tilde{\lambda_j}/N}|y\rangle)~~~|1\rangle_a
 \end{align}
 $$
 
 ```{python}
-from qiskit import QuantumRegister, QuantumCircuit, transpile
-from qiskit_aer import Aer
+psi_7 = psi_6.copy()
+psi_7.append(QFT(n_c, do_swaps=False), qr_c)
 
-qr_b = QuantumRegister(n_b, name='b')  # b-register
-qr_c = QuantumRegister(n_c, name='c')  # c-register
-qr_a = QuantumRegister(1, name='a')    # a-register
-qc = QuantumCircuit(qr_c, qr_b, qr_a)  # complete circuit
-# Initialize the quantum circuitz
-print("Initial quantum circuit:")
-# print(qc.draw(output='text'))
-qc.draw(output='mpl')
-# latex_source = qc.draw(output='latex_source')
-# print(latex_source)
+psi_7.draw(output='mpl')
 ```
 
-#### little helper function to print states in register
+
+### Step 2. Inverse Controlled-Rotations on `b-register`.
+Then inverse controlled-rotations of the `b-register` by the clock qubits are applied with $U^{−1} = e^{−iAt}$. 
+
+Similar to the forward process, when the controlling r-th clock qubit is $|0\rangle$, $|u_j\rangle$ will not be affected. If the r-th clock qubit is $|1\rangle$, $(U^{−1})^{2r}$ will be applied to $|u_j\rangle$. This is equivalent to multiplying $e^{−i\lambda_jty}$ if the c-register is $|y\rangle$ since $2\pi i \phi=i\lambda_jt$
+
+$$
+|\psi_8\rangle=\frac{1}{2^{\frac{n}{2}}\sqrt{\sum\limits^{2^{n_b}-1}_{j=0}|\frac{b_jC}{\tilde{\lambda_j}}|^2}}\sum\limits^{2^{n_b}-1}_{j=0}\frac{b_jC}{\tilde{\lambda_j}}|u_j\rangle~~~\left(\sum\limits^{2^n-1}_{y=0}e^{-i\lambda_jty}e^{2\pi i y\tilde{\lambda_j}/N}|y\rangle\right)~~~|1\rangle_a
+$$
+
+Since we choose $\tilde{\lambda_j}=\frac{N\lambda_jt}{2\pi}$, the two exponential terms cancel each other
+$$
+\begin{align}
+|\psi_8\rangle &=\frac{1}{2^{\frac{n}{2}}\sqrt{\sum\limits^{2^{n_b}-1}_{j=0}|\frac{b_jC}{\tilde{\lambda_j}}|^2}}\sum\limits^{2^{n_b}-1}_{j=0}\frac{b_jC}{\tilde{\lambda_j}}|u_j\rangle~~~\sum\limits^{2^n-1}_{y=0}|y\rangle)~~~|1\rangle_a\\
+&=\frac{C}{2^{\frac{n}{2}}\sqrt{\sum\limits^{2^{n_b}-1}_{j=0}|\frac{b_jC}{\tilde{\lambda_j}}|^2}}|x\rangle\sum\limits^{2^n-1}_{y=0}|y\rangle|1\rangle_a
+\end{align}
+$$
+
 ```{python}
-def print_register_states_from_circuit(qc):
-    """
-    Given a quantum circuit, this function prints the state of each register.
-    
-    Args:
-    - qc (QuantumCircuit): The quantum circuit.
-    """
-    registers = qc.qregs
-    
-    nc = len(registers[0])  # c-register
-    nb = len(registers[1])  # b-register
-    na = len(registers[2])  # a-register (assuming only one qubit in a-register)
+psi_8=psi_7.copy()
+U_inv = expm(-1j * t * mat_A)
+U_gate_inv = UnitaryGate(U_inv, label="e^{-iAt}")  # Inverse U gate
 
-    num_qubits = nc+nb+na 
-    
-    simulator = Aer.get_backend('statevector_simulator')
-    transpiled_circuit = transpile(qc, simulator)
-    result = simulator.run(transpiled_circuit).result()
-    
-    # 从状态结果获取statevector，并转换为NumPy数组
-    statevector = np.asarray(result.get_statevector(qc))
 
-    # 将状态向量转换为列表
-    state_str = statevector.tolist()
+# Apply inverse controlled-U operations in reverse order
+for j in reversed(range(n_c)):
+    power = 2**j
+    controlled_U_pow_inv = U_gate_inv.power(power).control(1)
+    psi_8.append(controlled_U_pow_inv, [qr_c[j], *qr_b])
 
-    # 初始化寄存器状态存储
-    registers_state = {'c': [], 'b': [], 'a': []}
-    print(statevector)
-
-    # 初始化寄存器状态
-    state_c = [0] * (2**nc)
-    state_b = [0] * (2**nb)
-    state_a = [0] * (2**na)
-
-    # 遍历状态向量，将状态分配到相应的寄存器
-    for i, amplitude in enumerate(statevector):
-        # 将状态索引转换为二进制字符串
-        state_str = f"{i:0{nc+nb+na}b}"[::-1]
-        # 根据寄存器索引分配状态
-        state_c[int(state_str[:nc], 2)] = amplitude
-        state_b[int(state_str[nc:nc+nb], 2)] = amplitude
-        state_a[int(state_str[nc+nb:], 2)] = amplitude
-
-    # 打印寄存器状态
-    print(f"Register c: {state_c}")
-    print(f"Register b: {state_b}")
-    print(f"Register a: {state_a}")
-
-# 调用函数
-print_register_states_from_circuit(qc)
+psi_8.draw(output='mpl')
 ```
 
-### Prepare $|b\rangle$
-In the state preparation, $|0\dots 0\rangle_b$ in the `b-register` needs to be rotated to have the amplitudes correspond to the coefficients of $\vec{b}$.
-$\vec{b}=\left(\begin{matrix}\beta_0\\\beta_1\\\vdots\\\beta_{N_b-1}\end{matrix}\right)\Leftrightarrow\beta_0|0\rangle+\beta_1|1\rangle+\dots+\beta_{N_b-1}|N_b-1\rangle=|b\rangle$
-$|\psi_1\rangle=|b\rangle_b|0\dots0\rangle_c|0\rangle_a$
+
+### Step 3 Apply Hadamard Gate
+The clock qubits and the b-register are now **_unentangled_** and the `b-register` stores $|x\rangle$. Next, we can apply the Hadamard Gate on the clock qubits such that we get:
+
+$$
+\begin{align}
+|\psi_9\rangle &= \frac{1}{\sqrt{\sum\limits^{2^{n_b}-1}_{j=0}|\frac{b_jC}{\tilde{\lambda_j}}|^2}}|x\rangle\sum\limits^{2^{n_b}-1}_{j=0}\frac{b_jC}{\lambda_j}|u_j\rangle^{\otimes n}_c|1\rangle_a\\
+&=|x\rangle_b|0\rangle_c^{\otimes n}|1\rangle_a
+\end{align}
+$$
+
 ```{python}
+psi_9 = psi_8.copy()
+psi_9.h(qr_c)
+psi_9.draw(output='mpl')
+# Do the measurement
+c_b = ClassicalRegister(len(qr_b), name='cb')  # 存储 b-register 测量值
+c_a = ClassicalRegister(1, name='ca')  # 存储 a-register 测量值
+psi_9.add_register(c_b, c_a)  # 添加经典寄存器
 
-# normalize b to make sure the aggregate possibility is 1
-norm_b = b / np.linalg.norm(b)
-qc.initialize(norm_b, qr_b)  # Apply to b-register
+psi_9.measure(qr_b, c_b)  # 测量 b-register 并存入 cb
+psi_9.measure(qr_a, c_a)  # 测量 a-register 并存入 ca
 
-
-#----------Print states--------------------------------
-# Simulate the circuit
+psi_9.draw(output='mpl')
+```
+```{python}
+# 运行并查看结果
 simulator = Aer.get_backend('statevector_simulator')
+t_psi_9 = transpile(psi_9, simulator)
+result = simulator.run(t_psi_9, shots=2 ** 2).result()
+counts = result.get_counts(t_psi_9)
+print(counts)
 
-# Transpile the circuit for the simulator
-transpiled_circuit = transpile(qc, simulator)
+# # 解析测量结果
+# measured_a1 = sum(counts[key] for key in counts if key[-1] == '1')
+# measured_a0 = sum(counts[key] for key in counts if key[-1] == '0')
 
-# Run the transpiled circuit
-result = simulator.run(transpiled_circuit).result()
-
-# Extract the statevector
-statevector = result.get_statevector(qc)
-print("Statevector after initialization:", statevector)
-
-# Optional: Visualize the circuit (if needed)
-qc.draw(output='mpl')
-
-#----------Print states--------------------------------
+# # 计算归一化比值
+# if measured_a1 + measured_a0 > 0:
+#     print("P(a=1) =", measured_a1 / (measured_a1 + measured_a0))
+#     print("P(a=0) =", measured_a0 / (measured_a1 + measured_a0))
 
 ```
 
 ### All in one function
 ```{python}
-def state_prep(mat_A, vec_b, n_c=1):
-  N_b = vec_b.shape[0]
-  n_b = np.round(np.log2(N_b))
-  qr_b = QuantumRegister(n_b, name='b')  # b-register
-  qr_c = QuantumRegister(n_c, name='c')  # c-register
-  qr_a = QuantumRegister(1, name='a')    # a-register
-  qc = QuantumCircuit(qr_c, qr_b, qr_a)  # complete circuit
-
-  norm_b = vec_b / np.linalg.norm(vec_b)
-  qc.initialize(norm_b, qr_b)
-  return qc
+def phase_estimation(qc, qr_b, qr_c, mat_A, t):
+    n_c = len(qr_c)
+    
+    # 1. Hadamard on c-register
+    qc.h(qr_c)
+    
+    # 2. Apply controlled-U^(2^j) operations
+    U = expm(1j * t * mat_A)  # 计算 e^(iAt)
+    U_gate = UnitaryGate(U, label="e^{iAt}")  # 创建 U gate
+  
+    for j in range(n_c):
+        power = 2**j  # 计算 U^(2^j)
+        controlled_U_pow = U_gate.power(power).control(1)  # 控制操作
+        qc.append(controlled_U_pow, [qr_c[j], *qr_b]) 
+    
+    # 3. Apply IQFT on c-register
+    iqft = QFT(num_qubits=n_c, do_swaps=False).inverse()
+    qc.append(iqft, qr_c)  # 作用于 c-register
+    
+    return qc
 
 mat_A = np.array([[1, -1/3], [-1/3, 1]])
 vec_b = np.array([0,1])
+t = np.pi/8
+psi_1, qr_b, qr_c, qr_a = state_prep(mat_A, vec_b, n_c=1)
 
-psi_1 = state_prep(mat_A, vec_b, n_c=1)
-psi_1.draw(output='mpl')
+
+psi_4 = phase_estimation(psi_1, qr_b, qr_c, mat_A, t)
+
+psi_4.draw(output='mpl')
 ```
 
-
-prev [State Preparation](./09.hhl_imp3.qmd)
-next step is [Controlled Rotation & Measurement of the Ancilla Qubit](./11.hhl_imp5.qmd)
+prev [Controlled Rotation](./09.hhl_imp3.qmd)  
+next is [HHL Complete Version](./11.hhl_imp5.qmd)
