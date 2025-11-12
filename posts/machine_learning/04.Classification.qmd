@@ -1,7 +1,7 @@
 ---
 title: 'Mnist dataset classification'
 date: '2023-11-16'
-categories: ['Python', 'CS5805 23Fall', 'Machine Learning', 'Classification', 'Perceptron', 'Nerual Network']
+categories: ['Python', 'CS5805 23Fall', 'Machine Learning']
 description: 'This project applies a one-layer perceptron, a simple form of a neural network, to classify handwritten digits from the MNIST dataset, providing insights into image recognition and machine learning model development.'
 format: 
   html:

@@ -1,7 +1,7 @@
 ---
 title: 'Harnessing Momentum: Predictive Analysis of Stock Prices Using Linear and Nonlinear Regression I'
 date: '2023-11-16'
-categories: ['Python', 'CS5805 23Fall', 'Machine Learning', 'Linear Regression', 'Nonlinear Regression', 'Momentum Strategy', 'Stock Prediction']
+categories: ['Python', 'CS5805 23Fall', 'Machine Learning']
 description: 'Implement my own version of linear regression and logistic regression and construct a momentum strategy based on my models in stock market. Phrase I, model implementation'
 format: 
   html:

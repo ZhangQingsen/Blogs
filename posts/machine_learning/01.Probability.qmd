@@ -1,7 +1,7 @@
 ---
 title: 'Predicting Diamond Prices: A Naive Bayes Approach'
 date: '2023-11-16'
-categories: ['Python', 'CS5805 23Fall', 'Machine Learning', 'Probability', 'Naive Bayes']
+categories: ['Python', 'CS5805 23Fall', 'Machine Learning']
 description: 'This project applies Probability and the Naive Bayes algorithm to predict diamond prices using the categorical features of the Seaborn’s diamonds dataset, demonstrating the algorithm’s efficiency in handling such data.'
 format: 
   html:

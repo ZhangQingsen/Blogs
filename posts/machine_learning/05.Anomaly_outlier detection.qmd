@@ -1,7 +1,7 @@
 ---
 title: 'Outlier Detection in Dow Jones using Support Vector Machines'
 date: '2023-11-16'
-categories: ['Python', 'CS5805 23Fall', 'Machine Learning', 'Anomaly/outlier detection', 'Support Vector Machine (SVM)']
+categories: ['Python', 'CS5805 23Fall', 'Machine Learning']
 description: 'Explore the application of SVM for anomaly detection in the Dow Jones data.'
 format: 
   html:

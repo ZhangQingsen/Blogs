@@ -5,7 +5,7 @@ project:
 website:
   title: "Home"
   site-url: https://zhangqingsen.github.io/Blogs/
-  description: "Keeping my notes here."
+  description: "Homepage"
   navbar:
     right:
       - text: Blog

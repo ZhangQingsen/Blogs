@@ -1,7 +1,7 @@
 ---
 title: 'Clustering on Brain Networks Observations'
 date: '2023-11-16'
-categories: ['Python', 'CS5805 23Fall', 'Machine Learning', 'Clustering', 'DBSCAN', 'Scikit-Learn']
+categories: ['Python', 'CS5805 23Fall', 'Machine Learning']
 description: 'This project applies clustering algorithms on seaborn’s brain_networks dataset, notably implementing DBSCAN from scratch and comparing results from various scikit-learn models.'
 format: 
   html:
