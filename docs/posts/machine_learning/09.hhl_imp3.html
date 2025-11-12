@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Qingsen Zhang">
-<meta name="dcterms.date" content="2025-01-20">
+<meta name="dcterms.date" content="2025-01-25">
 <meta name="description" content="Implement my verison of HHL step by step with a numerical example">
 
 <title>HHL Algorithm Implementation in Qiskit - Controlled Rotation &amp; Measurement of the Ancilla Qubit – Home</title>
@@ -202,7 +202,7 @@ window.Quarto = {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">January 20, 2025</p>
+        <p class="date">January 25, 2025</p>
       </div>
     </div>
     
@@ -246,7 +246,7 @@ window.Quarto = {
 <p><span class="math inline">\(N=2^n\)</span></p>
 <p><span class="math inline">\(t=\frac{\pi}{8}\)</span>: time variable, should be multiple of <span class="math inline">\(2\pi\)</span></p>
 <p><span class="math inline">\(C=0.01\)</span>: a constant to pick, try to make <span class="math inline">\(C\)</span> as large as possible while <span class="math inline">\(-1\leq\frac{C}{\tilde{\lambda_j}} \leq 1\)</span></p>
-<div id="df512c77" class="cell" data-execution_count="2">
+<div id="7f37db7d" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>N_b <span class="op">=</span> <span class="dv">2</span> <span class="co"># number of variables (b.shape[0])</span></span>
@@ -263,7 +263,7 @@ window.Quarto = {
 <section id="phase-3-controlled-rotation-measurement-of-the-ancilla-qubit" class="level2">
 <h2 class="anchored" data-anchor-id="phase-3-controlled-rotation-measurement-of-the-ancilla-qubit">Phase 3: Controlled Rotation &amp; Measurement of the Ancilla Qubit</h2>
 <p>The Goal for this phase is to rotate the Acilla Qubit (<code>register-a</code>) based on the encoded eigenvalues in the <code>c-register</code>.</p>
-<div id="d0700eac" class="cell" data-execution_count="3">
+<div id="5d980a84" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare the previous steps</span></span>
@@ -341,7 +341,7 @@ R_y(\theta_j)|0\rangle_a=\sqrt{1-\left(\frac{C}{\tilde{\lambda_j}}\right)^2}|0\r
 </div>
 </div>
 </div>
-<div id="6ef12e94" class="cell" data-execution_count="4">
+<div id="3d959834" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> controlled_rotation(qc, qr_c, qr_a, C, t, n_c):</span>
@@ -414,7 +414,7 @@ R_y(\theta_j)|0\rangle_a=\sqrt{1-\left(\frac{C}{\tilde{\lambda_j}}\right)^2}|0\r
 <li>measure <code>a-register</code></li>
 <li>only keep when the measure result of <code>a-register</code> is <span class="math inline">\(|1\rangle_a\)</span>.</li>
 </ol>
-<div id="42878fb4" class="cell" data-execution_count="5">
+<div id="c2cdd17c" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">######## This takes too long to run, over 2 million loops</span></span>
@@ -465,7 +465,7 @@ Expand for more approaches tried.
 \]</span></p></li>
 <li><p>Grover Gate <span class="math inline">\(U_{\psi_5}=2|\psi_5\rangle\langle\psi_5|-I\)</span> <span class="math inline">\(U_{\psi_5}=HR_y(-2\theta)H\)</span> A reverse rotation with angle is <span class="math inline">\(-2\theta\)</span> <span class="math inline">\(\text{Gover iteration time }\approx\frac{\pi}{4}\sqrt{N}\)</span>, notice <span class="math inline">\(N=2^{n_c}\)</span></p></li>
 </ol>
-<div id="489ca104" class="cell" data-execution_count="6">
+<div id="912017c9" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>psi_6 <span class="op">=</span> psi_5.copy()</span>
@@ -496,7 +496,7 @@ Expand for more approaches tried.
 <ol start="2" type="1">
 <li><h5 id="using-post-selection" class="anchored">Using post selection</h5></li>
 </ol>
-<div id="21430a25" class="cell" data-execution_count="7">
+<div id="16305a40" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qiskit.quantum_info <span class="im">import</span> Statevector</span>
@@ -540,7 +540,7 @@ Expand for more approaches tried.
 </div>
 </div>
 <p>The sequence of measure and uncompute does not matter. We can postpone the measure and discard step to the end.</p>
-<div id="689ef31c" class="cell" data-execution_count="8">
+<div id="f70cd7a8" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>psi_6 <span class="op">=</span> psi_5</span>
@@ -557,7 +557,7 @@ Expand for more approaches tried.
 </section>
 <section id="all-in-one-function" class="level3">
 <h3 class="anchored" data-anchor-id="all-in-one-function">All in one function</h3>
-<div id="0984f7b5" class="cell" data-execution_count="9">
+<div id="d143b82d" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> controlled_rotation(qc, qr_c, qr_a, C, t, n_c):</span>

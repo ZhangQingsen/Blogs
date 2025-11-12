@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Qingsen Zhang">
-<meta name="dcterms.date" content="2025-01-20">
+<meta name="dcterms.date" content="2025-01-30">
 <meta name="description" content="Implement my verison of HHL step by step with a numerical example">
 
 <title>HHL Algorithm Implementation in Qiskit - Uncomputation (Inverse QPE) – Home</title>
@@ -202,7 +202,7 @@ window.Quarto = {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">January 20, 2025</p>
+        <p class="date">January 30, 2025</p>
       </div>
     </div>
     
@@ -246,7 +246,7 @@ window.Quarto = {
 <p><span class="math inline">\(N=2^n\)</span></p>
 <p><span class="math inline">\(t=\frac{\pi}{8}\)</span>: time variable, should be multiple of <span class="math inline">\(2\pi\)</span></p>
 <p><span class="math inline">\(C=0.01\)</span>: a constant to pick, try to make <span class="math inline">\(C\)</span> as large as possible while <span class="math inline">\(-1\leq\frac{C}{\tilde{\lambda_j}} \leq 1\)</span></p>
-<div id="efd56871" class="cell" data-execution_count="2">
+<div id="a41e0928" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>N_b <span class="op">=</span> <span class="dv">2</span> <span class="co"># number of variables (b.shape[0])</span></span>
@@ -264,7 +264,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="phase-4-uncomputation-inverse-qpe">Phase 4: Uncomputation (Inverse QPE)</h2>
 <p>The goal for this phase is to remove unnecessary entanglements such that ensures correct final measurement. After uncomputing, the quantum state should ideally be close to <span class="math inline">\(|x\rangle\)</span>, where <span class="math inline">\(|x\rangle = A^{-1}|b\rangle\)</span>.</p>
 <p>After Uncomputation, we will finally get <span class="math inline">\(\psi_{final}=|x\rangle\otimes|0\rangle_c\otimes|0\rangle_a\)</span></p>
-<div id="abd1b357" class="cell" data-execution_count="3">
+<div id="2f140866" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare the previous steps</span></span>
@@ -285,7 +285,7 @@ window.Quarto = {
 |\psi_7\rangle &amp;= \frac{1}{\sqrt{\sum\limits^{2^{n_b}-1}*{j=0}|\frac{b_jC}{\tilde{\lambda_j}}|^2}}\sum\limits^{2^{n_b}-1}_{j=0}\frac{b_jC}{\tilde{\lambda_j}}|u_j\rangle\text{QFT}|\tilde{\lambda_j}\rangle|1\rangle_a\\&amp;=\frac{1}{\sqrt{\sum\limits^{2^{n_b}-1}*{j=0}|\frac{b_jC}{\tilde{\lambda_j}}|^2}}\sum\limits^{2^{n_b}-1}_{j=0}\frac{b_jC}{\tilde{\lambda_j}}|u_j\rangle~~~(\frac{1}{2^{\frac{2}{n}}}\sum\limits^{2^n-1}_{y=0}e^{2\pi i y\tilde{\lambda_j}/N}|y\rangle)~~~|1\rangle_a
 \end{align}
 \]</span></p>
-<div id="28b1b0fe" class="cell" data-execution_count="4">
+<div id="ab08f1c9" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>psi_7 <span class="op">=</span> psi_6.copy()</span>
@@ -315,7 +315,7 @@ window.Quarto = {
 &amp;=\frac{C}{2^{\frac{n}{2}}\sqrt{\sum\limits^{2^{n_b}-1}_{j=0}|\frac{b_jC}{\tilde{\lambda_j}}|^2}}|x\rangle\sum\limits^{2^n-1}_{y=0}|y\rangle|1\rangle_a
 \end{align}
 \]</span></p>
-<div id="8756dfed" class="cell" data-execution_count="5">
+<div id="f86a65f0" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>psi_8<span class="op">=</span>psi_7.copy()</span>
@@ -349,7 +349,7 @@ window.Quarto = {
 &amp;=|x\rangle_b|0\rangle_c^{\otimes n}|1\rangle_a
 \end{align}
 \]</span></p>
-<div id="e96533d3" class="cell" data-execution_count="6">
+<div id="b03774bb" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>psi_9 <span class="op">=</span> psi_8.copy()</span>
@@ -373,7 +373,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div id="e95a4b3b" class="cell" data-execution_count="7">
+<div id="60db5c8d" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 运行并查看结果</span></span>
@@ -410,7 +410,7 @@ b-register state after post-select:
 </section>
 <section id="all-in-one-function" class="level3">
 <h3 class="anchored" data-anchor-id="all-in-one-function">All in one function</h3>
-<div id="7e8cb663" class="cell" data-execution_count="8">
+<div id="42899acc" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> uncomputation(qc, qr_b, qr_c, qr_a, mat_A, t, n_c):</span>

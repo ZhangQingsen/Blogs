@@ -245,7 +245,7 @@ window.Quarto = {
 <p>a larger <span class="math inline">\(n_c\)</span> results in higher accuracy when the encoding is not exact</p>
 <p><span class="math inline">\(N=2^n\)</span></p>
 <p><span class="math inline">\(t=\frac{\pi}{8}\)</span>: time variable, choose <span class="math inline">\(t\)</span> such that <span class="math inline">\(\tilde{\lambda_j}=\frac{\lambda_jt}{2\pi}\)</span> is an integer</p>
-<div id="d3ff8525" class="cell" data-execution_count="2">
+<div id="fcbd599a" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>N_b <span class="op">=</span> <span class="dv">2</span> <span class="co"># number of variables (b.shape[0])</span></span>
@@ -271,7 +271,7 @@ window.Quarto = {
 \end{align}
 \]</span></p>
 <p>其实就是每个state in <code>c-register</code> 都apply Hadamard gate (变成<span class="math inline">\(\frac{1}{\sqrt2}(|0\rangle+|1\rangle)\)</span>) <span class="math inline">\(\frac{1}{\sqrt2 ^ n}\)</span> 是因为<span class="math inline">\(H^{\otimes n_c}|0\dots0\rangle_c\)</span></p>
-<div id="4355ae0a" class="cell" data-execution_count="3">
+<div id="c2f9c79d" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mat_A <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>], [<span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">1</span>]])</span>
@@ -310,7 +310,7 @@ U = e^{iAt}
 \]</span> <span class="math display">\[
 |\psi_3\rangle=|b\rangle \frac{1}{\sqrt2 ^n}\sum\limits^{2^{n}-1}_{k=0}e^{2\pi i \phi k}|k\rangle |0\rangle_a
 \]</span></p>
-<div id="77ec7a7a" class="cell" data-execution_count="4">
+<div id="afe9cbdf" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>U <span class="op">=</span> expm(<span class="ot">1j</span> <span class="op">*</span> t <span class="op">*</span> mat_A)</span>
@@ -363,7 +363,7 @@ U = e^{iAt}
 \]</span></p>
 <p>choose <span class="math inline">\(t\)</span> so that <span class="math inline">\(\tilde{\lambda_j}=\frac{N\lambda_jt}{2\pi}\)</span> are integers, therefore, <span class="math inline">\(\tilde{\lambda_j}\)</span> are usually scale of <span class="math inline">\(\lambda_j\)</span></p>
 <p><span class="math inline">\(|\psi_4\rangle=\sum\limits^{2^{n_b}-1}_{j=0}b_j|u_j\rangle|\tilde{\lambda_j}|0\rangle_a\)</span></p>
-<div id="f21e3028" class="cell" data-execution_count="5">
+<div id="0d148c92" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>iqft <span class="op">=</span> QFT(num_qubits<span class="op">=</span>n_c, do_swaps<span class="op">=</span><span class="va">False</span>).inverse()  <span class="co"># 创建 IQFT 门</span></span>
@@ -383,7 +383,7 @@ U = e^{iAt}
 </section>
 <section id="all-in-one-function" class="level3">
 <h3 class="anchored" data-anchor-id="all-in-one-function">All in one function</h3>
-<div id="ccc2c278" class="cell" data-execution_count="6">
+<div id="7fb1db0a" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> phase_estimation(qc, qr_b, qr_c, mat_A, t):</span>

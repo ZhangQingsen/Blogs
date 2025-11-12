@@ -1,35 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/11.hhl_imp5.html</loc>
-    <lastmod>2025-11-12T04:28:00.247Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/09.hhl_imp3.html</loc>
-    <lastmod>2025-11-12T04:28:18.508Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/07.hhl_imp1.html</loc>
-    <lastmod>2025-11-12T04:28:21.385Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/08.hhl_imp2.html</loc>
-    <lastmod>2025-11-12T04:28:16.259Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/10.hhl_imp4.html</loc>
-    <lastmod>2025-11-12T04:28:06.112Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/machine_learning.html</loc>
-    <lastmod>2025-11-12T05:34:28.000Z</lastmod>
-  </url>
-  <url>
     <loc>https://zhangqingsen.github.io/Blogs/index.html</loc>
     <lastmod>2025-11-12T05:35:28.000Z</lastmod>
   </url>
   <url>
+    <loc>https://zhangqingsen.github.io/Blogs/posts/welcome/index.html</loc>
+    <lastmod>2025-01-21T16:44:30.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://zhangqingsen.github.io/Blogs/posts/misc/01.Private Server Setup notes.html</loc>
+    <lastmod>2025-01-21T16:44:28.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://zhangqingsen.github.io/Blogs/posts/misc/misc.html</loc>
+    <lastmod>2025-01-21T16:44:28.000Z</lastmod>
+  </url>
+  <url>
     <loc>https://zhangqingsen.github.io/Blogs/blog.html</loc>
     <lastmod>2025-01-21T16:44:22.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/machine_learning.html</loc>
+    <lastmod>2025-11-12T05:34:28.000Z</lastmod>
   </url>
 </urlset>

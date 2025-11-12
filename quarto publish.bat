@@ -15,13 +15,13 @@ call .venv\Scripts\activate
 @REM     goto :eof
 @REM )
 
-@REM quarto publish gh-pages --no-render
-@REM if %ERRORLEVEL% NEQ 0 (
-@REM     echo Quarto publish failed.
-@REM     echo Press any key to exit...
-@REM     pause > nul
-@REM     goto :eof
-@REM )
+quarto publish gh-pages --no-render
+if %ERRORLEVEL% NEQ 0 (
+    echo Quarto publish failed.
+    echo Press any key to exit...
+    pause > nul
+    goto :eof
+)
 
 REM 显示完成效果
 echo.
