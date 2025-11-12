@@ -1,91 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://zhangqingsen.github.io/Blogs/index.html</loc>
-    <lastmod>2025-01-21T16:44:26.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/welcome/index.html</loc>
-    <lastmod>2025-01-21T16:44:30.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/misc/01.Private Server Setup notes.html</loc>
-    <lastmod>2025-01-21T16:44:28.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/intro_to_python/week11-renpy.html</loc>
-    <lastmod>2025-01-21T16:44:28.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/intro_to_python/intro_to_python.html</loc>
-    <lastmod>2025-01-21T16:44:28.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/06.Page Rank Algorithm.html</loc>
-    <lastmod>2025-01-21T16:44:28.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/04.Classification.html</loc>
-    <lastmod>2025-01-21T16:44:28.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/03.Linear and nonlinear regression 1.html</loc>
-    <lastmod>2025-01-21T16:44:28.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/01.Probability.html</loc>
-    <lastmod>2025-01-21T16:44:28.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/10.hhl_imp4.html</loc>
-    <lastmod>2025-02-13T16:54:10.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/08.hhl_imp2.html</loc>
-    <lastmod>2025-02-04T20:03:46.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/07.hhl_imp1.html</loc>
-    <lastmod>2025-02-02T18:46:50.000Z</lastmod>
+    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/11.hhl_imp5.html</loc>
+    <lastmod>2025-11-12T04:28:00.247Z</lastmod>
   </url>
   <url>
     <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/09.hhl_imp3.html</loc>
-    <lastmod>2025-02-03T18:33:22.000Z</lastmod>
+    <lastmod>2025-11-12T04:28:18.508Z</lastmod>
   </url>
   <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/11.hhl_imp5.html</loc>
-    <lastmod>2025-01-31T20:05:42.000Z</lastmod>
+    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/07.hhl_imp1.html</loc>
+    <lastmod>2025-11-12T04:28:21.385Z</lastmod>
   </url>
   <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/02.Clustering.html</loc>
-    <lastmod>2025-01-21T16:44:28.000Z</lastmod>
+    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/08.hhl_imp2.html</loc>
+    <lastmod>2025-11-12T04:28:16.259Z</lastmod>
   </url>
   <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/03.Linear and nonlinear regression 2.html</loc>
-    <lastmod>2025-01-21T16:44:28.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/05.Anomaly_outlier detection.html</loc>
-    <lastmod>2025-01-21T16:44:28.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/machine_learning.html</loc>
-    <lastmod>2025-02-02T09:29:24.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/intro_to_python/week00-install.html</loc>
-    <lastmod>2025-01-21T16:44:28.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/intro_to_python/week12-flask.html</loc>
-    <lastmod>2025-01-21T16:44:28.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/posts/misc/misc.html</loc>
-    <lastmod>2025-01-21T16:44:28.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://zhangqingsen.github.io/Blogs/blog.html</loc>
-    <lastmod>2025-01-21T16:44:22.000Z</lastmod>
+    <loc>https://zhangqingsen.github.io/Blogs/posts/machine_learning/10.hhl_imp4.html</loc>
+    <lastmod>2025-11-12T04:28:06.112Z</lastmod>
   </url>
 </urlset>

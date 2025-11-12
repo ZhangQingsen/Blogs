@@ -8,18 +8,20 @@ color 70
 REM 激活虚拟环境
 call .venv\Scripts\activate
 
-REM 执行quarto命令
-quarto render
-if %ERRORLEVEL% NEQ 0 (
-    echo Quarto render failed.
-    goto :eof
-)
-
-@REM quarto publish gh-pages
+@REM REM 执行quarto命令
+@REM quarto render
 @REM if %ERRORLEVEL% NEQ 0 (
-@REM     echo Quarto publish failed.
+@REM     echo Quarto render failed.
 @REM     goto :eof
 @REM )
+
+quarto publish gh-pages --no-render
+if %ERRORLEVEL% NEQ 0 (
+    echo Quarto publish failed.
+    echo Press any key to exit...
+    pause > nul
+    goto :eof
+)
 
 REM 显示完成效果
 echo.

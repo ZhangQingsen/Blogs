@@ -1,7 +1,7 @@
 ---
 title: "HHL Algorithm Implementation in Qiskit - Controlled Rotation & Measurement of the Ancilla Qubit"
 author: "Qingsen Zhang"
-date: "`2025-01-20"
+date: "2025-01-20"
 categories: ['Python', 'Quantum Computing']
 description: 'Implement my verison of HHL step by step with a numerical example'
 format: 
@@ -41,7 +41,7 @@ from scipy.linalg import expm
 # previous functions
 def state_prep(mat_A, vec_b, n_c=1):
   N_b = vec_b.shape[0]
-  n_b = np.round(np.log2(N_b))
+  n_b = int(np.log2(N_b))
   qr_b = QuantumRegister(n_b, name='qr_c')  # b-register
   qr_c = QuantumRegister(n_c, name='qr_b')  # c-register
   qr_a = QuantumRegister(1, name='qr_a')    # a-register
@@ -94,7 +94,7 @@ $C=0.01$: a constant to pick, try to make $C$ as large as possible while $-1\leq
 
 ```{python}
 N_b = 2 # number of variables (b.shape[0])
-n_b = np.log2(N_b) # number of qubits in b-register
+n_b = int(np.log2(N_b)) # number of qubits in b-register
 # n_b = 1 # N_b = 2^(n_b), n_b = np.log2(N_b)
 n_c = 1 # number of qubits in c-register
 N_c = 2 # N_c = 2^(n_c)
