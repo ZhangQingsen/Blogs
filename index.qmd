@@ -8,6 +8,9 @@ about:
     - icon: linkedin
       text: LinkedIn
       href: https://www.linkedin.com/in/qingsen-zhang-2672351b9/
+    - icon: mortarboard
+      text: Google Scholar
+      href: https://scholar.google.com/citations?user=56R5dLkAAAAJ&hl
     - icon: github
       text: Github
       href: https://github.com/ZhangQingsen
