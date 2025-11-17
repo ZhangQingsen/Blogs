@@ -38,7 +38,9 @@ Based on the figure, let's define some variables here:
 ### 1. **Forward** Process
 Assume we have $q(x_0)$ is the distribution for real data, we get $x_0$ could be sampled from $q(x_0)$, denoted as $x_0 \sim q(x_0)$.  
 The forward process $q(x_t | x_{t-1})$ gradually adds Gaussian noise at each timestep $t$.  
-$q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1 - \beta_t} x_{t-1}, \beta_t\mathbf{I})$
+We can write:
+> $q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1 - \beta_t} x_{t-1}, \beta_t\mathbf{I})$  
+Where $\beta_t$ is the variance schedule.
 ### 2. **Backword** Process
 ### 3. **Loss**  
 

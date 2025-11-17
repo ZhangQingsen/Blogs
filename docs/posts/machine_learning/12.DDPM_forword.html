@@ -248,7 +248,7 @@ This document is based on the Hugging Face blog <a href="https://huggingface.co/
 <p>Assume we have <span class="math inline">\(q(x_0)\)</span> is the distribution for real data, we get <span class="math inline">\(x_0\)</span> could be sampled from <span class="math inline">\(q(x_0)\)</span>, denoted as <span class="math inline">\(x_0 \sim q(x_0)\)</span>.<br>
 The forward process <span class="math inline">\(q(x_t | x_{t-1})\)</span> gradually adds Gaussian noise at each timestep <span class="math inline">\(t\)</span>.<br>
 <span class="math inline">\(q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1 - \beta_t} x_{t-1}, \beta_t\mathbf{I})\)</span> ### 2. <strong>Backword</strong> Process ### 3. <strong>Loss</strong></p>
-<div id="d2db755e" class="cell" data-execution_count="1">
+<div id="9aaec440" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import necessary libraries</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -257,7 +257,7 @@ The forward process <span class="math inline">\(q(x_t | x_{t-1})\)</span> gradua
 </section>
 <section id="forword-process" class="level3">
 <h3 class="anchored" data-anchor-id="forword-process">Forword process</h3>
-<div id="1558adaf" class="cell" data-execution_count="2">
+<div id="9aca4294" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># forward</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -266,7 +266,7 @@ The forward process <span class="math inline">\(q(x_t | x_{t-1})\)</span> gradua
 </section>
 <section id="backword-process" class="level3">
 <h3 class="anchored" data-anchor-id="backword-process">Backword process</h3>
-<div id="3f5f847a" class="cell" data-execution_count="3">
+<div id="a6788107" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># backword</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
