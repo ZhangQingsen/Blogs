@@ -1,0 +1,61 @@
+---
+title: "DDPM Forward Backword and Loss"
+author: "Qingsen Zhang"
+date: "2025-11-10"
+categories: ['Python', 'Diffusion']
+description: 'Implement my verison of HHL step by step with a numerical example'
+format: 
+  html:
+    code-fold: true
+execute: 
+  message: false
+  warning: false
+editor_options: 
+  chunk_output_type: console
+---
+
+# DDPM Forward Backword and Loss
+
+## Introduction
+
+This document provides a one step simple implementation of the **<span style="color:#188038">Denoising Diffusion Probabilistic Models</span> (DDPM)** algorithm.  
+This document is based on the Hugging Face blog [The Annotated Diffusion Model](https://huggingface.co/blog/annotated-diffusion).  
+
+The key of Diffusion consists of 2 processes:  
+1. a <span style="color:#188038">fixed</span> forward process $q$ that gradually <span style="color:#188038">adds Gaussian noise</span> to an image, until you end up with pure noise.  
+2. a <span style="color:#188038">learned</span> reverse <span style="color:#188038">denoise</span> diffusion process $p_{\theta}$ where a neural network is trained to gradually denoise an image starting from pure noise, until you end up with an actual image.  
+
+> ![Diffusion process illustration](https://huggingface.co/blog/assets/78_annotated-diffusion/diffusion_figure.png)   
+
+Based on the figure, let's define some variables here:  
+- The actual image $x_0$
+- The <span style="color:#188038">defined</span> total timesteps $T$
+- One specific timestep $t$.
+- The pure noise $x_T$
+- $q(x_t | x_{t-1})$ is the distrubition of $x_t$ given $x_{t-1}$
+- $p(x_{t-1} | x_{t})$ is the distrubition of $x_{t-1}$ given $x_{t}$
+
+### 1. **Forward** Process
+Assume we have $q(x_0)$ is the distribution for real data, we get $x_0$ could be sampled from $q(x_0)$, denoted as $x_0 \sim q(x_0)$.  
+The forward process $q(x_t | x_{t-1})$ gradually adds Gaussian noise at each timestep $t$.  
+$q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1 - \beta_t} x_{t-1}, \beta_t\mathbf{I})$
+### 2. **Backword** Process
+### 3. **Loss**  
+
+```{python}
+
+# Import necessary libraries
+
+```
+### Forword process
+```{python}
+# forward
+```
+### Backword process
+```{python}
+# backword
+```
+
+
+
+[go back](./machine_learning.qmd) 
