@@ -1,7 +1,7 @@
 ---
 title: "DDIM"
 author: "Qingsen Zhang"
-date: "2025-11-10"
+date: "2025-11-20"
 categories: ['Python', 'Diffusion']
 description: 'Implement my verison of HHL step by step with a numerical example'
 format: 
@@ -72,5 +72,5 @@ Where $\beta_t$ is the variance schedule.
 ```
 
 
-
+prev [DDPM](./12.DDPM.qmd)
 [go back](./machine_learning.qmd) 
