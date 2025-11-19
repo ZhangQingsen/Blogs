@@ -7,8 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Qingsen Zhang">
+<meta name="dcterms.date" content="2025-11-10">
+<meta name="description" content="Implement my verison of HHL step by step with a numerical example">
 
-<title>Blogs in Machine Learning – Home</title>
+<title>DDPM Forward Backword and Loss – Home</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -31,8 +68,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-listing/list.min.js"></script>
-<script src="../../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -71,35 +106,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-categories','listing-reading-time','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -173,8 +179,17 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-page">
-      <h1 class="title">Blogs in Machine Learning</h1>
-                      </div>
+      <h1 class="title">DDPM Forward Backword and Loss</h1>
+                  <div>
+        <div class="description">
+          Implement my verison of HHL step by step with a numerical example
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Python</div>
+                <div class="quarto-category">Diffusion</div>
+              </div>
+                  </div>
   </div>
     
   
@@ -187,6 +202,12 @@ window.Quarto = {
             </div>
     </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 10, 2025</p>
+      </div>
+    </div>
     
       
     </div>
@@ -203,376 +224,86 @@ window.Quarto = {
 
 
 
-<p>About this series</p>
-<p>Blogs in Machine learning</p>
+<section id="ddpm-forward-backword-and-loss" class="level1">
+<h1>DDPM Forward Backword and Loss</h1>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>This document provides a one step simple implementation of the <strong><span style="color:#188038">Denoising Diffusion Probabilistic Models</span> (DDPM)</strong> algorithm.<br>
+This document is based on the Hugging Face blog <a href="https://huggingface.co/blog/annotated-diffusion">The Annotated Diffusion Model</a>.</p>
+<p>The key of Diffusion consists of 2 processes:</p>
+<ol type="1">
+<li><p>A <strong><span style="color:#188038">fixed</span></strong> forward process <span class="math inline">\(q\)</span> that gradually <span style="color:#188038">adds Gaussian noise</span> to an image, until you end up with pure noise.</p></li>
+<li><p>A <strong><span style="color:#188038">learned</span></strong> reverse <span style="color:#188038">denoise</span> diffusion process <span class="math inline">\(p_{\theta}\)</span> where a neural network is trained to gradually denoise an image starting from pure noise, until you end up with an actual image.</p></li>
+</ol>
+<blockquote class="blockquote">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://huggingface.co/blog/assets/78_annotated-diffusion/diffusion_figure.png" class="img-fluid figure-img"></p>
+<figcaption>Diffusion process illustration</figcaption>
+</figure>
+</div>
+</blockquote>
+<p>Based on the figure, let’s define some variables here:<br>
+- The actual image <span class="math inline">\(x_0\)</span></p>
+<ul>
+<li><p>The <span style="color:#188038">defined</span> total timesteps <span class="math inline">\(T\)</span></p></li>
+<li><p>One specific timestep <span class="math inline">\(t\)</span>.</p></li>
+<li><p>The pure noise <span class="math inline">\(x_T\)</span></p></li>
+<li><p><span class="math inline">\(q(x_t | x_{t-1})\)</span> is the distrubition of <span class="math inline">\(x_t\)</span> given <span class="math inline">\(x_{t-1}\)</span></p></li>
+<li><p><span class="math inline">\(p(x_{t-1} | x_{t})\)</span> is the distrubition of <span class="math inline">\(x_{t-1}\)</span> given <span class="math inline">\(x_{t}\)</span></p></li>
+</ul>
+<section id="forward-process" class="level3">
+<h3 class="anchored" data-anchor-id="forward-process">1. <strong>Forward</strong> Process</h3>
+<p>Assume we have <span class="math inline">\(q(x_0)\)</span> is the distribution for real data, we get <span class="math inline">\(x_0\)</span> could be sampled from <span class="math inline">\(q(x_0)\)</span>, denoted as <span class="math inline">\(x_0 \sim q(x_0)\)</span>.<br>
+The forward process <span class="math inline">\(q(x_t | x_{t-1})\)</span> gradually adds Gaussian noise at each timestep <span class="math inline">\(t\)</span>.<br>
+We can write: <span class="math display">\[  
+q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1 - \beta_t} x_{t-1}, \beta_t\mathbf{I})
+\]</span><br>
+Where <span class="math inline">\(\beta_t\)</span> is the variance schedule.</p>
+</section>
+<section id="backword-process" class="level3">
+<h3 class="anchored" data-anchor-id="backword-process">2. <strong>Backword</strong> Process</h3>
+<p><span class="math display">\[  
+p_{\theta}(x_{t-1} | x_t) = \mathcal{N}(x_{t-1}; \mu_\theta(x_t, t), \Sigma(x_t, t))
+\]</span></p>
+</section>
+<section id="loss" class="level3">
+<h3 class="anchored" data-anchor-id="loss">3. <strong>Loss</strong></h3>
+<p><strong>variational lower bound</strong> (also called ELBO) <span class="math display">\[  
+q(x_t | x_0) = \mathcal{N}(x_t; \sqrt{\bar{\alpha_t}}X_0, (1-\bar{\alpha_t})I)
+\]</span></p>
+<div id="b29c7693" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import necessary libraries</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="forword-process" class="level3">
+<h3 class="anchored" data-anchor-id="forword-process">Forword process</h3>
+<div id="7246684f" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># forward</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="backword-process-1" class="level3">
+<h3 class="anchored" data-anchor-id="backword-process-1">Backword process</h3>
+<div id="edaba797" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># backword</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><a href="../../posts/machine_learning/machine_learning.html">go back</a></p>
 
 
+</section>
+</section>
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="listing-actions-group">
-   <div class="input-group input-group-sm quarto-listing-sort">
-    <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-    <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
-      <option value="" disabled="" selected="" hidden="">Order By</option>
-      <option value="index" data-direction="asc">Default</option>
-      <option value="listing-title" data-direction="asc">
-        Title
-      </option>
-      <option value="listing-date-sort" data-direction="asc">
-        Date - Oldest
-      </option>
-      <option value="listing-date-sort" data-direction="desc">
-        Date - Newest
-      </option>
-    </select>
-  </div>
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
-</div>
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="UHl0aG9uJTJDRGlmZnVzaW9u" data-listing-date-sort="1762750800000" data-listing-file-modified-sort="1763568408000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="261">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/machine_learning/12.DDPM.html" class="no-external">DDPM Forward Backword and Loss</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('RGlmZnVzaW9u'); return false;">Diffusion</div>
-
-</div>
-<div class="delink listing-description"><a href="../../posts/machine_learning/12.DDPM.html" class="no-external">
-<p>Implement my verison of HHL step by step with a numerical example</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/machine_learning/12.DDPM.html" class="no-external">
-<div class="listing-date">
-Nov 10, 2025
-</div>
-<div class="listing-reading-time">2 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="UHl0aG9uJTJDRGlmZnVzaW9u" data-listing-date-sort="1762750800000" data-listing-file-modified-sort="1763567594000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="230">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/machine_learning/13.DDIM.html" class="no-external">DDIM</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('RGlmZnVzaW9u'); return false;">Diffusion</div>
-
-</div>
-<div class="delink listing-description"><a href="../../posts/machine_learning/13.DDIM.html" class="no-external">
-<p>Implement my verison of HHL step by step with a numerical example</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/machine_learning/13.DDIM.html" class="no-external">
-<div class="listing-date">
-Nov 10, 2025
-</div>
-<div class="listing-reading-time">2 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="UHl0aG9uJTJDUXVhbnR1bSUyMENvbXB1dGluZw==" data-listing-date-sort="1738299600000" data-listing-file-modified-sort="1762927084000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1271">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/machine_learning/11.hhl_imp5.html" class="no-external">HHL Algorithm Implementation in Qiskit - Complete Version</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UXVhbnR1bSUyMENvbXB1dGluZw=='); return false;">Quantum Computing</div>
-
-</div>
-<div class="delink listing-description"><a href="../../posts/machine_learning/11.hhl_imp5.html" class="no-external">
-<p>Implement my verison of HHL step by step with a numerical example</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/machine_learning/11.hhl_imp5.html" class="no-external">
-<div class="listing-date">
-Jan 31, 2025
-</div>
-<div class="listing-reading-time">7 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="UHl0aG9uJTJDUXVhbnR1bSUyMENvbXB1dGluZw==" data-listing-date-sort="1738213200000" data-listing-file-modified-sort="1762927082000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1476">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/machine_learning/10.hhl_imp4.html" class="no-external">HHL Algorithm Implementation in Qiskit - Uncomputation (Inverse QPE)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UXVhbnR1bSUyMENvbXB1dGluZw=='); return false;">Quantum Computing</div>
-
-</div>
-<div class="delink listing-description"><a href="../../posts/machine_learning/10.hhl_imp4.html" class="no-external">
-<p>Implement my verison of HHL step by step with a numerical example</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/machine_learning/10.hhl_imp4.html" class="no-external">
-<div class="listing-date">
-Jan 30, 2025
-</div>
-<div class="listing-reading-time">8 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="UHl0aG9uJTJDUXVhbnR1bSUyMENvbXB1dGluZw==" data-listing-date-sort="1737781200000" data-listing-file-modified-sort="1762927078000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2032">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/machine_learning/09.hhl_imp3.html" class="no-external">HHL Algorithm Implementation in Qiskit - Controlled Rotation &amp; Measurement of the Ancilla Qubit</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UXVhbnR1bSUyMENvbXB1dGluZw=='); return false;">Quantum Computing</div>
-
-</div>
-<div class="delink listing-description"><a href="../../posts/machine_learning/09.hhl_imp3.html" class="no-external">
-<p>Implement my verison of HHL step by step with a numerical example</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/machine_learning/09.hhl_imp3.html" class="no-external">
-<div class="listing-date">
-Jan 25, 2025
-</div>
-<div class="listing-reading-time">11 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="UHl0aG9uJTJDUXVhbnR1bSUyMENvbXB1dGluZw==" data-listing-date-sort="1737349200000" data-listing-file-modified-sort="1762921698000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="913">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/machine_learning/08.hhl_imp2.html" class="no-external">HHL Algorithm Implementation in Qiskit - Quantum Phase Estimation (QPE)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UXVhbnR1bSUyMENvbXB1dGluZw=='); return false;">Quantum Computing</div>
-
-</div>
-<div class="delink listing-description"><a href="../../posts/machine_learning/08.hhl_imp2.html" class="no-external">
-<p>Implement my verison of HHL step by step with a numerical example</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/machine_learning/08.hhl_imp2.html" class="no-external">
-<div class="listing-date">
-Jan 20, 2025
-</div>
-<div class="listing-reading-time">5 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="UHl0aG9uJTJDUXVhbnR1bSUyMENvbXB1dGluZw==" data-listing-date-sort="1736917200000" data-listing-file-modified-sort="1762929876000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="464">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/machine_learning/07.hhl_imp1.html" class="no-external">HHL Algorithm Implementation in Qiskit - State Preparation</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UXVhbnR1bSUyMENvbXB1dGluZw=='); return false;">Quantum Computing</div>
-
-</div>
-<div class="delink listing-description"><a href="../../posts/machine_learning/07.hhl_imp1.html" class="no-external">
-<p>Implement my verison of HHL step by step with a numerical example</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/machine_learning/07.hhl_imp1.html" class="no-external">
-<div class="listing-date">
-Jan 15, 2025
-</div>
-<div class="listing-reading-time">3 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="UHl0aG9uJTJDQ1M1ODA1JTIwMjNGYWxsJTJDTWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1700110800000" data-listing-file-modified-sort="1762929616000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="878">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/machine_learning/01.Probability.html" class="no-external">Predicting Diamond Prices: A Naive Bayes Approach</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q1M1ODA1JTIwMjNGYWxs'); return false;">CS5805 23Fall</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="../../posts/machine_learning/01.Probability.html" class="no-external">
-<p>This project applies Probability and the Naive Bayes algorithm to predict diamond prices using the categorical features of the Seaborn’s diamonds dataset, demonstrating the algorithm’s efficiency in handling such data.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/machine_learning/01.Probability.html" class="no-external">
-<div class="listing-date">
-Nov 16, 2023
-</div>
-<div class="listing-reading-time">5 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-categories="UHl0aG9uJTJDQ1M1ODA1JTIwMjNGYWxsJTJDTWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1700110800000" data-listing-file-modified-sort="1762929622000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1035">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/machine_learning/02.Clustering.html" class="no-external">Clustering on Brain Networks Observations</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q1M1ODA1JTIwMjNGYWxs'); return false;">CS5805 23Fall</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="../../posts/machine_learning/02.Clustering.html" class="no-external">
-<p>This project applies clustering algorithms on seaborn’s brain_networks dataset, notably implementing DBSCAN from scratch and comparing results from various scikit-learn models.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/machine_learning/02.Clustering.html" class="no-external">
-<div class="listing-date">
-Nov 16, 2023
-</div>
-<div class="listing-reading-time">6 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="9" data-categories="UHl0aG9uJTJDQ1M1ODA1JTIwMjNGYWxsJTJDTWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1700110800000" data-listing-file-modified-sort="1762929634000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1661">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/machine_learning/03.Linear and nonlinear regression 1.html" class="no-external">Harnessing Momentum: Predictive Analysis of Stock Prices Using Linear and Nonlinear Regression I</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q1M1ODA1JTIwMjNGYWxs'); return false;">CS5805 23Fall</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="../../posts/machine_learning/03.Linear and nonlinear regression 1.html" class="no-external">
-<p>Implement my own version of linear regression and logistic regression and construct a momentum strategy based on my models in stock market. Phrase I, model implementation</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/machine_learning/03.Linear and nonlinear regression 1.html" class="no-external">
-<div class="listing-date">
-Nov 16, 2023
-</div>
-<div class="listing-reading-time">9 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="10" data-categories="UHl0aG9uJTJDQ1M1ODA1JTIwMjNGYWxsJTJDTWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1700110800000" data-listing-file-modified-sort="1762929642000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1357">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/machine_learning/03.Linear and nonlinear regression 2.html" class="no-external">Harnessing Momentum: Predictive Analysis of Stock Prices Using Linear and Nonlinear Regression II</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q1M1ODA1JTIwMjNGYWxs'); return false;">CS5805 23Fall</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="../../posts/machine_learning/03.Linear and nonlinear regression 2.html" class="no-external">
-<p>Implement my own version of linear regression and logistic regression and construct a time series momentum strategy based on my models in stock market. Phrase II, momentum strategy</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/machine_learning/03.Linear and nonlinear regression 2.html" class="no-external">
-<div class="listing-date">
-Nov 16, 2023
-</div>
-<div class="listing-reading-time">7 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="11" data-categories="UHl0aG9uJTJDQ1M1ODA1JTIwMjNGYWxsJTJDTWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1700110800000" data-listing-file-modified-sort="1762929648000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="601">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/machine_learning/04.Classification.html" class="no-external">Mnist dataset classification</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q1M1ODA1JTIwMjNGYWxs'); return false;">CS5805 23Fall</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="../../posts/machine_learning/04.Classification.html" class="no-external">
-<p>This project applies a one-layer perceptron, a simple form of a neural network, to classify handwritten digits from the MNIST dataset, providing insights into image recognition and machine learning model development.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/machine_learning/04.Classification.html" class="no-external">
-<div class="listing-date">
-Nov 16, 2023
-</div>
-<div class="listing-reading-time">4 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="12" data-categories="UHl0aG9uJTJDQ1M1ODA1JTIwMjNGYWxsJTJDTWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1700110800000" data-listing-file-modified-sort="1762929658000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1006">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/machine_learning/05.Anomaly_outlier detection.html" class="no-external">Outlier Detection in Dow Jones using Support Vector Machines</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q1M1ODA1JTIwMjNGYWxs'); return false;">CS5805 23Fall</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-</div>
-<div class="delink listing-description"><a href="../../posts/machine_learning/05.Anomaly_outlier detection.html" class="no-external">
-<p>Explore the application of SVM for anomaly detection in the Dow Jones data.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/machine_learning/05.Anomaly_outlier detection.html" class="no-external">
-<div class="listing-date">
-Nov 16, 2023
-</div>
-<div class="listing-reading-time">6 min</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

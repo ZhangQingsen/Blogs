@@ -14,7 +14,8 @@
   {
     "listing": "/posts/machine_learning/machine_learning.html",
     "items": [
-      "/posts/machine_learning/12.DDPM_forword.html",
+      "/posts/machine_learning/12.DDPM.html",
+      "/posts/machine_learning/13.DDIM.html",
       "/posts/machine_learning/11.hhl_imp5.html",
       "/posts/machine_learning/10.hhl_imp4.html",
       "/posts/machine_learning/09.hhl_imp3.html",

@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2025-11-10">
 <meta name="description" content="Implement my verison of HHL step by step with a numerical example">
 
-<title>DDPM Forward Backword and Loss – Home</title>
+<title>DDIM – Home</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -179,7 +179,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-page">
-      <h1 class="title">DDPM Forward Backword and Loss</h1>
+      <h1 class="title">DDIM</h1>
                   <div>
         <div class="description">
           Implement my verison of HHL step by step with a numerical example
@@ -228,8 +228,8 @@ window.Quarto = {
 <h1>DDPM Forward Backword and Loss</h1>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>This document provides a one step simple implementation of the <strong><span style="color:#188038">Denoising Diffusion Probabilistic Models</span> (DDPM)</strong> algorithm.<br>
-This document is based on the Hugging Face blog <a href="https://huggingface.co/blog/annotated-diffusion">The Annotated Diffusion Model</a>.</p>
+<p>This document provides a one step simple implementation of the <strong><span style="color:#188038">Denoising Diffusion Implicit Models</span> (DDPM)</strong> algorithm.<br>
+This document is based on the paper <a href="https://arxiv.org/pdf/2010.02502">Denoising Diffusion Implicit Models</a>.</p>
 <p>The key of Diffusion consists of 2 processes:</p>
 <ol type="1">
 <li><p>A <strong><span style="color:#188038">fixed</span></strong> forward process <span class="math inline">\(q\)</span> that gradually <span style="color:#188038">adds Gaussian noise</span> to an image, until you end up with pure noise.</p></li>
@@ -256,11 +256,17 @@ This document is based on the Hugging Face blog <a href="https://huggingface.co/
 <h3 class="anchored" data-anchor-id="forward-process">1. <strong>Forward</strong> Process</h3>
 <p>Assume we have <span class="math inline">\(q(x_0)\)</span> is the distribution for real data, we get <span class="math inline">\(x_0\)</span> could be sampled from <span class="math inline">\(q(x_0)\)</span>, denoted as <span class="math inline">\(x_0 \sim q(x_0)\)</span>.<br>
 The forward process <span class="math inline">\(q(x_t | x_{t-1})\)</span> gradually adds Gaussian noise at each timestep <span class="math inline">\(t\)</span>.<br>
-We can write: &gt; <span class="math display">\[
-&gt; q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1 - \beta_t} x_{t-1}, \beta_t\mathbf{I})
-&gt; \]</span><br>
-Where <span class="math inline">\(\beta_t\)</span> is the variance schedule. ### 2. <strong>Backword</strong> Process ### 3. <strong>Loss</strong></p>
-<div id="cfe4726e" class="cell" data-execution_count="1">
+We can write: <span class="math display">\[  
+q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1 - \beta_t} x_{t-1}, \beta_t\mathbf{I})
+\]</span><br>
+Where <span class="math inline">\(\beta_t\)</span> is the variance schedule.</p>
+</section>
+<section id="backword-process" class="level3">
+<h3 class="anchored" data-anchor-id="backword-process">2. <strong>Backword</strong> Process</h3>
+</section>
+<section id="loss" class="level3">
+<h3 class="anchored" data-anchor-id="loss">3. <strong>Loss</strong></h3>
+<div id="f8f20996" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import necessary libraries</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -269,16 +275,16 @@ Where <span class="math inline">\(\beta_t\)</span> is the variance schedule. ###
 </section>
 <section id="forword-process" class="level3">
 <h3 class="anchored" data-anchor-id="forword-process">Forword process</h3>
-<div id="df634c32" class="cell" data-execution_count="2">
+<div id="db38b80d" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># forward</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
-<section id="backword-process" class="level3">
-<h3 class="anchored" data-anchor-id="backword-process">Backword process</h3>
-<div id="02c34214" class="cell" data-execution_count="3">
+<section id="backword-process-1" class="level3">
+<h3 class="anchored" data-anchor-id="backword-process-1">Backword process</h3>
+<div id="c1681c7a" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># backword</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
