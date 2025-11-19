@@ -79,5 +79,5 @@ $$
 ```
 
 
-next [DDIM](./13.DDIM.qmd)
+next [DDIM](./13.DDIM.qmd)  
 [go back](./machine_learning.qmd) 

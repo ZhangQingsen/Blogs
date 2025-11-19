@@ -72,5 +72,5 @@ Where $\beta_t$ is the variance schedule.
 ```
 
 
-prev [DDPM](./12.DDPM.qmd)
+prev [DDPM](./12.DDPM.qmd)  
 [go back](./machine_learning.qmd) 
