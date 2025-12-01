@@ -1,5 +1,5 @@
 /.quarto/
 /.venv/
 /.luarc.json
-/.bat
+/*.bat
 **/*.quarto_ipynb
