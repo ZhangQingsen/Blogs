@@ -3,7 +3,7 @@ title: "DDIM"
 author: "Qingsen Zhang"
 date: "2025-11-20"
 categories: ['Python', 'Diffusion']
-description: 'Implement my verison of HHL step by step with a numerical example'
+description: 'Understanding DDIM step by step'
 format: 
   html:
     code-fold: true
@@ -19,13 +19,11 @@ editor_options:
 ## Introduction
 
 This document provides a one step simple implementation of the **<span style="color:#188038">Denoising Diffusion Implicit Models</span> (DDPM)** algorithm.  
-This document is based on the paper [Denoising Diffusion Implicit Models](https://arxiv.org/pdf/2010.02502).  
+This document is based on the paper [Denoising Diffusion Implicit Models](https://arxiv.org/pdf/2010.02502 "ICLR2021").  
 
-The key of Diffusion consists of 2 processes:  
-
-1. A __<span style="color:#188038">fixed</span>__ forward process $q$ that gradually <span style="color:#188038">adds Gaussian noise</span> to an image, until you end up with pure noise.
-
-2. A __<span style="color:#188038">learned</span>__ reverse <span style="color:#188038">denoise</span> diffusion process $p_{\theta}$ where a neural network is trained to gradually denoise an image starting from pure noise, until you end up with an actual image.
+$$
+x_t = √α_t * x_0 + √(1 - α_t) * ε_t, \text{ where } ε_t ~ N(0, I)
+$$
 
 
 > ![Diffusion process illustration](https://huggingface.co/blog/assets/78_annotated-diffusion/diffusion_figure.png)   
@@ -73,4 +71,5 @@ Where $\beta_t$ is the variance schedule.
 
 
 prev [DDPM](./12.DDPM.qmd)  
+next [Ractified Flow](./14.Rectified_Flow.qmd)  
 [go back](./machine_learning.qmd) 

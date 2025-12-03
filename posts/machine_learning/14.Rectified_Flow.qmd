@@ -1,9 +1,9 @@
 ---
-title: "DDPM Forward Backword and Loss"
+title: "Rectified Flow"
 author: "Qingsen Zhang"
-date: "2025-11-10"
+date: "2025-11-20"
 categories: ['Python', 'Diffusion']
-description: 'Understanding DDPM step by step'
+description: 'Understanding Rectified Flow step by step'
 format: 
   html:
     code-fold: true
@@ -18,8 +18,8 @@ editor_options:
 
 ## Introduction
 
-This document provides a one step simple implementation of the **<span style="color:#188038">Denoising Diffusion Probabilistic Models</span> (DDPM)** algorithm.  
-This document is based on the Hugging Face blog [The Annotated Diffusion Model](https://huggingface.co/blog/annotated-diffusion).  
+This document provides a one step simple implementation of the **<span style="color:#188038">Rectified Flow</span> (DDPM)** algorithm.  
+This document is based on the paper [Flow Straight and Fast: Learning to Generate and Transfer Data with Rectified Flow](https://arxiv.org/pdf/2209.03003 "ICL2023").  
 
 The key of Diffusion consists of 2 processes:  
 
@@ -54,15 +54,8 @@ $$
 Where $\beta_t$ is the variance schedule.
 
 ### 2. **Backword** Process
-$$  
-p_{\theta}(x_{t-1} | x_t) = \mathcal{N}(x_{t-1}; \mu_\theta(x_t, t), \Sigma(x_t, t)) 
-$$  
 
 ### 3. **Loss**  
-__variational lower bound__ (also called ELBO)
-$$  
-q(x_t | x_0) = \mathcal{N}(x_t; \sqrt{\bar{\alpha_t}}X_0, (1-\bar{\alpha_t})I) 
-$$  
 
 ```{python}
 
@@ -79,5 +72,5 @@ $$
 ```
 
 
-next [DDIM](./13.DDIM.qmd)  
+prev [DDPM](./13.DDIM.qmd)  
 [go back](./machine_learning.qmd) 
