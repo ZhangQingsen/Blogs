@@ -21,9 +21,22 @@ editor_options:
 This document provides a one step simple implementation of the **<span style="color:#188038">Denoising Diffusion Implicit Models</span> (DDPM)** algorithm.  
 This document is based on the paper [Denoising Diffusion Implicit Models](https://arxiv.org/pdf/2010.02502 "ICLR2021").  
 
+Below is the key formula for __DDIM__:  
 $$
 x_t = √α_t * x_0 + √(1 - α_t) * ε_t, \text{ where } ε_t ~ N(0, I)
-$$
+$$  
+
+Recall the __DDPM__ forward process:  
+$$  
+q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1 - \beta_t} x_{t-1}, \beta_t\mathbf{I}) 
+$$  
+It adds the noise step by step, after $T$ steps, $x_T\sim(0,\mathbf{I})$.  
+In this case, the backward process:  
+$$  
+p_{\theta}(x_{t-1} | x_t) = \mathcal{N}(x_{t-1}; \mu_\theta(x_t, t), \Sigma(x_t, t)) 
+$$  
+is driven from predicted noise.
+
 
 
 > ![Diffusion process illustration](https://huggingface.co/blog/assets/78_annotated-diffusion/diffusion_figure.png)   
